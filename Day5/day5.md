@@ -134,11 +134,11 @@ With context, the roadmap became personalized and actionable.
 
 ## Prompt A Output
 
-![Prompt A Output](prompt-a.png)
+![Prompt A Output](prompt-a-roadmap.png)
 
 ## Prompt B Output
 
-![Prompt B Output](prompt-b.png)
+![Prompt B Output](prompt-b-roadmap.png)
 
 ---
 
