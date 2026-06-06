@@ -26,7 +26,7 @@ Learn how AI can be used to analyze, improve, and optimize a resume for better A
 
 ### Screenshot
 
-![ATS Scorecard](ATS Scorecard)
+![ATS Scorecard](ATS Scorecard.png)
 
 ---
 
