@@ -10,7 +10,7 @@ Learn how AI can be used to analyze, improve, and optimize a resume for better A
 
 ### Screenshot
 
-![Original Resume](Original Resume.png)
+![Original Resume](resume-before.png)
 
 ---
 
