@@ -10,7 +10,7 @@ Learn how AI can be used to analyze, improve, and optimize a resume for better A
 
 ### Screenshot
 
-![Original Resume](original-resume.png)
+![Original Resume](Original Resume.png)
 
 ---
 
@@ -18,7 +18,7 @@ Learn how AI can be used to analyze, improve, and optimize a resume for better A
 
 ### Screenshot
 
-![Optimized Resume](optimized-resume.png)
+![Optimized Resume](Optimized Resume.png)
 
 ---
 
@@ -26,7 +26,7 @@ Learn how AI can be used to analyze, improve, and optimize a resume for better A
 
 ### Screenshot
 
-![ATS Scorecard](ats-scorecard.png)
+![ATS Scorecard](ATS Scorecard)
 
 ---
 
