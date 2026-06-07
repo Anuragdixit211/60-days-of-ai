@@ -103,7 +103,7 @@ I created a single infographic that includes:
 
 **Screenshot:**
 
-(Add Your Single Screenshot Here)
+(Add Your Single Screenshot Here
 
 ---
 
