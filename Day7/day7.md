@@ -103,7 +103,8 @@ I created a single infographic that includes:
 
 **Screenshot:**
 
-(Add Your Single Screenshot Here
+(<img width="1122" height="1402" alt="day7-strategy png" src="https://github.com/user-attachments/assets/a29c525e-fa3b-4fb8-a26b-fc116fc88160" />
+)
 
 ---
 
