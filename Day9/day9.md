@@ -10,15 +10,15 @@ Enhance an existing NutriScope nutrition analysis application by adding advanced
 
 ### HTML Files
 
-* nutriscope-original.html
-* nutriscope-enhanced.html
+* [day9-nutriscope-original.html](day9-nutriscope-original.html)
+* [day9-nutriscope-enhanced.html](day9-nutriscope-enhanced.html)
 
 ### Screenshots
 
-* day9-homepage.png
-* day9-food-analysis.png
-* day9-meal-planner.png
-* day9-risk-analysis.png
+* ![Homepage](day9-homepage.png)
+* ![Food Analysis](day9-food-analysis.png)
+* ![Meal Planner](day9-meal-planner.png)
+* ![Risk Analysis](day9-risk-analysis.png)
 
 ---
 
