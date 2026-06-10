@@ -6,13 +6,26 @@ Build and enhance a personal portfolio website using HTML, CSS, and JavaScript.
 
 ## Project Overview
 
-Created a responsive portfolio website showcasing personal information, skills, projects, education, and contact details.
+Created a responsive personal portfolio website showcasing personal information, skills, projects, education, and contact details. The website was developed using HTML, CSS, and JavaScript and designed to provide a professional online presence.
 
 ## Files Included
 
-* portfolio.html
-* Screenshots of the portfolio website
+* portfolio.html (Portfolio Website Source Code)
+* Screenshots of the Portfolio Website
 * day10.md
+
+## Portfolio HTML File
+
+The `portfolio.html` file contains the complete structure of the portfolio website, including:
+
+* Hero Section
+* About Me Section
+* Skills Section
+* Projects Section
+* Education Section
+* Contact Section
+* Social Media Links
+* Responsive Layout
 
 ## Features Implemented
 
@@ -21,6 +34,7 @@ Created a responsive portfolio website showcasing personal information, skills, 
 * About Me Section
 * Skills Section
 * Projects Section
+* Education Section
 * Contact Information
 * Social Media Links
 * Professional UI Design
@@ -32,11 +46,12 @@ Created a responsive portfolio website showcasing personal information, skills, 
 * Learned responsive design techniques.
 * Practiced organizing project files in GitHub.
 * Improved portfolio presentation skills.
+* Gained experience in creating a professional portfolio website.
 
 ## Screenshots
 
-Screenshots of the completed project are included in this folder.
+Screenshots of the completed portfolio website are included in this folder.
 
 ## Outcome
 
-Successfully created and enhanced a professional portfolio website and uploaded all project files to GitHub.
+Successfully created and enhanced a professional portfolio website, uploaded the `portfolio.html` file, added project screenshots, documented learnings, and pushed all files to GitHub.
