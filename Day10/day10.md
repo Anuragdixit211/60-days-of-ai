@@ -16,7 +16,7 @@ Created a responsive personal portfolio website showcasing personal information,
 
 ## Portfolio HTML File
 
-The `portfolio.html` file contains the complete structure of the portfolio website, including:
+The [Original HTML](day10-portfolio.html) file contains the complete structure of the portfolio website, including:
 
 * Hero Section
 * About Me Section
@@ -50,7 +50,7 @@ The `portfolio.html` file contains the complete structure of the portfolio websi
 
 ## Screenshots
 
-Screenshots of the completed portfolio website are included in this folder.
+![Homepage](day10-screenshot1.png)
 
 ## Outcome
 
