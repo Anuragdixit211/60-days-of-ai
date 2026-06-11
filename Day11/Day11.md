@@ -21,6 +21,6 @@ Updated resume with:
 
 ## Files Included
 
-- ATS Analysis Report
-- Optimized Resume
+- ATS Analysis Report ![ATSscore](day11-screenshot.png)
+- Optimized Resume ![Resume](day11-resume.png)
   
