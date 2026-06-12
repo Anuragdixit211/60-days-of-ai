@@ -180,7 +180,7 @@ Add project interview toolkit screenshot below:
 
 Add generated outputs screenshot below:
 
-![interview toolkit](day12-toolkit.png)
+![interview toolkit](day12-toolkit.png.)
 
 ---
 
@@ -188,9 +188,9 @@ Add generated outputs screenshot below:
 
 Add personal branding screenshot below:
 
-![Screenshot1](day12-screenshot.png1)
-![Screenshot2](day12-screenshot.png2)
-![Screenshot3](day12-screenshot.png3)
+![Screenshot1](day12-screenshot.png1.)
+![Screenshot2](day12-screenshot.png2.)
+![Screenshot3](day12-screenshot.png3.)
 
 ---
 
