@@ -20,6 +20,6 @@
 
 ## Screenshots
 
-* Screenshot 1: Home Page 
-* Screenshot 2: Analysis/Findings
-* Screenshot 3: Learning Outcome
+* Screenshot 1: ![Homepage](day13-screenshot1.png)
+* Screenshot 2: ![ Analysis/Findings](day13-screenshot2.png)
+* Screenshot 3: ![ Learning Outcome](day13-screenshot3.png)
