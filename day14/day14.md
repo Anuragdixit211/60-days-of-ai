@@ -6,9 +6,9 @@ Today, I built an AI-Powered Job Risk Assessment Dashboard that analyzes job opp
 
 ## Screenshots
 
-* Dashboard Home Screen
-* Risk Analysis Section
-* Final Report View
+* Screenshot1- ![Dashboard Home Screen](day14-screenshot1.png)
+* Screenshot2- Risk Analysis Section ![ Risk Analysis Section](day14-screenshot2.png)
+* Screenshot3- Final Report View ![ Final Report View](day14-screenshot3.png)
 
 ## Generated Report
 
