@@ -6,7 +6,7 @@ AI-Powered Premium Vedic Astrology Report
 
 ## Home Page Screenshot
 
-![Homepage](day15-homepage.png)
+![Homepage](day15-vedicdata.png)
 
 
 ## Screenshots Added
