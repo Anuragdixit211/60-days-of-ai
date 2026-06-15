@@ -12,8 +12,7 @@ AI-Powered Premium Vedic Astrology Report
 ## Screenshots Added
 
 1. Home Page Screenshot ![Homepage](day15-screenshot1.png)
-2. Astrology Report Screenshot ![ Astrology Report](day15-screenshot2.png)
-3. Premium Poster Screenshot ![Premium Poster data](day15-screenshot3.png)
+
 
 ## Generated Reports
 
