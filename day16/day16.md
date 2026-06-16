@@ -15,10 +15,10 @@ Created professional stock research reports and LinkedIn-ready posters using AI 
 
 ## Files Uploaded
 
-* TCS LinkedIn Poster Screenshot
-* TCS_Screenshot 1
-* TCS_Screenshot 2
-* TCS_Screenshot 3
+* TCS LinkedIn Poster Screenshot![Poster](day16-poster.png)
+* TCS_Screenshot 1 ![pic](day16-screenshot1.png)
+* TCS_Screenshot 2 ![pic](day16-screenshot2.png)
+  
 
 ## Key Learnings
 
