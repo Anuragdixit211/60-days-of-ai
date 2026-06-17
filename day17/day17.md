@@ -6,8 +6,8 @@ Built a stock fundamental research dashboard and analyzed company fundamentals u
 
 ## Files Included
 
-* Generated HTML Dashboard [Original HTML](day17-htmlFile.html)
-* Analysis Report poster [Original HTML](day17-poster.png)
+* Generated HTML Dashboard [HTML Dashboard](day17-htmlFile.html)
+* Analysis Report poster [ Report poster](day17-poster.png)
 
 ## Analysis Findings
 
