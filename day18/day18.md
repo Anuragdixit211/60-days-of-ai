@@ -15,7 +15,7 @@ Created and analyzed interactive dashboards to visualize data effectively and im
 
 ## Files Included
 
-* Dashboard HTML/CSS/JS files [Original HTML](day18-htmlFile.html)
+* Dashboard HTML/CSS/JS files [Original HTML](day18-htmlfile.html)
 * Build a Brain Dump poster ![Brain Poster](day9-buildBrainPoster.png)
 
 ## Key Learnings
