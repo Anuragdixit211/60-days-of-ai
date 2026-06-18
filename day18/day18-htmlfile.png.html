@@ -1,0 +1,291 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f5f7; color: #1a1a2e; font-size: 14px; }
+  .dashboard { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+  .header { background: linear-gradient(135deg, #1e3a5f 0%, #2d6a9f 100%); color: white; border-radius: 14px; padding: 28px 32px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(30,58,95,0.25); }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .header .meta { font-size: 13px; opacity: 0.8; display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px; }
+  .meta span { display: flex; align-items: center; gap: 6px; }
+  .section { background: white; border-radius: 12px; padding: 22px 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .section-title { font-size: 15px; font-weight: 700; color: #1e3a5f; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #e8eef5; padding-bottom: 10px; }
+  .summary-text { color: #374151; line-height: 1.7; font-size: 14px; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .card { background: #f8fafc; border-radius: 10px; padding: 16px; border-left: 4px solid #2d6a9f; }
+  .card.red { border-left-color: #ef4444; }
+  .card.orange { border-left-color: #f97316; }
+  .card.green { border-left-color: #22c55e; }
+  .card-label { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .card-value { font-size: 14px; font-weight: 600; color: #1f2937; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: #f0f4f8; }
+  th { text-align: left; padding: 10px 14px; font-size: 12px; font-weight: 700; color: #4b5563; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { padding: 11px 14px; border-bottom: 1px solid #f0f4f8; font-size: 13px; color: #374151; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .badge-red { background: #fee2e2; color: #b91c1c; }
+  .badge-orange { background: #ffedd5; color: #c2410c; }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-yellow { background: #fef9c3; color: #a16207; }
+  .badge-gray { background: #f3f4f6; color: #4b5563; }
+  .q-item { background: #fffbeb; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; border-left: 3px solid #f59e0b; display: flex; gap: 10px; align-items: flex-start; }
+  .q-item:last-child { margin-bottom: 0; }
+  .risk-item { background: #fff1f2; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; border-left: 3px solid #ef4444; }
+  .risk-item:last-child { margin-bottom: 0; }
+  .conflict-item { background: #fff7ed; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; border-left: 3px solid #f97316; }
+  .conflict-item:last-child { margin-bottom: 0; }
+  .item-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .item-desc { font-size: 13px; color: #6b7280; line-height: 1.5; }
+  .speaker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .speaker-card { background: #f8fafc; border-radius: 10px; padding: 16px; border: 1px solid #e5e7eb; }
+  .speaker-name { font-weight: 700; font-size: 13px; color: #1e3a5f; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .speaker-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; }
+  .speaker-item { font-size: 12px; color: #4b5563; margin-bottom: 4px; padding-left: 12px; border-left: 2px solid #d1d5db; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } .cards-grid { grid-template-columns: 1fr 1fr; } }
+  .collapse-btn { background: none; border: none; cursor: pointer; color: #6b7280; font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px; padding: 0; }
+  .collapse-btn:hover { color: #2d6a9f; }
+  details summary { list-style: none; cursor: pointer; font-size: 13px; font-weight: 600; color: #2d6a9f; margin-top: 8px; }
+  details summary::-webkit-details-marker { display: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { background: #e0e7ff; color: #3730a3; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+</style>
+
+<div class="dashboard">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>📋 Quarterly Growth Strategy Meeting</h1>
+    <div class="meta">
+      <span>👥 8 Participants</span>
+      <span>📅 Date: Not specified</span>
+      <span>🏷️ Q2 / Q3 Planning</span>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="section">
+    <div class="section-title">📝 Summary</div>
+    <div class="summary-text">
+      Leadership reviewed Q2 revenue performance, which came in at 12% growth against an 18% target. The shortfall was primarily driven by 5 enterprise deals slipping to next quarter due to procurement delays and security review requests. Key discussion topics included website conversion improvements, engineering capacity constraints, a known reporting performance issue affecting both customers and sales prospects, hiring plan postponement, and the pending annual customer conference budget approval.
+    </div>
+  </div>
+
+  <!-- Key Takeaways -->
+  <div class="section">
+    <div class="section-title">💡 Key Takeaways</div>
+    <div class="cards-grid">
+      <div class="card red">
+        <div class="card-label">Q2 Revenue Growth</div>
+        <div class="card-value">12% achieved vs 18% target</div>
+      </div>
+      <div class="card red">
+        <div class="card-label">Enterprise Deals Slipped</div>
+        <div class="card-value">9 of 14 closed — 5 pushed to Q3</div>
+      </div>
+      <div class="card green">
+        <div class="card-label">Customer Retention</div>
+        <div class="card-value">94% — Remains strong</div>
+      </div>
+      <div class="card green">
+        <div class="card-label">Website Traffic Growth</div>
+        <div class="card-value">+34% vs last quarter</div>
+      </div>
+      <div class="card orange">
+        <div class="card-label">Support Ticket Volume</div>
+        <div class="card-value">Increased significantly</div>
+      </div>
+      <div class="card orange">
+        <div class="card-label">Engineering Capacity</div>
+        <div class="card-value">Near capacity — August dashboard due</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Items -->
+  <div class="section">
+    <div class="section-title">✅ Action Items</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Owner</th>
+          <th>Deadline</th>
+          <th>Priority</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Get cost estimate for website redesign / contractor work</td>
+          <td>CTO</td>
+          <td>Before next approval</td>
+          <td><span class="badge badge-red">🔴 High</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending</span></td>
+        </tr>
+        <tr>
+          <td>Complete architecture review for website work</td>
+          <td>CTO</td>
+          <td>Not specified</td>
+          <td><span class="badge badge-red">🔴 High</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending</span></td>
+        </tr>
+        <tr>
+          <td>Resolve reporting performance and dashboard loading issues</td>
+          <td>Engineering / CTO</td>
+          <td>Not specified</td>
+          <td><span class="badge badge-red">🔴 High</span></td>
+          <td><span class="badge badge-blue">🔄 In Progress</span></td>
+        </tr>
+        <tr>
+          <td>Postpone hiring decisions until Q3 forecasts are finalized</td>
+          <td>CEO / All Dept. Heads</td>
+          <td>After Q3 forecasts</td>
+          <td><span class="badge badge-orange">🟠 Medium</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending</span></td>
+        </tr>
+        <tr>
+          <td>Collect final vendor proposals for annual customer conference</td>
+          <td>VP Marketing / CFO</td>
+          <td>Before next month's meeting</td>
+          <td><span class="badge badge-orange">🟠 Medium</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending</span></td>
+        </tr>
+        <tr>
+          <td>Revisit conference budget after proposals received</td>
+          <td>CEO / CFO</td>
+          <td>Next month</td>
+          <td><span class="badge badge-orange">🟠 Medium</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending</span></td>
+        </tr>
+        <tr>
+          <td>Complete analytics dashboard milestone review</td>
+          <td>Engineering / CTO</td>
+          <td>Before August release</td>
+          <td><span class="badge badge-orange">🟠 Medium</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending</span></td>
+        </tr>
+        <tr>
+          <td>Website redesign and simplify demo-request process</td>
+          <td>VP Marketing</td>
+          <td>Not specified</td>
+          <td><span class="badge badge-orange">🟠 Medium</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending — Awaiting Cost Estimate</span></td>
+        </tr>
+        <tr>
+          <td>Follow up on all open items</td>
+          <td>All</td>
+          <td>Next week's leadership meeting</td>
+          <td><span class="badge badge-green">🟢 Low</span></td>
+          <td><span class="badge badge-yellow">⏳ Pending</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Open Questions -->
+  <div class="section">
+    <div class="section-title">❓ Open Questions</div>
+    <div class="q-item"><span style="font-size:16px">❓</span><div><div class="item-title">Will the remaining 5 enterprise deals close in Q3, or slip again?</div><div class="item-desc">CFO flagged that if they move again, the annual revenue target may be missed.</div></div></div>
+    <div class="q-item"><span style="font-size:16px">❓</span><div><div class="item-title">What is the cost estimate for website work and additional contractors?</div><div class="item-desc">CTO stated the architecture review has not been completed yet — no estimate available.</div></div></div>
+    <div class="q-item"><span style="font-size:16px">❓</span><div><div class="item-title">Will the new analytics dashboard be ready by August?</div><div class="item-desc">CTO could not guarantee the August release date at the time of the meeting.</div></div></div>
+    <div class="q-item"><span style="font-size:16px">❓</span><div><div class="item-title">Should reporting performance improvement replace planned feature releases?</div><div class="item-desc">Product Director agreed it may have larger business impact — no final decision made.</div></div></div>
+    <div class="q-item"><span style="font-size:16px">❓</span><div><div class="item-title">Will the analytics dashboard be announced at the annual customer conference?</div><div class="item-desc">Deferred — no public commitments until engineering completes the milestone review.</div></div></div>
+    <div class="q-item"><span style="font-size:16px">❓</span><div><div class="item-title">When will the annual hiring plan be finalized?</div><div class="item-desc">Postponed until Q3 forecasts are complete. No timeline given.</div></div></div>
+  </div>
+
+  <!-- Risks & Blockers + Conflicts -->
+  <div class="two-col">
+    <div class="section">
+      <div class="section-title">⚠️ Risks & Blockers</div>
+      <div class="risk-item"><div class="item-title">Annual revenue target at risk</div><div class="item-desc">5 slipped enterprise deals. CFO warned a further slip could cause annual target miss.</div></div>
+      <div class="risk-item"><div class="item-title">Engineering near capacity</div><div class="item-desc">Adding website redesign work may require contractors — cost unknown and unapproved.</div></div>
+      <div class="risk-item"><div class="item-title">Reporting performance degrading sales</div><div class="item-desc">Prospects mentioned it during sales calls. Also driving support ticket increase.</div></div>
+      <div class="risk-item"><div class="item-title">Architecture review incomplete</div><div class="item-desc">Blocking cost estimate approval for website work. No completion date given.</div></div>
+      <div class="risk-item"><div class="item-title">August release date uncertain</div><div class="item-desc">CTO could not guarantee dashboard delivery. Conference announcement deferred.</div></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">⚡ Conflicts</div>
+      <div class="conflict-item"><div class="item-title">⚠️ Website redesign vs. Engineering capacity</div><div class="item-desc">VP Marketing wants a website redesign; Engineering is near capacity with the August analytics dashboard. Contractor option raised but no approval yet.</div></div>
+      <div class="conflict-item"><div class="item-title">⚠️ Reporting fix vs. Planned feature releases</div><div class="item-desc">Product Director suggested reporting performance may outweigh planned releases in business impact — reprioritization not formally decided.</div></div>
+      <div class="conflict-item"><div class="item-title">⚠️ Conflicting headcount requests</div><div class="item-desc">Department heads submitted different hiring requests. No reconciliation — decision postponed to post-Q3 forecast.</div></div>
+      <div class="conflict-item"><div class="item-title">⚠️ Conference announcement dependency</div><div class="item-desc">Head of Sales wants to announce analytics dashboard at conference; CTO cannot confirm August delivery.</div></div>
+    </div>
+  </div>
+
+  <!-- Speaker Summary -->
+  <div class="section">
+    <div class="section-title">👥 Speaker Summary</div>
+    <div class="speaker-grid">
+      <div class="speaker-card">
+        <div class="speaker-name"><div class="speaker-avatar" style="background:#1e3a5f">CE</div>CEO</div>
+        <div class="speaker-item">Led meeting; set priorities on reporting fix</div>
+        <div class="speaker-item">Blocked website spending pending cost estimate</div>
+        <div class="speaker-item">Deferred hiring until Q3 forecasts</div>
+        <div class="speaker-item">Deferred conference budget to next month</div>
+        <div class="speaker-item">Blocked public commitments on August release</div>
+      </div>
+      <div class="speaker-card">
+        <div class="speaker-name"><div class="speaker-avatar" style="background:#2563eb">HS</div>Head of Sales</div>
+        <div class="speaker-item">14 deals expected; 9 closed — 5 slipped</div>
+        <div class="speaker-item">Procurement delays + 2 security reviews</div>
+        <div class="speaker-item">Prospects flagged reporting performance issues</div>
+        <div class="speaker-item">Asked about announcing dashboard at conference</div>
+      </div>
+      <div class="speaker-card">
+        <div class="speaker-name"><div class="speaker-avatar" style="background:#7c3aed">CF</div>CFO</div>
+        <div class="speaker-item">Warned annual target risk from deal slippage</div>
+        <div class="speaker-item">Requested cost estimate before approvals</div>
+        <div class="speaker-item">Needs final vendor proposals for conference budget</div>
+        <div class="speaker-item">Flagged differing headcount requests</div>
+      </div>
+      <div class="speaker-card">
+        <div class="speaker-name"><div class="speaker-avatar" style="background:#0891b2">VM</div>VP Marketing</div>
+        <div class="speaker-item">Website traffic +34% QoQ</div>
+        <div class="speaker-item">Conversion rates below expectations</div>
+        <div class="speaker-item">Planning website redesign + demo-request simplification</div>
+        <div class="speaker-item">Raised conference budget approval need</div>
+      </div>
+      <div class="speaker-card">
+        <div class="speaker-name"><div class="speaker-avatar" style="background:#b45309">PD</div>Product Director</div>
+        <div class="speaker-item">Flagged engineering capacity for website work</div>
+        <div class="speaker-item">Agreed reporting performance is higher priority than some planned releases</div>
+        <div class="speaker-item">Conditioned conference announcement on August confidence</div>
+      </div>
+      <div class="speaker-card">
+        <div class="speaker-name"><div class="speaker-avatar" style="background:#dc2626">CT</div>CTO</div>
+        <div class="speaker-item">Engineering near capacity</div>
+        <div class="speaker-item">Architecture review not complete — no cost estimate yet</div>
+        <div class="speaker-item">Investigating reporting/dashboard performance</div>
+        <div class="speaker-item">Cannot guarantee August release date</div>
+      </div>
+      <div class="speaker-card">
+        <div class="speaker-name"><div class="speaker-avatar" style="background:#059669">CS</div>Customer Success Lead</div>
+        <div class="speaker-item">Retention strong at 94%</div>
+        <div class="speaker-item">Support ticket volume up significantly</div>
+        <div class="speaker-item">Most complaints: reporting performance + dashboard loading</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Notes -->
+  <div class="section">
+    <div class="section-title">📌 Additional Notes</div>
+    <div class="risk-item" style="background:#f0f9ff; border-left-color:#0ea5e9;">
+      <div class="item-title">Next Meeting</div>
+      <div class="item-desc">Follow-up on all open items during next week's leadership meeting.</div>
+    </div>
+    <div class="risk-item" style="background:#f0f9ff; border-left-color:#0ea5e9; margin-top: 10px;">
+      <div class="item-title">Conference Budget Review</div>
+      <div class="item-desc">CEO to revisit conference budget next month once CFO receives final vendor proposals.</div>
+    </div>
+    <div class="risk-item" style="background:#f0f9ff; border-left-color:#0ea5e9; margin-top: 10px;">
+      <div class="item-title">No Public Commitments on Dashboard</div>
+      <div class="item-desc">Team agreed to avoid any external announcements regarding the August analytics dashboard until the engineering milestone review is complete.</div>
+    </div>
+  </div>
+
+</div>
