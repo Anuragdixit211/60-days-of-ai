@@ -6,8 +6,8 @@ Created an interactive Football Intelligence Profile Dashboard using HTML, CSS, 
 
 ## Files Included
 
-* football_intelligence_profile.html
-* football poster
+* football_intelligence_profile.html [Original HTML](day19-footballinyelligence.html)
+* football poster ![Homepage](day9-poster.png)
 
 ## Features Implemented
 
