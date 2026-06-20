@@ -6,8 +6,8 @@ Create a professional analytics dashboard for the Face Puzzle project to visuali
 
 ## Files Included
 
-* FacePuzzle_Dashboard.html  [FacePuzzle HTML](day20-htmlfile.html)
-* Dashboard poster ![Poster](day20-poster.png)
+* FacePuzzle_Dashboard.html  [FacePuzzle HTML](day20-htmlfile.html)]
+* Dashboard poster ![Poster](day20-poster.png)]
 
 ## Features Implemented
 
