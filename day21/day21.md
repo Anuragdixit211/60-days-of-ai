@@ -10,7 +10,7 @@ The dashboard provides insights into a user's digital footprint by visualizing p
 
 ## Files Included
 
-* Digital_Footprint_Intelligence_X.html ## HTML Files ![Digital_Footprint HTML](day21-file.html)].
+* Digital_Footprint_Intelligence_X.html HTML Files ![Digital_Footprint HTML](day21-file.html)].
 * LinkedIn Poster Design ![Homepage](day21-poster.png)].
 
 ## Privacy Findings
