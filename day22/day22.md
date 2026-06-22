@@ -35,22 +35,13 @@ An AI-powered chatbot platform designed for Indian SMEs to automate customer sup
 
 ### HTML Report
 
-* `startup_validation_report.html`
-
-### PDF Report
-
-* `startup_validation_report.pdf`
+* `startup_validation_report.html` [Original HTML](day22-htmlfile.html.pdf)
 
 ### Screenshots
 
 The following screenshots have been uploaded in the `screenshots/` folder:
 
-* Homepage Dashboard Screenshot
-* TAM/SAM/SOM Analysis Screenshot
-* Competitor Analysis Screenshot
-* Startup Scorecard Screenshot
-* Final Recommendation Screenshot
-
+* Homepage Dashboard Screenshot ![Poster](day22-poster.png)
 ---
 
 ## Key Findings
