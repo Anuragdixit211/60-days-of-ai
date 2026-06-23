@@ -14,8 +14,8 @@ Learned how to generate structured reports using AI, organize information effect
 
 ## Files Included
 
-* Generated Report and file
-*  Poster of Report 
+* Generated Report and file - [Original HTML](day23-htmlfile.html)]
+*  Poster of Report ![Poster](day23-poster.png)
 
 
 ## Key Learnings
