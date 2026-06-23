@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer & MVP Blueprint — Local Business Chatbot</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0D1B2A;
+    --navy2:   #1A2E42;
+    --teal:    #00B4A6;
+    --teal2:   #00D4C3;
+    --amber:   #F59E0B;
+    --amber2:  #FCD34D;
+    --coral:   #FF6B6B;
+    --green:   #10B981;
+    --purple:  #7C3AED;
+    --slate:   #64748B;
+    --light:   #F0F7FF;
+    --white:   #FFFFFF;
+    --card:    #111C2A;
+    --card2:   #162030;
+    --border:  rgba(0,180,166,0.18);
+    --glow:    rgba(0,180,166,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: #E2EEF9;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,27,42,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex; align-items: center; gap: 0;
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 0.85rem;
+    color: var(--teal2);
+    letter-spacing: 0.05em;
+    margin-right: auto;
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 0.1rem; }
+  .nav-links a {
+    font-size: 0.72rem; font-weight: 500;
+    color: rgba(226,238,249,0.55);
+    text-decoration: none;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .nav-links a:hover { color: var(--teal2); background: var(--glow); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,180,166,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,180,166,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
+  }
+  .hero-orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
+  }
+  .orb1 { width:500px; height:500px; background:rgba(0,180,166,0.12); top:-100px; left:-100px; }
+  .orb2 { width:400px; height:400px; background:rgba(124,58,237,0.10); bottom:-80px; right:-80px; }
+  .orb3 { width:300px; height:300px; background:rgba(245,158,11,0.08); top:40%; left:60%; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(0,180,166,0.12);
+    border: 1px solid rgba(0,180,166,0.3);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--teal2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .dot-live {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--teal2);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .hero h1 span.grad {
+    background: linear-gradient(135deg, var(--teal2) 0%, var(--amber2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.05rem; color: rgba(226,238,249,0.6);
+    max-width: 560px; margin: 0 auto 2.5rem;
+    font-weight: 400;
+  }
+
+  /* ── VERDICT BADGE ── */
+  .verdict-pill {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+    border: 1px solid rgba(245,158,11,0.4);
+    border-radius: 100px;
+    padding: 0.7rem 1.6rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--amber2);
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  /* ── SCORE CARDS ── */
+  .score-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; max-width: 860px; width: 100%;
+    margin: 0 auto; position: relative;
+  }
+  .score-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.4rem 1rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .score-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  }
+  .score-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  }
+  .sc-teal::before { background: linear-gradient(90deg, var(--teal), var(--teal2)); }
+  .sc-green::before { background: linear-gradient(90deg, var(--green), #34D399); }
+  .sc-amber::before { background: linear-gradient(90deg, var(--amber), var(--amber2)); }
+  .sc-purple::before { background: linear-gradient(90deg, var(--purple), #A78BFA); }
+
+  .score-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.2rem; font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .sc-teal .score-num { color: var(--teal2); }
+  .sc-green .score-num { color: #34D399; }
+  .sc-amber .score-num { color: var(--amber2); }
+  .sc-purple .score-num { color: #A78BFA; }
+
+  .score-label { font-size: 0.72rem; color: rgba(226,238,249,0.5); font-weight: 500; letter-spacing: 0.04em; }
+
+  /* ── SCORE BAR ── */
+  .score-bar-wrap { margin-top: 0.6rem; background: rgba(255,255,255,0.07); border-radius: 4px; height: 4px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 4px; animation: bar-grow 1.4s ease-out forwards; transform-origin: left; }
+  .sc-teal .score-bar { background: linear-gradient(90deg, var(--teal), var(--teal2)); width: 78%; }
+  .sc-green .score-bar { background: linear-gradient(90deg, var(--green), #34D399); width: 82%; }
+  .sc-amber .score-bar { background: linear-gradient(90deg, var(--amber), var(--amber2)); width: 71%; }
+  .sc-purple .score-bar { background: linear-gradient(90deg, var(--purple), #A78BFA); width: 55%; }
+  @keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* ── SECTIONS ── */
+  .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--teal);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    color: var(--white); margin-bottom: 0.5rem;
+  }
+  .section-desc { color: rgba(226,238,249,0.55); font-size: 0.9rem; max-width: 520px; margin-bottom: 2.5rem; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 0 2rem; }
+
+  /* ── CARDS & GRIDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .card:hover { border-color: rgba(0,180,166,0.4); transform: translateY(-2px); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+  /* ── TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    background: rgba(0,180,166,0.1);
+    color: var(--teal2); font-size: 0.72rem;
+    font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.75rem 1rem; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 0.75rem 1rem; font-size: 0.85rem;
+    color: rgba(226,238,249,0.8);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .data-table tr:hover td { background: rgba(0,180,166,0.04); }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* ── BADGE CHIPS ── */
+  .chip {
+    display: inline-block; padding: 0.2rem 0.6rem;
+    border-radius: 100px; font-size: 0.7rem; font-weight: 600;
+  }
+  .chip-red    { background:rgba(255,107,107,0.15); color:#FF6B6B; border:1px solid rgba(255,107,107,0.3); }
+  .chip-amber  { background:rgba(245,158,11,0.15);  color:var(--amber2); border:1px solid rgba(245,158,11,0.3); }
+  .chip-green  { background:rgba(16,185,129,0.15);  color:#34D399; border:1px solid rgba(16,185,129,0.3); }
+  .chip-teal   { background:rgba(0,180,166,0.12);   color:var(--teal2); border:1px solid rgba(0,180,166,0.3); }
+  .chip-purple { background:rgba(124,58,237,0.15);  color:#A78BFA; border:1px solid rgba(124,58,237,0.3); }
+
+  /* ── PAIN POINTS ── */
+  .pain-grid { display: flex; flex-direction: column; gap: 0.6rem; }
+  .pain-item {
+    display: grid; grid-template-columns: 2rem 1fr 7rem 7rem;
+    align-items: center; gap: 1rem;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.9rem 1.2rem;
+    transition: all 0.25s;
+  }
+  .pain-item:hover { border-color: rgba(0,180,166,0.35); background: var(--card2); }
+  .pain-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; font-weight: 500; color: var(--teal);
+    opacity: 0.7;
+  }
+  .pain-text { font-size: 0.85rem; color: rgba(226,238,249,0.85); }
+  .pain-freq { font-size: 0.75rem; color: rgba(226,238,249,0.45); }
+
+  /* ── JOURNEY ── */
+  .journey-track {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 0; position: relative; margin-bottom: 1rem;
+  }
+  .journey-track::before {
+    content:''; position:absolute; top: 32px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, var(--teal), var(--amber));
+    z-index: 0;
+  }
+  .journey-step {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 0 0.3rem; position: relative; z-index: 1;
+    cursor: pointer;
+  }
+  .journey-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 0.6rem;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+  }
+  .journey-step:hover .journey-icon { transform: scale(1.12); }
+  .j1 .journey-icon { background:rgba(0,180,166,0.15); border-color:var(--teal); }
+  .j2 .journey-icon { background:rgba(124,58,237,0.15); border-color:var(--purple); }
+  .j3 .journey-icon { background:rgba(245,158,11,0.15); border-color:var(--amber); }
+  .j4 .journey-icon { background:rgba(16,185,129,0.15); border-color:var(--green); }
+  .j5 .journey-icon { background:rgba(255,107,107,0.12); border-color:var(--coral); }
+  .j6 .journey-icon { background:rgba(252,211,77,0.12); border-color:var(--amber2); }
+  .journey-stage { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color:var(--teal2); margin-bottom:0.2rem; }
+  .journey-desc { font-size: 0.72rem; color:rgba(226,238,249,0.5); line-height:1.4; }
+
+  .journey-detail-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.5rem;
+  }
+  .journey-detail {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem;
+  }
+  .journey-detail h4 { font-size: 0.78rem; font-weight: 700; color: var(--teal2); margin-bottom: 0.4rem; }
+  .journey-detail p { font-size: 0.77rem; color: rgba(226,238,249,0.6); }
+
+  /* ── MOSCOW ── */
+  .moscow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .moscow-col { border-radius: 14px; padding: 1.2rem; }
+  .must   { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); }
+  .should { background:rgba(0,180,166,0.08); border:1px solid rgba(0,180,166,0.25); }
+  .could  { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); }
+  .wont   { background:rgba(100,116,139,0.08); border:1px solid rgba(100,116,139,0.2); }
+  .moscow-label {
+    font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 0.8rem; display: block;
+  }
+  .must .moscow-label   { color:#34D399; }
+  .should .moscow-label { color:var(--teal2); }
+  .could .moscow-label  { color:var(--amber2); }
+  .wont .moscow-label   { color:var(--slate); }
+  .moscow-item {
+    font-size: 0.79rem; color:rgba(226,238,249,0.75);
+    padding: 0.35rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; gap: 0.4rem; align-items: flex-start;
+  }
+  .moscow-item:last-child { border: none; }
+  .moscow-item::before { content:'•'; opacity:0.4; flex-shrink:0; margin-top:0.05rem; }
+
+  /* ── PRICING ── */
+  .pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .pricing-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.5rem 1.2rem;
+    text-align: center; position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+  .pricing-card.featured {
+    background: linear-gradient(145deg, rgba(0,180,166,0.15), rgba(0,180,166,0.05));
+    border-color: var(--teal);
+  }
+  .pricing-card.featured::before {
+    content: 'BEST FIT';
+    position: absolute; top: 12px; right: 12px;
+    background: var(--teal); color: var(--navy);
+    font-size: 0.6rem; font-weight: 800; letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem; border-radius: 100px;
+  }
+  .plan-name { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-bottom: 0.8rem; }
+  .plan-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem; font-weight: 700; color: var(--white);
+    margin-bottom: 0.2rem;
+  }
+  .plan-price span { font-size: 1rem; color: var(--teal2); }
+  .plan-sub { font-size: 0.72rem; color: var(--slate); margin-bottom: 1rem; }
+  .plan-target { font-size: 0.78rem; color: rgba(226,238,249,0.6); margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .plan-feature { font-size: 0.77rem; color: rgba(226,238,249,0.7); padding: 0.3rem 0; display: flex; gap: 0.5rem; text-align: left; }
+  .plan-feature::before { content: '✓'; color: var(--teal2); flex-shrink: 0; font-weight: 700; }
+
+  /* ── RISK ── */
+  .risk-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+  .risk-item {
+    display: grid; grid-template-columns: 2.5rem 1fr 7rem 7rem 7rem;
+    gap: 1rem; align-items: start;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.2rem;
+    transition: all 0.25s;
+  }
+  .risk-item:hover { border-color: rgba(255,107,107,0.3); }
+  .risk-num {
+    width: 2rem; height: 2rem; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 700;
+    background: rgba(255,107,107,0.15); color: var(--coral); flex-shrink: 0;
+  }
+  .risk-text h4 { font-size: 0.85rem; font-weight: 600; color: var(--white); margin-bottom: 0.25rem; }
+  .risk-text p { font-size: 0.78rem; color: rgba(226,238,249,0.55); }
+
+  /* ── TIMELINE ── */
+  .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .week-card {
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .week-header {
+    padding: 0.9rem 1.1rem;
+    display: flex; flex-direction: column; gap: 0.15rem;
+  }
+  .w1 .week-header { background: linear-gradient(135deg, rgba(0,180,166,0.3), rgba(0,180,166,0.1)); }
+  .w2 .week-header { background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(124,58,237,0.1)); }
+  .w3 .week-header { background: linear-gradient(135deg, rgba(245,158,11,0.3), rgba(245,158,11,0.1)); }
+  .w4 .week-header { background: linear-gradient(135deg, rgba(16,185,129,0.3), rgba(16,185,129,0.1)); }
+  .week-num { font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:rgba(226,238,249,0.45); }
+  .week-title { font-family:'Space Grotesk',sans-serif; font-size:0.95rem; font-weight:700; color:var(--white); }
+  .week-theme { font-size:0.72rem; opacity:0.65; }
+  .week-body { background: var(--card); padding: 1rem 1.1rem; }
+  .week-action {
+    font-size: 0.78rem; color: rgba(226,238,249,0.7);
+    padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; gap: 0.5rem; align-items: flex-start;
+  }
+  .week-action:last-child { border: none; padding-bottom: 0; }
+  .week-action::before { content:'→'; color:var(--teal); opacity:0.7; flex-shrink:0; }
+
+  /* ── ICP ── */
+  .icp-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; }
+  .icp-attr { display: flex; flex-direction:column; gap:0.6rem; }
+  .icp-row {
+    display: flex; gap: 1rem;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem 1rem;
+    align-items: flex-start;
+  }
+  .icp-key { font-size: 0.7rem; font-weight: 700; text-transform:uppercase; letter-spacing:0.06em; color:var(--teal); min-width: 100px; flex-shrink:0; padding-top:0.1rem; }
+  .icp-val { font-size: 0.82rem; color:rgba(226,238,249,0.8); }
+
+  /* ── PERSONAS ── */
+  .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .persona-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+  }
+  .persona-head {
+    padding: 1.4rem 1.5rem 1rem;
+    background: linear-gradient(135deg, rgba(0,180,166,0.12), transparent);
+    display: flex; gap: 1rem; align-items: center;
+  }
+  .persona-avatar {
+    width: 54px; height: 54px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+    border: 2px solid var(--border);
+  }
+  .p-priya .persona-avatar { background: rgba(245,158,11,0.15); }
+  .p-ramesh .persona-avatar { background: rgba(124,58,237,0.15); }
+  .persona-name { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; color:var(--white); }
+  .persona-role { font-size:0.75rem; color:rgba(226,238,249,0.5); }
+  .persona-body { padding: 1rem 1.5rem 1.4rem; }
+  .persona-row { display:flex; gap:0.5rem; margin-bottom:0.5rem; font-size:0.8rem; }
+  .persona-row b { color:var(--teal2); min-width:90px; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; }
+  .persona-row span { color:rgba(226,238,249,0.75); }
+
+  /* ── OBJECTIONS ── */
+  .obj-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+  .obj-item {
+    display: grid; grid-template-columns: 1fr 0.8fr 1.2fr;
+    gap: 1rem; align-items: start;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.2rem;
+    transition: all 0.25s;
+  }
+  .obj-item:hover { border-color: rgba(245,158,11,0.3); }
+  .obj-q { font-size:0.82rem; font-style:italic; color:rgba(226,238,249,0.85); }
+  .obj-q::before { content: '"'; color: var(--amber); }
+  .obj-q::after  { content: '"'; color: var(--amber); }
+  .obj-fear { font-size:0.78rem; color:rgba(226,238,249,0.5); }
+  .obj-res { font-size:0.78rem; color:rgba(226,238,249,0.75); }
+
+  /* ── TRIGGERS ── */
+  .trigger-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .trigger-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.1rem;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    transition: all 0.25s;
+  }
+  .trigger-card:hover { border-color: rgba(245,158,11,0.4); background: var(--card2); }
+  .trigger-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .trigger-text { font-size: 0.8rem; color: rgba(226,238,249,0.75); line-height: 1.5; }
+
+  /* ── EXEC TABLE ── */
+  .exec-table-wrap { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+
+  /* ── FINAL VERDICT ── */
+  .final-verdict {
+    background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
+    border: 1px solid rgba(245,158,11,0.4);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .final-verdict::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(245,158,11,0.08), transparent);
+  }
+  .verdict-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--amber2); margin-bottom: 0.5rem;
+    position: relative;
+  }
+  .verdict-body { font-size: 0.88rem; color: rgba(226,238,249,0.7); max-width: 700px; margin: 0 auto 1.5rem; position: relative; }
+  .conditions-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; margin-top: 1.5rem; }
+  .cond-card {
+    background: rgba(0,0,0,0.25); border-radius: 10px; padding: 0.8rem;
+    border: 1px solid rgba(245,158,11,0.2);
+  }
+  .cond-num { font-family:'JetBrains Mono',monospace; font-size:1.2rem; font-weight:700; color:var(--amber); margin-bottom:0.3rem; }
+  .cond-text { font-size:0.72rem; color:rgba(226,238,249,0.6); line-height:1.4; }
+
+  /* ── ACTION SHEET ── */
+  .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .action-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.1rem;
+    transition: all 0.25s;
+  }
+  .action-item:hover { border-color: var(--teal); }
+  .action-n {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem; font-weight: 800;
+    color: var(--teal); opacity: 0.4; min-width: 2rem; line-height: 1;
+  }
+  .action-body h4 { font-size: 0.8rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+  .action-body p { font-size: 0.77rem; color: rgba(226,238,249,0.55); }
+
+  /* ── COMPETITORS ── */
+  .comp-wrap { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .you-row td { background: rgba(0,180,166,0.07) !important; font-weight: 600; }
+  .you-row td:first-child { color: var(--teal2); }
+
+  /* ── MARKET ── */
+  .market-funnel { display: flex; flex-direction: column; gap: 0.5rem; max-width: 560px; margin: 0 auto; }
+  .funnel-tier {
+    border-radius: 12px; padding: 1rem 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .f-tam { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); }
+  .f-sam { background: rgba(0,180,166,0.12); border: 1px solid rgba(0,180,166,0.3); }
+  .f-som { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); }
+  .funnel-label { font-family:'Space Grotesk',sans-serif; font-size:0.85rem; font-weight:700; }
+  .f-tam .funnel-label { color:#A78BFA; }
+  .f-sam .funnel-label { color:var(--teal2); }
+  .f-som .funnel-label { color:#34D399; }
+  .funnel-val { font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:800; }
+  .f-tam .funnel-val { color:#A78BFA; }
+  .f-sam .funnel-val { color:var(--teal2); }
+  .f-som .funnel-val { color:#34D399; }
+  .funnel-desc { font-size:0.75rem; color:rgba(226,238,249,0.5); margin-top:0.2rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem; color: rgba(226,238,249,0.3);
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .score-grid, .moscow-grid, .pricing-grid, .timeline, .four-col { grid-template-columns: repeat(2, 1fr); }
+    .two-col, .icp-grid, .persona-grid, .action-grid, .three-col, .journey-detail-grid { grid-template-columns: 1fr; }
+    .journey-track { grid-template-columns: repeat(3, 1fr); }
+    .journey-track::before { display: none; }
+    .pain-item { grid-template-columns: 2rem 1fr; }
+    .pain-freq, .pain-item .chip { display: none; }
+    .risk-item { grid-template-columns: 2.5rem 1fr; }
+    .obj-item { grid-template-columns: 1fr; }
+    .conditions-grid { grid-template-columns: repeat(2, 1fr); }
+    .trigger-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">📊 MVP Blueprint</span>
+  <div class="nav-links">
+    <a href="#summary">Summary</a>
+    <a href="#icp">ICP</a>
+    <a href="#pain">Pain Points</a>
+    <a href="#journey">Journey</a>
+    <a href="#mvp">MVP</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#risks">Risks</a>
+    <a href="#plan">30-Day Plan</a>
+    <a href="#verdict">Verdict</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+
+  <div class="hero-eyebrow">
+    <span class="dot-live"></span>
+    Startup Validation Intelligence Platform
+  </div>
+
+  <h1>
+    Customer &amp; MVP Blueprint<br>
+    <span class="grad">Local Business Chatbot</span>
+  </h1>
+  <p class="hero-sub">AI-powered WhatsApp-native customer engagement for 63M+ Indian SMEs — complete validation report with actionable roadmap</p>
+
+  <div class="verdict-pill">
+    🟡 &nbsp; Promising but Unvalidated — Conditional GO
+  </div>
+
+  <div class="score-grid">
+    <div class="score-card sc-teal fade-in">
+      <div class="score-num">78</div>
+      <div class="score-label">Customer Clarity</div>
+      <div class="score-bar-wrap"><div class="score-bar"></div></div>
+    </div>
+    <div class="score-card sc-green fade-in">
+      <div class="score-num">82</div>
+      <div class="score-label">Problem Severity</div>
+      <div class="score-bar-wrap"><div class="score-bar"></div></div>
+    </div>
+    <div class="score-card sc-amber fade-in">
+      <div class="score-num">71</div>
+      <div class="score-label">PMF Potential</div>
+      <div class="score-bar-wrap"><div class="score-bar"></div></div>
+    </div>
+    <div class="score-card sc-purple fade-in">
+      <div class="score-num">55</div>
+      <div class="score-label">MVP Readiness</div>
+      <div class="score-bar-wrap"><div class="score-bar"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section class="section fade-in" id="summary">
+  <div class="section-eyebrow">01 — Overview</div>
+  <h2 class="section-title">Executive Summary</h2>
+  <p class="section-desc">Synthesised from your full startup validation report. Key dimensions at a glance.</p>
+  <div class="exec-table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Dimension</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip chip-teal">Startup Idea</span></td><td>AI-powered WhatsApp-native chatbot SaaS for Indian SMEs, priced at ₹399–799/month</td></tr>
+        <tr><td><span class="chip chip-red">Core Problem</span></td><td>63M+ Indian SMEs miss after-hours leads, spend 2–4 hrs/day on repetitive queries, and can't afford ₹15–25K/month human support staff</td></tr>
+        <tr><td><span class="chip chip-teal">Target Market</span></td><td>Service SMEs — salons, clinics, gyms, coaching institutes — in Tier-1 &amp; Tier-2 Indian cities</td></tr>
+        <tr><td><span class="chip chip-purple">Market Size</span></td><td>TAM $2.4B · SAM $480M · SOM $48M (~50,000 paying customers in Years 1–3)</td></tr>
+        <tr><td><span class="chip chip-green">Differentiation</span></td><td>Sub-₹800 pricing (cheapest India tool is ₹999+), Hindi/regional language-first, WhatsApp-native, zero technical setup required</td></tr>
+        <tr><td><span class="chip chip-amber">Stage</span></td><td>Pre-validation — zero users, no prototype, no revenue. Pure idea stage. Highest risk.</td></tr>
+        <tr><td><span class="chip chip-teal">Validation Score</span></td><td>7.2 / 10 opportunity score · 6.5 / 10 founder-market fit · 6.7 / 10 overall</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MARKET SIZE -->
+<section class="section fade-in" id="market">
+  <div class="section-eyebrow">02 — Market Opportunity</div>
+  <h2 class="section-title">Market Sizing — TAM / SAM / SOM</h2>
+  <p class="section-desc">India SME chatbot &amp; customer engagement market. Strong tailwinds from UPI adoption, affordable LLMs, and Jio internet revolution.</p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center;">
+    <div class="market-funnel">
+      <div class="funnel-tier f-tam">
+        <div><div class="funnel-label">TAM — Total Addressable Market</div><div class="funnel-desc">All 63M Indian SMEs that could use an AI chatbot</div></div>
+        <div class="funnel-val">$2.4B</div>
+      </div>
+      <div style="text-align:center; font-size:1.2rem; opacity:0.3;">▼</div>
+      <div class="funnel-tier f-sam">
+        <div><div class="funnel-label">SAM — Serviceable Addressable Market</div><div class="funnel-desc">~12.6M digitally-ready SMEs in Tier-1 &amp; Tier-2 cities</div></div>
+        <div class="funnel-val">$480M</div>
+      </div>
+      <div style="text-align:center; font-size:1.2rem; opacity:0.3;">▼</div>
+      <div class="funnel-tier f-som">
+        <div><div class="funnel-label">SOM — Serviceable Obtainable Market</div><div class="funnel-desc">~50,000 customers in 3–5 cities, service vertical, Years 1–3</div></div>
+        <div class="funnel-val">$48M</div>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+      <div class="card">
+        <div style="font-size:1.2rem; margin-bottom:0.4rem;">📱</div>
+        <div style="font-size:0.82rem; font-weight:700; color:var(--white); margin-bottom:0.3rem;">WhatsApp Business API</div>
+        <div style="font-size:0.78rem; color:rgba(226,238,249,0.55);">350M+ Indian businesses use WhatsApp. Chatbot layered on WhatsApp = near-zero adoption friction.</div>
+      </div>
+      <div class="card">
+        <div style="font-size:1.2rem; margin-bottom:0.4rem;">💸</div>
+        <div style="font-size:0.82rem; font-weight:700; color:var(--white); margin-bottom:0.3rem;">LLM Cost Collapse</div>
+        <div style="font-size:0.78rem; color:rgba(226,238,249,0.55);">LLM API costs dropped 95% in 2 years — AI chatbots now viable at ₹500–1,000/month price points.</div>
+      </div>
+      <div class="card">
+        <div style="font-size:1.2rem; margin-bottom:0.4rem;">🏙️</div>
+        <div style="font-size:0.82rem; font-weight:700; color:var(--white); margin-bottom:0.3rem;">Tier-2 Digitisation</div>
+        <div style="font-size:0.78rem; color:rgba(226,238,249,0.55);">Jio's internet revolution created 200M+ new digital SME customers. Digital India push continues.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ICP -->
+<section class="section fade-in" id="icp">
+  <div class="section-eyebrow">03 — Who to Serve</div>
+  <h2 class="section-title">Ideal Customer Profile</h2>
+  <p class="section-desc">Your perfect first customer is hyper-specific. Nail this segment before expanding.</p>
+  <div class="icp-grid">
+    <div class="icp-attr">
+      <div class="icp-row"><span class="icp-key">Business Type</span><span class="icp-val">Salons, dental/medical clinics, coaching institutes, gyms, yoga studios, restaurants, travel agents</span></div>
+      <div class="icp-row"><span class="icp-key">Geography</span><span class="icp-val">Tier-1 first: Mumbai, Delhi, Bangalore, Pune → Year 2 Tier-2: Lucknow, Jaipur, Indore, Nagpur</span></div>
+      <div class="icp-row"><span class="icp-key">Business Size</span><span class="icp-val">1–15 employees, owner-operated, monthly revenue ₹50,000–₹5,00,000</span></div>
+      <div class="icp-row"><span class="icp-key">Digital Maturity</span><span class="icp-val">Uses WhatsApp Business + Instagram/Facebook page. Accepts UPI. Basic or no website.</span></div>
+      <div class="icp-row"><span class="icp-key">Support Style</span><span class="icp-val">Owner personally handles ALL WhatsApp queries. Zero dedicated support staff.</span></div>
+      <div class="icp-row"><span class="icp-key">Tech Comfort</span><span class="icp-val">Moderate — smartphone-fluent but intimidated by complex SaaS dashboards or setup flows</span></div>
+      <div class="icp-row"><span class="icp-key">Decision Maker</span><span class="icp-val">Owner/proprietor directly. Decides in 1–2 days. Heavily influenced by peer recommendations.</span></div>
+      <div class="icp-row"><span class="icp-key">Budget Range</span><span class="icp-val">₹300–₹1,000/month if ROI in saved time or recovered bookings is clearly demonstrated</span></div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+      <div class="card" style="background:linear-gradient(135deg,rgba(0,180,166,0.1),transparent);">
+        <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal2); margin-bottom:0.6rem;">🎯 Sweet Spot ICP</div>
+        <div style="font-size:1.05rem; font-weight:700; color:var(--white); margin-bottom:0.3rem;">Service Business Owner</div>
+        <div style="font-size:0.82rem; color:rgba(226,238,249,0.6); margin-bottom:1rem;">Salon / Clinic / Gym / Coaching Centre<br>Tier-1 or Tier-2 city, India</div>
+        <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+          <span class="chip chip-teal">WhatsApp User</span>
+          <span class="chip chip-green">UPI Native</span>
+          <span class="chip chip-amber">Hindi Speaker</span>
+          <span class="chip chip-purple">Instagram Active</span>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:0.7rem; font-weight:700; color:var(--amber2); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.5rem;">⚠️ Who is NOT your ICP</div>
+        <div style="font-size:0.8rem; color:rgba(226,238,249,0.6); line-height:1.6;">
+          • Large businesses with 50+ employees<br>
+          • D2C e-commerce brands<br>
+          • English-first metro tech startups<br>
+          • Businesses with dedicated support teams<br>
+          • Tier-3 / rural businesses (Phase 3+)
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PERSONAS -->
+<section class="section fade-in">
+  <div class="section-eyebrow">04 — Human Archetypes</div>
+  <h2 class="section-title">Buyer Personas</h2>
+  <p class="section-desc">Two real decision-maker profiles built from the validation data. Know these people by name.</p>
+  <div class="persona-grid">
+    <div class="persona-card p-priya">
+      <div class="persona-head">
+        <div class="persona-avatar">💇‍♀️</div>
+        <div>
+          <div class="persona-name">Priya</div>
+          <div class="persona-role">Salon Owner · 28–38 · Female · Pune / Lucknow</div>
+        </div>
+      </div>
+      <div class="persona-body">
+        <div class="persona-row"><b>Daily WA Msgs</b><span>40+ messages — pricing, slots, availability</span></div>
+        <div class="persona-row"><b>Goal</b><span>Fill appointment slots daily; reduce evening WhatsApp time</span></div>
+        <div class="persona-row"><b>Pain Point</b><span>Misses bookings during treatments; loses customers to faster-reply competitors</span></div>
+        <div class="persona-row"><b>Buy Trigger</b><span>Sees Hindi demo on Instagram Reels; hears from another salon owner</span></div>
+        <div class="persona-row"><b>Top Objection</b><span>"Will it work in Hindi?" / "Too complicated to set up"</span></div>
+      </div>
+    </div>
+    <div class="persona-card p-ramesh">
+      <div class="persona-head">
+        <div class="persona-avatar">🏥</div>
+        <div>
+          <div class="persona-name">Ramesh</div>
+          <div class="persona-role">Clinic Admin · 35–50 · Male · Nagpur / Jaipur</div>
+        </div>
+      </div>
+      <div class="persona-body">
+        <div class="persona-row"><b>Daily WA Msgs</b><span>60+ messages — doctor availability, fees, test reports</span></div>
+        <div class="persona-row"><b>Goal</b><span>Cut front-desk costs; handle patient queries 24/7; reduce no-shows</span></div>
+        <div class="persona-row"><b>Pain Point</b><span>Staff overwhelmed at peak hours; unanswered late-night patient calls</span></div>
+        <div class="persona-row"><b>Buy Trigger</b><span>Competitor clinic starts using a chatbot; receives a local reseller cold call</span></div>
+        <div class="persona-row"><b>Top Objection</b><span>"Patient data privacy?" / "Will patients trust a bot?"</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PAIN POINTS -->
+<section class="section fade-in" id="pain">
+  <div class="section-eyebrow">05 — Validated Needs</div>
+  <h2 class="section-title">Top 10 Customer Pain Points</h2>
+  <p class="section-desc">Ranked by frequency and severity. The top three are daily and critical — your core MVP must solve these.</p>
+  <div class="pain-grid">
+    <div class="pain-item">
+      <span class="pain-num">01</span>
+      <span class="pain-text">Missing customer queries after 9pm &amp; on holidays — leads walk straight to a competitor who replies instantly</span>
+      <span class="pain-freq">📅 Daily</span>
+      <span class="chip chip-red">Critical</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">02</span>
+      <span class="pain-text">Spending 2–4 hours/day personally answering identical WhatsApp questions (hours, prices, availability)</span>
+      <span class="pain-freq">📅 Daily</span>
+      <span class="chip chip-red">Critical</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">03</span>
+      <span class="pain-text">Losing customers to competitors who reply 10 minutes faster — speed = conversion in local SME markets</span>
+      <span class="pain-freq">📅 Daily</span>
+      <span class="chip chip-red">Critical</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">04</span>
+      <span class="pain-text">No system to track leads or follow up — mental notes only, high drop-off rate on warm leads</span>
+      <span class="pain-freq">📅 Weekly</span>
+      <span class="chip chip-amber">High</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">05</span>
+      <span class="pain-text">Cannot afford ₹15,000–25,000/month for a dedicated receptionist or support staff member</span>
+      <span class="pain-freq">🔄 Ongoing</span>
+      <span class="chip chip-amber">High</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">06</span>
+      <span class="pain-text">No automated reminders → high no-show and appointment-forget rate, wasted slots</span>
+      <span class="pain-freq">📅 Weekly</span>
+      <span class="chip chip-amber">High</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">07</span>
+      <span class="pain-text">Instagram DMs and website inquiries checked once a day manually — leads go cold</span>
+      <span class="pain-freq">📅 Daily</span>
+      <span class="chip chip-amber">High</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">08</span>
+      <span class="pain-text">Language barrier — customers prefer Hindi or regional language; English chatbots feel foreign and unfamiliar</span>
+      <span class="pain-freq">📅 Daily</span>
+      <span class="chip chip-amber">High</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">09</span>
+      <span class="pain-text">No integrated booking + payment flow in WhatsApp chat — extra friction costs conversions</span>
+      <span class="pain-freq">📋 Per booking</span>
+      <span class="chip chip-teal">Medium</span>
+    </div>
+    <div class="pain-item">
+      <span class="pain-num">10</span>
+      <span class="pain-text">Cannot run professional WhatsApp broadcast promotions for festivals or seasonal offers</span>
+      <span class="pain-freq">📅 Monthly</span>
+      <span class="chip chip-teal">Medium</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OBJECTIONS & TRIGGERS -->
+<section class="section fade-in" id="objections">
+  <div class="section-eyebrow">06 — Conversion Psychology</div>
+  <h2 class="section-title">Objections &amp; Buying Triggers</h2>
+  <p class="section-desc">Know exactly what your customer fears and what makes them pull out their wallet.</p>
+
+  <div style="margin-bottom:1rem;">
+    <div style="font-size:0.78rem; font-weight:700; color:var(--amber2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.75rem;">🛡️ Key Objections &amp; How to Crush Them</div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden;">
+      <table class="data-table" style="width:100%;">
+        <thead><tr><th>Objection</th><th>Fear Behind It</th><th>Your Response</th></tr></thead>
+        <tbody>
+          <tr><td><i>"Too complicated to set up"</i></td><td>Tech anxiety</td><td>Free 30-min WhatsApp setup call + 5-min video demo showing zero-code setup</td></tr>
+          <tr><td><i>"What if it gives wrong info?"</i></td><td>Losing customer trust</td><td>"It only answers what you teach it — you stay fully in control at all times"</td></tr>
+          <tr><td><i>"My customers won't use a bot"</i></td><td>Impersonal experience</td><td>68% of customers prefer instant bot reply over waiting 4+ hours for a human</td></tr>
+          <tr><td><i>"Can't afford ₹799/month"</i></td><td>ROI doubt</td><td>ROI calc: 1 recovered booking/day = ₹3,000+/month vs ₹799 cost. 4x ROI.</td></tr>
+          <tr><td><i>"Hindi mein kaam karega?"</i></td><td>Language trust barrier</td><td>Demo in Hindi immediately. Lead ALL marketing in Hindi. Never show English first.</td></tr>
+          <tr><td><i>"Let me think about it"</i></td><td>Inertia / no urgency</td><td>14-day free trial. "One missed booking = the tool pays for itself forever."</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="font-size:0.78rem; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.75rem; margin-top:1.5rem;">🔥 Buying Triggers — When They're Ready to Pay</div>
+  <div class="trigger-grid">
+    <div class="trigger-card"><span class="trigger-icon">😤</span><span class="trigger-text"><b>Lost a big booking</b> to a competitor who replied 10 minutes faster — immediate emotional trigger, highest urgency</span></div>
+    <div class="trigger-card"><span class="trigger-icon">👀</span><span class="trigger-text"><b>Peer/competitor</b> in the same locality or business association started using a chatbot tool</span></div>
+    <div class="trigger-card"><span class="trigger-icon">📱</span><span class="trigger-text"><b>Saw a Hindi demo</b> on Instagram Reels or YouTube Shorts — visual proof removes the complexity barrier</span></div>
+    <div class="trigger-card"><span class="trigger-icon">🪔</span><span class="trigger-text"><b>Festival season</b> approaching (Diwali, wedding season) — huge inbound inquiry spike creates urgency to automate</span></div>
+    <div class="trigger-card"><span class="trigger-icon">🤝</span><span class="trigger-text"><b>Personal recommendation</b> from local business association, CA, accountant, or family member</span></div>
+    <div class="trigger-card"><span class="trigger-icon">👋</span><span class="trigger-text"><b>Lost a staff member</b> — chatbot replaces their WhatsApp-answering function at 5% of the monthly salary cost</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CUSTOMER JOURNEY -->
+<section class="section fade-in" id="journey">
+  <div class="section-eyebrow">07 — Conversion Path</div>
+  <h2 class="section-title">Customer Journey</h2>
+  <p class="section-desc">From first scroll to brand advocate — the full SME conversion path with your touchpoints at each stage.</p>
+  <div class="card" style="padding:2rem;">
+    <div class="journey-track">
+      <div class="journey-step j1">
+        <div class="journey-icon">🔍</div>
+        <div class="journey-stage">Awareness</div>
+        <div class="journey-desc">Scrolls Instagram; hears from peer</div>
+      </div>
+      <div class="journey-step j2">
+        <div class="journey-icon">💡</div>
+        <div class="journey-stage">Interest</div>
+        <div class="journey-desc">Googles options; watches demos</div>
+      </div>
+      <div class="journey-step j3">
+        <div class="journey-icon">⚖️</div>
+        <div class="journey-stage">Consideration</div>
+        <div class="journey-desc">Compares pricing; checks reviews</div>
+      </div>
+      <div class="journey-step j4">
+        <div class="journey-icon">✅</div>
+        <div class="journey-stage">Purchase</div>
+        <div class="journey-desc">Tries free; books setup call</div>
+      </div>
+      <div class="journey-step j5">
+        <div class="journey-icon">🔄</div>
+        <div class="journey-stage">Retention</div>
+        <div class="journey-desc">Monitors recovered leads</div>
+      </div>
+      <div class="journey-step j6">
+        <div class="journey-icon">📣</div>
+        <div class="journey-stage">Advocacy</div>
+        <div class="journey-desc">Refers peers in business groups</div>
+      </div>
+    </div>
+    <div class="journey-detail-grid">
+      <div class="journey-detail"><h4>🔍 Awareness Touchpoints</h4><p>Hindi Reels demo · WhatsApp business groups · Google Ads "chatbot for salon" · Local business associations<br><br><b>Goal:</b> Reach 10,000 SMEs/month</p></div>
+      <div class="journey-detail"><h4>💡 Interest Touchpoints</h4><p>SEO blog posts · Hindi YouTube channel · Free templates · "5 WhatsApp messages your salon should automate"<br><br><b>Goal:</b> 500 website visitors/month</p></div>
+      <div class="journey-detail"><h4>⚖️ Consideration Touchpoints</h4><p>Case study from same city + industry · Transparent pricing page · Free trial CTA · ROI calculator tool<br><br><b>Goal:</b> 50 free trial signups/month</p></div>
+      <div class="journey-detail"><h4>✅ Purchase Touchpoints</h4><p>WhatsApp onboarding call (30 min) · Live demo in Hindi · ROI calculator showing payback period<br><br><b>Goal:</b> 30% trial-to-paid conversion</p></div>
+      <div class="journey-detail"><h4>🔄 Retention Touchpoints</h4><p>Weekly performance report · WhatsApp tips every Tuesday · New feature alerts · Proactive usage monitoring<br><br><b>Goal:</b> &lt;5% monthly churn · NPS &gt;50</p></div>
+      <div class="journey-detail"><h4>📣 Advocacy Touchpoints</h4><p>Referral programme: 1 month free per paying referral · Testimonial collection · Featured case studies<br><br><b>Goal:</b> 20% new customers from referrals by Month 6</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMPETITORS -->
+<section class="section fade-in" id="competitors">
+  <div class="section-eyebrow">08 — Competitive Landscape</div>
+  <h2 class="section-title">Competitor Analysis</h2>
+  <p class="section-desc">You're entering a crowded space — but the hyper-affordable, Hindi-first, WhatsApp-native gap is genuinely open.</p>
+  <div class="comp-wrap">
+    <table class="data-table">
+      <thead><tr><th>Competitor</th><th>Type</th><th>Price / Month</th><th>India Focus</th><th>SME-Friendly</th><th>WA-Native</th><th>Key Weakness</th></tr></thead>
+      <tbody>
+        <tr><td>Tidio</td><td>Global SaaS</td><td>₹4,000+</td><td>❌</td><td>⚠️</td><td>❌</td><td>Too expensive for Indian SMEs; no Hindi</td></tr>
+        <tr><td>Intercom</td><td>Global SaaS</td><td>₹8,000+</td><td>❌</td><td>❌</td><td>❌</td><td>Enterprise-focused; complex; overbuilt</td></tr>
+        <tr><td>Freshchat</td><td>Global/India</td><td>₹1,200+</td><td>⚠️</td><td>⚠️</td><td>⚠️</td><td>Generic flows; not local-business-specific</td></tr>
+        <tr><td>Gallabox</td><td>India SaaS</td><td>₹999+</td><td>✅</td><td>⚠️</td><td>✅</td><td>WhatsApp only; no website widget</td></tr>
+        <tr><td>Wati.io</td><td>India SaaS</td><td>₹2,499+</td><td>✅</td><td>⚠️</td><td>✅</td><td>Pricing barrier; complex setup for SMEs</td></tr>
+        <tr><td>Local Freelancers</td><td>Services</td><td>₹5,000 setup</td><td>✅</td><td>⚠️</td><td>❌</td><td>No ongoing support; no AI; one-time only</td></tr>
+        <tr class="you-row"><td><b>YOUR STARTUP ⭐</b></td><td>India SaaS</td><td><b>₹399–799</b></td><td>✅</td><td>✅</td><td>✅</td><td><span class="chip chip-green">Hyper-local · Hindi-first · Zero-setup</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="background:rgba(0,180,166,0.07); border:1px solid var(--border); border-radius:12px; padding:1rem 1.2rem; margin-top:1rem; font-size:0.82rem; color:rgba(226,238,249,0.75); font-style:italic;">
+    "For Indian SME owners in service industries losing customers after hours and drowning in repetitive WhatsApp messages — our chatbot is the only AI-powered, WhatsApp-native engagement tool priced under ₹800/month, built specifically for India's local business context, with zero technical setup required."
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MVP RECOMMENDATION -->
+<section class="section fade-in" id="mvp">
+  <div class="section-eyebrow">09 — What to Build</div>
+  <h2 class="section-title">MVP Recommendation</h2>
+  <p class="section-desc">Ruthless prioritisation. Build only what solves Pain Points 1–3. Everything else is a distraction.</p>
+  <div class="two-col" style="margin-bottom:1.5rem;">
+    <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:14px; padding:1.4rem;">
+      <div style="font-size:0.7rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:#34D399; margin-bottom:0.8rem;">✅ BUILD FIRST (MVP Core — 45 Days)</div>
+      <div class="moscow-item">WhatsApp chatbot via Business API (360dialog / Twilio)</div>
+      <div class="moscow-item">Hindi + English language support from Day 1</div>
+      <div class="moscow-item">FAQ builder — owner defines answers, no coding</div>
+      <div class="moscow-item">Basic lead capture: name, phone number, query type</div>
+      <div class="moscow-item">Pre-built vertical flows: salon, clinic, gym, restaurant, coaching</div>
+      <div class="moscow-item">Simple web dashboard: configure bot + view lead log</div>
+      <div class="moscow-item">WhatsApp setup wizard (zero-tech-knowledge required)</div>
+      <div class="moscow-item">Free trial + Razorpay payment link for first collection</div>
+    </div>
+    <div style="background:rgba(255,107,107,0.07); border:1px solid rgba(255,107,107,0.2); border-radius:14px; padding:1.4rem;">
+      <div style="font-size:0.7rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--coral); margin-bottom:0.8rem;">❌ DON'T BUILD YET</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">Native mobile app (web dashboard is enough)</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">AI that auto-learns without owner training</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">Multi-channel inbox dashboard (Month 4+)</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">Payment gateway integration (Phase 2)</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">Advanced analytics and reporting suite (Phase 3)</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">CRM or third-party integrations</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">Voice chatbot or video support</div>
+      <div class="moscow-item" style="color:rgba(226,238,249,0.5);">Enterprise tier or multi-location features</div>
+    </div>
+  </div>
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:1.2rem;">
+    <div style="font-size:0.75rem; font-weight:700; color:var(--amber2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.75rem;">📊 MVP Success Metrics</div>
+    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:0.75rem;">
+      <div style="text-align:center; padding:0.75rem; background:rgba(0,180,166,0.07); border-radius:10px; border:1px solid var(--border);">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--teal2);">10</div>
+        <div style="font-size:0.7rem; color:rgba(226,238,249,0.5); margin-top:0.2rem;">Pilot customers in 45 days</div>
+      </div>
+      <div style="text-align:center; padding:0.75rem; background:rgba(16,185,129,0.07); border-radius:10px; border:1px solid rgba(16,185,129,0.2);">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:#34D399;">3+</div>
+        <div style="font-size:0.7rem; color:rgba(226,238,249,0.5); margin-top:0.2rem;">Ready to pay ₹399–799</div>
+      </div>
+      <div style="text-align:center; padding:0.75rem; background:rgba(245,158,11,0.07); border-radius:10px; border:1px solid rgba(245,158,11,0.2);">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--amber2);">60%</div>
+        <div style="font-size:0.7rem; color:rgba(226,238,249,0.5); margin-top:0.2rem;">FAQ queries handled automatically</div>
+      </div>
+      <div style="text-align:center; padding:0.75rem; background:rgba(124,58,237,0.07); border-radius:10px; border:1px solid rgba(124,58,237,0.2);">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:#A78BFA;">&lt;30</div>
+        <div style="font-size:0.7rem; color:rgba(226,238,249,0.5); margin-top:0.2rem;">Minutes to set up for any owner</div>
+      </div>
+      <div style="text-align:center; padding:0.75rem; background:rgba(0,180,166,0.07); border-radius:10px; border:1px solid var(--border);">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--teal2);">40+</div>
+        <div style="font-size:0.7rem; color:rgba(226,238,249,0.5); margin-top:0.2rem;">NPS from pilot users</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MOSCOW -->
+<section class="section fade-in">
+  <div class="section-eyebrow">10 — Feature Prioritisation</div>
+  <h2 class="section-title">MoSCoW Framework</h2>
+  <p class="section-desc">Every feature in one place. Green = ship now. Yellow = next quarter. Grey = say no.</p>
+  <div class="moscow-grid">
+    <div class="moscow-col must">
+      <span class="moscow-label">🟢 Must Have — Launch</span>
+      <div class="moscow-item">WhatsApp chatbot via API</div>
+      <div class="moscow-item">Hindi + English support</div>
+      <div class="moscow-item">FAQ builder (owner-defined)</div>
+      <div class="moscow-item">Lead capture (name, phone)</div>
+      <div class="moscow-item">5 vertical templates</div>
+      <div class="moscow-item">Web config dashboard</div>
+      <div class="moscow-item">Free trial + Razorpay link</div>
+    </div>
+    <div class="moscow-col should">
+      <span class="moscow-label">🔵 Should Have — Month 2</span>
+      <div class="moscow-item">Instagram DM integration</div>
+      <div class="moscow-item">Appointment availability</div>
+      <div class="moscow-item">Automated reminders</div>
+      <div class="moscow-item">Basic usage analytics</div>
+      <div class="moscow-item">Reseller / partner portal</div>
+      <div class="moscow-item">Google My Business reply</div>
+    </div>
+    <div class="moscow-col could">
+      <span class="moscow-label">🟡 Could Have — Month 4</span>
+      <div class="moscow-item">Website chat widget</div>
+      <div class="moscow-item">Booking + UPI in-chat</div>
+      <div class="moscow-item">WhatsApp broadcast</div>
+      <div class="moscow-item">Tamil / Telugu / Marathi</div>
+      <div class="moscow-item">Multi-location support</div>
+      <div class="moscow-item">Review collection flow</div>
+    </div>
+    <div class="moscow-col wont">
+      <span class="moscow-label">⬛ Won't Have — Year 2+</span>
+      <div class="moscow-item">Full CRM module</div>
+      <div class="moscow-item">Native mobile app</div>
+      <div class="moscow-item">Voice chatbot</div>
+      <div class="moscow-item">AI self-learning</div>
+      <div class="moscow-item">Enterprise tier</div>
+      <div class="moscow-item">International markets</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="section fade-in" id="pricing">
+  <div class="section-eyebrow">11 — Revenue Model</div>
+  <h2 class="section-title">Pricing Hypothesis</h2>
+  <p class="section-desc">Freemium entry removes friction. ₹399 Starter undercuts every Indian chatbot tool. Upgrade happens naturally when the business hits message limits.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">₹0<span>/mo</span></div>
+      <div class="plan-sub">Forever free</div>
+      <div class="plan-target">Early adopters &amp; validation</div>
+      <div class="plan-feature">1 WhatsApp number</div>
+      <div class="plan-feature">100 messages / month</div>
+      <div class="plan-feature">Basic FAQ chatbot</div>
+      <div class="plan-feature">Hindi + English</div>
+    </div>
+    <div class="pricing-card featured">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">₹399<span>/mo</span></div>
+      <div class="plan-sub">~$4.80 USD</div>
+      <div class="plan-target">Solo owner: salon, gym, tutor</div>
+      <div class="plan-feature">500 messages / month</div>
+      <div class="plan-feature">Hindi + English support</div>
+      <div class="plan-feature">3 vertical templates</div>
+      <div class="plan-feature">Lead capture log</div>
+    </div>
+    <div class="pricing-card">
+      <div class="plan-name">Growth</div>
+      <div class="plan-price">₹799<span>/mo</span></div>
+      <div class="plan-sub">~$9.60 USD</div>
+      <div class="plan-target">Clinic, restaurant, coaching</div>
+      <div class="plan-feature">2,000 messages / month</div>
+      <div class="plan-feature">5 vertical templates</div>
+      <div class="plan-feature">Automated reminders</div>
+      <div class="plan-feature">Analytics + priority support</div>
+    </div>
+    <div class="pricing-card">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">₹1,499<span>/mo</span></div>
+      <div class="plan-sub">~$18 USD</div>
+      <div class="plan-target">Multi-location / franchises</div>
+      <div class="plan-feature">Unlimited messages</div>
+      <div class="plan-feature">All templates + API access</div>
+      <div class="plan-feature">Reseller tools</div>
+      <div class="plan-feature">Dedicated onboarding</div>
+    </div>
+  </div>
+  <div style="background:rgba(0,180,166,0.06); border:1px solid var(--border); border-radius:12px; padding:1rem 1.2rem; margin-top:1rem; font-size:0.82rem; color:rgba(226,238,249,0.65);">
+    💡 <b style="color:var(--teal2);">ROI Anchor:</b> 1 recovered missed booking per day = ₹3,000+/month revenue for the SME. At ₹399/month, that's a 7.5x ROI — make this calculation the centrepiece of every sales conversation.
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RISKS -->
+<section class="section fade-in" id="risks">
+  <div class="section-eyebrow">12 — Risk Register</div>
+  <h2 class="section-title">Top 5 Risks &amp; Mitigations</h2>
+  <p class="section-desc">Know your threats before they materialise. Risk #1 is existential — address it in Week 1.</p>
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="risk-num">R1</div>
+      <div class="risk-text"><h4>No paying customers found post-MVP launch</h4><p>Zero validated WTP — this is the #1 existential risk for the entire venture</p></div>
+      <span class="chip chip-red">High Likelihood</span>
+      <span class="chip chip-red">Critical Impact</span>
+      <span class="chip chip-red">🔴 9/10</span>
+    </div>
+    <div class="risk-item">
+      <div class="risk-num">R2</div>
+      <div class="risk-text"><h4>High SME churn due to low engagement</h4><p>SMEs sign up but forget to configure or stop using the bot after 2 weeks</p></div>
+      <span class="chip chip-amber">High Likelihood</span>
+      <span class="chip chip-amber">High Impact</span>
+      <span class="chip chip-amber">🟠 7/10</span>
+    </div>
+    <div class="risk-item">
+      <div class="risk-num">R3</div>
+      <div class="risk-text"><h4>Price war with funded competitors (Gallabox, Wati)</h4><p>Well-funded players could drop pricing to compete directly with your entry price</p></div>
+      <span class="chip chip-amber">Medium Likelihood</span>
+      <span class="chip chip-amber">High Impact</span>
+      <span class="chip chip-amber">🟠 7/10</span>
+    </div>
+    <div class="risk-item">
+      <div class="risk-num">R4</div>
+      <div class="risk-text"><h4>WhatsApp API policy change by Meta</h4><p>Meta has a history of restricting/repricing Business API access without notice</p></div>
+      <span class="chip chip-teal">Low-Med Likelihood</span>
+      <span class="chip chip-amber">High Impact</span>
+      <span class="chip chip-teal">🟡 6/10</span>
+    </div>
+    <div class="risk-item">
+      <div class="risk-num">R5</div>
+      <div class="risk-text"><h4>Single founder execution risk</h4><p>No co-founder means concentration of knowledge, skill, and resilience in one person</p></div>
+      <span class="chip chip-amber">Medium Likelihood</span>
+      <span class="chip chip-amber">High Impact</span>
+      <span class="chip chip-amber">🟠 7/10</span>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:0.75rem; margin-top:1rem;">
+    <div class="card" style="font-size:0.75rem; color:rgba(226,238,249,0.65);"><b style="color:var(--coral); display:block; margin-bottom:0.3rem;">R1 Mitigation</b>Run 30 discovery interviews BEFORE building. Collect ₹1 WTP commitment from ≥10 SMEs first.</div>
+    <div class="card" style="font-size:0.75rem; color:rgba(226,238,249,0.65);"><b style="color:var(--amber2); display:block; margin-bottom:0.3rem;">R2 Mitigation</b>Human-assisted onboarding + weekly WhatsApp tips + proactive usage monitoring alerts.</div>
+    <div class="card" style="font-size:0.75rem; color:rgba(226,238,249,0.65);"><b style="color:var(--amber2); display:block; margin-bottom:0.3rem;">R3 Mitigation</b>Own hyper-local Hindi niche + build community moat + reseller channel in Tier-2 cities.</div>
+    <div class="card" style="font-size:0.75rem; color:rgba(226,238,249,0.65);"><b style="color:var(--teal2); display:block; margin-bottom:0.3rem;">R4 Mitigation</b>Multi-channel from Day 1: website widget + Instagram DM. Never be single-channel dependent.</div>
+    <div class="card" style="font-size:0.75rem; color:rgba(226,238,249,0.65);"><b style="color:var(--amber2); display:block; margin-bottom:0.3rem;">R5 Mitigation</b>Find a co-founder or anchor advisor within 60 days. Document all processes from Day 1.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 30-DAY PLAN -->
+<section class="section fade-in" id="plan">
+  <div class="section-eyebrow">13 — Immediate Roadmap</div>
+  <h2 class="section-title">30-Day MVP Plan</h2>
+  <p class="section-desc">Four focused weeks. Do not skip to Week 4. Sequence is the strategy.</p>
+  <div class="timeline">
+    <div class="week-card w1">
+      <div class="week-header">
+        <span class="week-num">WEEK 1 · DAYS 1–7</span>
+        <span class="week-title">Discover</span>
+        <span class="week-theme">Customer Discovery</span>
+      </div>
+      <div class="week-body">
+        <div class="week-action">List 50 local SMEs across 5 industries in Prayagraj / nearby cities</div>
+        <div class="week-action">Walk into 10 businesses in person — observe their real WhatsApp workflow</div>
+        <div class="week-action">Call / WhatsApp 20 more; ask 5 key validation questions; record verbatim</div>
+        <div class="week-action">Goal: 30 completed interviews with exact customer quotes on pain</div>
+      </div>
+    </div>
+    <div class="week-card w2">
+      <div class="week-header">
+        <span class="week-num">WEEK 2 · DAYS 8–14</span>
+        <span class="week-title">Prototype</span>
+        <span class="week-theme">Build a Demo</span>
+      </div>
+      <div class="week-body">
+        <div class="week-action">Synthesise interviews — identify top 3 pain points with direct customer quotes</div>
+        <div class="week-action">Build no-code WhatsApp bot for a salon using Landbot or ManyChat (free tier)</div>
+        <div class="week-action">Show prototype to 5 business owners — get brutally honest feedback</div>
+        <div class="week-action">Iterate the demo in the same week based on real feedback</div>
+      </div>
+    </div>
+    <div class="week-card w3">
+      <div class="week-header">
+        <span class="week-num">WEEK 3 · DAYS 15–21</span>
+        <span class="week-title">Validate WTP</span>
+        <span class="week-theme">Prove Willingness to Pay</span>
+      </div>
+      <div class="week-body">
+        <div class="week-action">Pitch working demo to 15 SME businesses with ₹399/month ask</div>
+        <div class="week-action">Collect ₹1 payment via Razorpay link — even ₹1 confirms real intent</div>
+        <div class="week-action">Identify your first 3 committed pilot customers to onboard</div>
+        <div class="week-action">Refine demo and pricing based on objections heard this week</div>
+      </div>
+    </div>
+    <div class="week-card w4">
+      <div class="week-header">
+        <span class="week-num">WEEK 4 · DAYS 22–30</span>
+        <span class="week-title">Build &amp; Launch</span>
+        <span class="week-theme">V1 + Go-To-Market</span>
+      </div>
+      <div class="week-body">
+        <div class="week-action">Build V1: WhatsApp bot + basic lead dashboard using 360dialog / Twilio API</div>
+        <div class="week-action">Onboard 3 pilot customers for free — collect usage data &amp; testimonials</div>
+        <div class="week-action">Set up Hindi landing page with clear pricing and ROI calculator</div>
+        <div class="week-action">Create 3 case study posts for Instagram / WhatsApp groups; plan Month 2 GTM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ACTION SHEET -->
+<section class="section fade-in" id="actions">
+  <div class="section-eyebrow">14 — Founder To-Do</div>
+  <h2 class="section-title">Founder Action Sheet</h2>
+  <p class="section-desc">Top 10 next actions. Numbered by urgency, not importance — they're equally important. Start today.</p>
+  <div class="action-grid">
+    <div class="action-item">
+      <div class="action-n">01</div>
+      <div class="action-body"><h4>TODAY — List 50 Local SMEs</h4><p>Across salons, clinics, gyms, coaching centres, restaurants in Prayagraj and nearby cities</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">02</div>
+      <div class="action-body"><h4>DAY 2–3 — Walk Into 10 Businesses</h4><p>Observe their real WhatsApp workflow without pitching anything. Listen, don't sell.</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">03</div>
+      <div class="action-body"><h4>DAY 4–7 — 20 Phone / WhatsApp Interviews</h4><p>Ask 5 validation questions; document verbatim pain quotes — these become your marketing copy</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">04</div>
+      <div class="action-body"><h4>DAY 8–9 — Synthesise Findings</h4><p>Identify 3 validated pain points backed by ≥5 customer quotes each</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">05</div>
+      <div class="action-body"><h4>DAY 10–12 — Build No-Code Demo</h4><p>WhatsApp chatbot for a salon on Landbot or ManyChat free tier — takes 3–4 hours</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">06</div>
+      <div class="action-body"><h4>DAY 13–14 — Demo to 5 Owners</h4><p>Get brutally honest feedback. Iterate the demo immediately. Don't wait for "perfect".</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">07</div>
+      <div class="action-body"><h4>DAY 15–17 — Pitch ₹399/month</h4><p>To 15 businesses. Collect ₹1 Razorpay commitment. ₹1 = real intent confirmed.</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">08</div>
+      <div class="action-body"><h4>DAY 18–21 — Lock In 3 Pilot Customers</h4><p>Set up their bots personally. Be their human support. Learn everything about their usage.</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">09</div>
+      <div class="action-body"><h4>DAY 22–25 — Build V1</h4><p>WhatsApp Business API (360dialog sandbox) + basic lead log dashboard. Ship ugly, ship fast.</p></div>
+    </div>
+    <div class="action-item">
+      <div class="action-n">10</div>
+      <div class="action-body"><h4>DAY 26–30 — Hindi Landing Page + 3 Case Studies</h4><p>Post on Instagram &amp; WhatsApp groups. Plan Month 2 GTM based on what you learned.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FINAL VERDICT -->
+<section class="section fade-in" id="verdict">
+  <div class="final-verdict">
+    <div style="font-size:2.5rem; margin-bottom:0.75rem;">🟡</div>
+    <div class="verdict-title">Promising But Unvalidated — Conditional GO</div>
+    <p class="verdict-body">
+      The Local Business Chatbot for Indian SMEs is a well-timed, well-positioned idea with a large market and real, daily pain points. 
+      The problem is severe. The pricing gap is genuine. Post-pandemic digital acceleration is the tailwind. The market loves WhatsApp. 
+      But zero users and zero prototype means this remains a hypothesis — not a business. 
+      The GO signal is fully conditional on the 5 milestones below. Do not build V1 until Week 3 WTP validation is complete.
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.75rem; margin-bottom:1.5rem; text-align:left;">
+      <div style="background:rgba(0,0,0,0.2); border:1px solid rgba(226,238,249,0.1); border-radius:10px; padding:0.9rem;">
+        <div style="font-size:0.65rem; font-weight:700; color:var(--teal2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.4rem;">Customer Clarity</div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:800; color:var(--teal2);">78/100</div>
+        <div style="font-size:0.72rem; color:rgba(226,238,249,0.5);">ICP well-defined; personas grounded in real behaviour</div>
+      </div>
+      <div style="background:rgba(0,0,0,0.2); border:1px solid rgba(226,238,249,0.1); border-radius:10px; padding:0.9rem;">
+        <div style="font-size:0.65rem; font-weight:700; color:#34D399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.4rem;">Problem Severity</div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:800; color:#34D399;">82/100</div>
+        <div style="font-size:0.72rem; color:rgba(226,238,249,0.5);">Daily, high-pain, clear revenue and cost impact</div>
+      </div>
+      <div style="background:rgba(0,0,0,0.2); border:1px solid rgba(226,238,249,0.1); border-radius:10px; padding:0.9rem;">
+        <div style="font-size:0.65rem; font-weight:700; color:var(--amber2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.4rem;">PMF Potential</div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:800; color:var(--amber2);">71/100</div>
+        <div style="font-size:0.72rem; color:rgba(226,238,249,0.5);">Strong fit; timing ideal; WTP unproven at scale</div>
+      </div>
+      <div style="background:rgba(0,0,0,0.2); border:1px solid rgba(226,238,249,0.1); border-radius:10px; padding:0.9rem;">
+        <div style="font-size:0.65rem; font-weight:700; color:#A78BFA; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.4rem;">MVP Readiness</div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:800; color:#A78BFA;">55/100</div>
+        <div style="font-size:0.72rem; color:rgba(226,238,249,0.5);">No prototype, no users — requires 30-day sprint</div>
+      </div>
+    </div>
+
+    <div style="font-size:0.72rem; font-weight:700; color:var(--amber2); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.75rem;">5 Conditions to Unlock Full GO Signal</div>
+    <div class="conditions-grid">
+      <div class="cond-card"><div class="cond-num">C1</div><div class="cond-text">Interview ≥20 local SME owners. Document their exact words about the pain.</div></div>
+      <div class="cond-card"><div class="cond-num">C2</div><div class="cond-text">Validate that ≥10 would pay ₹399–799/month for a working solution.</div></div>
+      <div class="cond-card"><div class="cond-num">C3</div><div class="cond-text">Build a no-code WhatsApp chatbot prototype using Landbot or Botpress.</div></div>
+      <div class="cond-card"><div class="cond-num">C4</div><div class="cond-text">Identify 3–5 pilot customers who agree to test MVP free for feedback.</div></div>
+      <div class="cond-card"><div class="cond-num">C5</div><div class="cond-text">Validate you (or co-founder) can build V1 within 45 days from today.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Customer &amp; MVP Blueprint — Local Business Chatbot Service &nbsp;·&nbsp; Startup Validation Intelligence Platform &nbsp;·&nbsp; Confidential — For Founder Use Only &nbsp;·&nbsp; June 2025
+</footer>
+
+<script>
+  // Intersection Observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Active nav link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--teal2)' : '';
+      a.style.background = a.getAttribute('href') === '#' + cur ? 'var(--glow)' : '';
+    });
+  });
+</script>
+</body>
+</html>
