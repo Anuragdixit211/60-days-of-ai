@@ -80,8 +80,8 @@ Verdict: **🟡 Validate & Execute**
 
 ## Files Included
 
-* Business Strategy Report
-* LinkedIn Poster
+* Business Strategy Report # HTML Files- [ Business Strategy](day24-htmlfile.html)
+* LinkedIn Poster -![Homepage](day24-poster.png)
 
 ---
 
