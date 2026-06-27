@@ -27,16 +27,16 @@ Today, I developed an advanced **Prior Authorization Story Simulator** that help
 
 ## 📄 HTML File
 
-* **Generated HTML File:** `prior_authorization_story_simulator.html`
+* **Generated HTML File:** [Original HTML](day27-htmlfile.html)
 * This file contains the complete interactive simulator with all UI components, animations, and learning sections.
 
 ## 🖼️ Poster
 
-* **Poster File:** `poster.png`
+* **Poster File:** ![poster](day27-poster.png)
 
 ## 📸 Screenshots
 
-* **Final Learning Summary:** `screenshots/summary.png`
+* **Final Learning Summary:** ![ScreenShot](day27-screenshot.png)
 
 ## 📚 Key Learnings
 
