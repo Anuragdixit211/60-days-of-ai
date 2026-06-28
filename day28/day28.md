@@ -222,15 +222,19 @@ The simulator identifies:
 ## Screenshots
 
 Add screenshots of:
+![Screenshot](day28-screenshot.png)
 
 * Readiness Analysis
 ---
-## File
+## Html File
 
-Add file
-----
+file included: 
+![Enhanced HTML](day28-htmlfile.html)
 
-## Add poster
+---
+
+## Add poster:
+![Screenshot](day28-screenshot.png)
 
 ## Key Learnings
 
