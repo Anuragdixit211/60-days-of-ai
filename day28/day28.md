@@ -234,7 +234,7 @@ file included:
 ---
 
 ## Add poster:
-![Screenshot](day28-screenshot.png)
+![Poster](day28-poster.png)
 
 ## Key Learnings
 
