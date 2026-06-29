@@ -36,9 +36,9 @@ Developed an interactive supply chain crisis simulation that challenges users to
 
 ## 📂 Files Included
 
-* day29-htmlfile.html
-* Project Screenshots
-* Projet Poster
+* day29-htmlfile.html [Original HTML](day29-htmlfile.html)
+* Project Screenshots ![Screenshot](day29-screenshot.png)
+* Projet Poster ![Poster](day29-poster.png)
   
 
 ## 📖 Key Learnings
