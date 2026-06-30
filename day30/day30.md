@@ -23,8 +23,13 @@ Build an interactive Supply Chain Builder dashboard using HTML, CSS, and JavaScr
 
 ## 📷 Project Screenshots
 - Final Dashboard View
+- [Final](day30-screenshot.png)
+  
 - Project poster
-- File included
+-  [Poster](day30-poster.png)
+  
+- File included # HTML Files
+ [Original HTML](day30-htmlfile.html)
 
 ## 📚 Key Learnings
 - Improved Prompt Engineering skills
