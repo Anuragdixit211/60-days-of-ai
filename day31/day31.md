@@ -12,9 +12,10 @@
 - Committed and pushed the project to GitHub.
 
 ## 📂 Files Included
-- day31.html
-- Screenshots
-- poster 
+- day31.html [Original HTML](day31-htmlfile.html)
+- Screenshots ![ScreenShot](day9-screenshot1.png)
+- poster ![Poster](day31-poster.png)
+
 
 ## 🚀 Key Learnings
 - Improved HTML page structure and semantic elements.
