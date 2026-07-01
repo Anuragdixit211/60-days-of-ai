@@ -13,7 +13,7 @@
 
 ## 📂 Files Included
 - day31.html [Original HTML](day31-htmlfile.html)
-- Screenshots ![ScreenShot](day9-screenshot1.png)
+- Screenshots ![ScreenShot](day31-screenshot1.png)
 - poster ![Poster](day31-poster.png)
 
 
