@@ -30,10 +30,9 @@ Today I built an AI Supply Chain Control Tower, an interactive dashboard that si
 - Developing complex single-file web applications
 
 ## Screenshots
-- Dashboard Poster
-- HTML File
-- Screenshot 
-
+- Dashboard Poster ![POSTER](day32-poster.png)
+- Screenshot ![SCREENSHOT](day32-screenshot.png)
+- HTML File [Original HTML](day32-htmlfile.html)
 
 ## Outcome
 This project helped me understand how modern supply chain control towers provide operational visibility, monitor logistics, and support AI-driven decision making.
