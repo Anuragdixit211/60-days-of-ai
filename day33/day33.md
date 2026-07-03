@@ -25,9 +25,10 @@ Today I built an interactive AI-powered web application using HTML, CSS, and Jav
 - Code organization and optimization
 
 ## 📂 Files Included
-- day33.htmlfile
-- Poster
-- Screenshots
+- day33.htmlfile [Original HTML](day33-htmlfile.html)
+- Poster ![Poster](day33-poster.png)
+- Screenshots ![ScreenShot](day33-screenshot.png)
+
 
 ## ✅ Outcome
 Successfully completed Day 33 challenge and uploaded the project to GitHub.
