@@ -58,10 +58,9 @@ Day34/
 
 Included:
 
-- HTML FILE
-- Investigation Board
-- Solve the Case
-- Learning Report poster
+- HTML FILE [Original HTML](day34-htmlfile.html)
+- Investigation Board ![Screenshot](day34-screenshot1.png)
+- Solve the Case ![Screenshot](day34-screenshot2.png)
 
 ---
 
