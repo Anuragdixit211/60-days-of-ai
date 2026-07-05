@@ -41,9 +41,9 @@ Today I built an interactive AI-powered web application using only HTML, CSS, an
 
 ### Files Included
 
-* day35.html
-* Screenshots
-* poster
+* day35.html [Original HTML](day35-htmlfile.html)
+* Screenshots [Screenshot](day35-screenshot.png)
+* poster [POSTER](day35-poster.png)
 
 ### Outcome
 
