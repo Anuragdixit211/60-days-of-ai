@@ -32,9 +32,16 @@ Built a single-file offline web application that provides a psychology-inspired 
 ## 📂 Files Uploaded
 
 * day36.html
+* [Original HTML](day36-htmlfile.html)
+  
 * Screenshots of the application
-* ScreenShot2 
+* ![SCREENSHOT](day36-screenshot1.png)
+  
+* ScreenShot2
+* ![SCREENSHOT](day36-screenshot2.png)
+  
 * day36.Poster
+* ![Poster](day36-poster.png)
 
 ## 📚 Key Learnings
 
