@@ -62,9 +62,9 @@ Built a premium single-file offline web application that teaches how work flows 
 
 ## Files Uploaded
 
-* task_compass.html
-* Project Screenshots
-* day37 Poster
+* task_compass.html [Original HTML](day37-htmlfile.html)
+* Project Screenshots ![ScreenShot](day37-screenshot.png)
+* day37 Poster ![Poster](day37-poster.png)
 
 ## GitHub Submission Steps
 
