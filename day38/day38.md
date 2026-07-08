@@ -22,9 +22,12 @@ Built an AI-powered application using Claude AI and improved my skills in prompt
 - GitHub
 
 ## Files Included
-HTML File
-Added POSTER
-Added screenshots 
+- HTML File 
+- [Original HTML](day38-htmlfile.html)
+- Added POSTER 
+- ![Poster](day38-poster.jpeg)
+- Added screenshots 
+- ![Screenshot](day38-screenshot.png)
 
 ## Conclusion
 Day 38 helped me understand practical AI-assisted development and how to build better digital experiences using AI tools.
