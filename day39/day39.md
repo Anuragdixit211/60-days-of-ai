@@ -67,9 +67,9 @@ The application allows users to:
 - Created professional UI workflows with AI assistance
 
 ## Files Included 
-- HTML FILE
-- POSTER
-- SCREENSHOT
+- HTML FILE [Original HTML](day39-htmlfile.html)
+- POSTER ![Poster](day39-poster.jpeg)
+- SCREENSHOT ![Screenshot](day39-screenshot.png)
 
 ## 🏆 Challenge Outcome
 
