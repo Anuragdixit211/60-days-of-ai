@@ -31,16 +31,17 @@ The application focuses on:
 
 The system prompt used for generating this project is included in:
 
-
+[Original HTML](day40-htmlfile.html)
 
 ## 📸 Screenshots
 
 Screenshots demonstrating the application are uploaded in the screenshots folder.
 
+![ScreenShot](day40-screenshot.png)
 
 ## Poster included
 
-
+![Poster](day40-poster.jpeg)
 
 ## 📚 Key Learnings
 
