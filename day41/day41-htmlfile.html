@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Learning Studio — Python Data Structures</title>
+<style>
+:root{
+  --bg:#0f1117; --bg2:#151824; --card:#1b1f2e; --card2:#20263a;
+  --text:#e8eaf0; --muted:#9aa3b8; --accent:#7c9eff; --accent2:#9d7cff;
+  --good:#3ddc97; --bad:#ff6b7a; --warn:#ffb84d;
+  --border:#2a2f42; --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:16px; --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:var(--font); background:radial-gradient(1200px 800px at 10% -10%, #1a1e2e 0%, var(--bg) 55%);
+  color:var(--text); line-height:1.6; min-height:100vh; padding-bottom:60px;
+}
+.light{
+  --bg:#f4f6fb; --bg2:#ffffff; --card:#ffffff; --card2:#f0f2fa;
+  --text:#1a1d29; --muted:#5b6377; --border:#e1e5f0; --shadow:0 10px 30px rgba(30,40,80,.08);
+}
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px;}
+a{color:var(--accent);}
+.container{max-width:980px;margin:0 auto;padding:0 20px;}
+header.topbar{
+  position:sticky; top:0; z-index:100; background:rgba(15,17,23,.85); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border); padding:14px 0;
+}
+.light header.topbar{background:rgba(244,246,251,.85);}
+.topbar-inner{display:flex; align-items:center; justify-content:space-between; gap:16px;}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem;}
+.brand .logo{
+  width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.controls{display:flex; align-items:center; gap:10px;}
+.icon-btn{
+  background:var(--card2); border:1px solid var(--border); color:var(--text); border-radius:10px;
+  padding:8px 12px; cursor:pointer; font-size:.85rem; transition:.2s; display:flex; align-items:center; gap:6px;
+}
+.icon-btn:hover{border-color:var(--accent); transform:translateY(-1px);}
+.progress-pill{
+  background:var(--card2); border:1px solid var(--border); border-radius:999px; padding:6px 14px; font-size:.8rem; color:var(--muted);
+}
+.progress-track{height:6px; background:var(--border); border-radius:4px; overflow:hidden; margin-top:8px;}
+.progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .5s ease;}
+
+section{padding:50px 0;}
+.hero{padding-top:40px;}
+.badge{
+  display:inline-block; background:linear-gradient(135deg,rgba(124,158,255,.15),rgba(157,124,255,.15));
+  border:1px solid var(--border); color:var(--accent); padding:5px 14px; border-radius:999px; font-size:.78rem; font-weight:600; letter-spacing:.5px;
+}
+h1{font-size:2.4rem; margin:16px 0 10px; line-height:1.15;}
+h2{font-size:1.7rem; margin-bottom:14px;}
+h3{font-size:1.25rem; margin-bottom:10px;}
+.subtitle{color:var(--muted); font-size:1.05rem; max-width:680px;}
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:26px;
+  box-shadow:var(--shadow); margin-bottom:20px;
+}
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media(max-width:800px){.grid-2{grid-template-columns:1fr;} .grid-4{grid-template-columns:1fr 1fr;}}
+.stat-box{background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;}
+.stat-box .num{font-size:1.5rem; font-weight:700; color:var(--accent);}
+.stat-box .label{font-size:.8rem; color:var(--muted); margin-top:4px;}
+ul.objectives li{margin:8px 0 8px 20px;}
+.reward-box{
+  background:linear-gradient(135deg,rgba(255,184,77,.1),rgba(124,158,255,.08));
+  border:1px solid var(--warn); border-radius:12px; padding:18px; margin-top:16px;
+}
+.btn{
+  background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:10px;
+  padding:13px 26px; font-size:1rem; font-weight:600; cursor:pointer; transition:.2s; box-shadow:0 6px 18px rgba(124,158,255,.3);
+}
+.btn:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(124,158,255,.4);}
+.btn:disabled{opacity:.4; cursor:not-allowed; transform:none;}
+.btn-secondary{
+  background:var(--card2); color:var(--text); border:1px solid var(--border); box-shadow:none;
+}
+.btn-small{padding:8px 16px; font-size:.85rem;}
+
+.module{display:none; animation:fadeIn .5s ease;}
+.module.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+.module-header{display:flex; align-items:center; gap:14px; margin-bottom:6px;}
+.module-num{
+  width:44px;height:44px;border-radius:12px;background:var(--card2); border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-weight:700; font-size:1.1rem; color:var(--accent); flex-shrink:0;
+}
+.locked-banner{
+  text-align:center; padding:60px 20px; color:var(--muted);
+}
+.locked-banner .lock-icon{font-size:2.5rem; margin-bottom:12px;}
+
+pre{
+  background:#0b0d14; border:1px solid var(--border); border-radius:10px; padding:16px; overflow-x:auto;
+  font-family:'Consolas','Monaco',monospace; font-size:.88rem; line-height:1.55; margin:14px 0;
+}
+.light pre{background:#12141f; color:#e8eaf0;}
+code{font-family:'Consolas','Monaco',monospace; background:var(--card2); padding:2px 6px; border-radius:5px; font-size:.9em;}
+pre code{background:none; padding:0;}
+.cm{color:#6b7280;} .kw{color:#c792ea;} .str{color:#c3e88d;} .fn{color:#82aaff;} .num{color:#f78c6c;}
+
+.analogy-box{
+  background:linear-gradient(135deg,rgba(157,124,255,.08),rgba(124,158,255,.04)); border-left:4px solid var(--accent2);
+  border-radius:10px; padding:16px 18px; margin:16px 0;
+}
+.analogy-box .tag{font-size:.75rem; font-weight:700; color:var(--accent2); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+.misconception-box{
+  background:rgba(255,107,122,.06); border-left:4px solid var(--bad); border-radius:10px; padding:16px 18px; margin:16px 0;
+}
+.misconception-box .tag{font-size:.75rem; font-weight:700; color:var(--bad); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+.takeaway-box{
+  background:rgba(61,220,151,.06); border-left:4px solid var(--good); border-radius:10px; padding:16px 18px; margin:16px 0;
+}
+.takeaway-box .tag{font-size:.75rem; font-weight:700; color:var(--good); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+.takeaway-box ul{margin-left:18px;}
+
+.tabs{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.tab-btn{
+  background:var(--card2); border:1px solid var(--border); color:var(--muted); padding:8px 16px; border-radius:8px;
+  cursor:pointer; font-size:.85rem; font-weight:600; transition:.2s;
+}
+.tab-btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+.tab-content{display:none;}
+.tab-content.active{display:block; animation:fadeIn .3s ease;}
+
+.exercise-box{
+  background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:20px; margin:16px 0;
+}
+.exercise-box textarea{
+  width:100%; min-height:110px; background:#0b0d14; color:#e8eaf0; border:1px solid var(--border); border-radius:8px;
+  padding:12px; font-family:'Consolas',monospace; font-size:.87rem; resize:vertical;
+}
+.exercise-result{margin-top:10px; padding:10px 14px; border-radius:8px; font-size:.88rem; display:none;}
+.exercise-result.show{display:block;}
+.exercise-result.correct{background:rgba(61,220,151,.12); color:var(--good); border:1px solid var(--good);}
+.exercise-result.incorrect{background:rgba(255,107,122,.12); color:var(--bad); border:1px solid var(--bad);}
+
+.diagram-box{
+  background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:20px; margin:16px 0; text-align:center; overflow-x:auto;
+}
+.diagram-box svg{max-width:100%; height:auto;}
+
+.quiz-box{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:28px; margin-top:30px;}
+.quiz-q{margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--border);}
+.quiz-q:last-of-type{border-bottom:none;}
+.quiz-q .qtext{font-weight:600; margin-bottom:12px;}
+.quiz-options{display:flex; flex-direction:column; gap:8px;}
+.quiz-option{
+  background:var(--card2); border:1px solid var(--border); padding:11px 16px; border-radius:9px; cursor:pointer;
+  transition:.15s; font-size:.92rem;
+}
+.quiz-option:hover{border-color:var(--accent);}
+.quiz-option.selected{border-color:var(--accent); background:rgba(124,158,255,.1);}
+.quiz-option.correct{border-color:var(--good); background:rgba(61,220,151,.12);}
+.quiz-option.incorrect{border-color:var(--bad); background:rgba(255,107,122,.12);}
+.quiz-explain{
+  margin-top:10px; padding:10px 14px; border-radius:8px; font-size:.87rem; background:var(--card2); display:none;
+}
+.quiz-explain.show{display:block;}
+.quiz-summary{text-align:center; padding:24px; display:none;}
+.quiz-summary.show{display:block; animation:fadeIn .5s ease;}
+.score-circle{
+  width:120px;height:120px;border-radius:50%; margin:0 auto 16px; display:flex; align-items:center; justify-content:center;
+  font-size:1.8rem; font-weight:800; border:6px solid var(--border);
+}
+
+footer.page-footer{text-align:center; color:var(--muted); font-size:.85rem; padding:30px 0; border-top:1px solid var(--border); margin-top:40px;}
+
+.toc-nav{
+  display:flex; gap:8px; flex-wrap:wrap; margin:20px 0;
+}
+.toc-item{
+  background:var(--card2); border:1px solid var(--border); padding:8px 14px; border-radius:8px; font-size:.82rem; color:var(--muted);
+  cursor:pointer; transition:.2s;
+}
+.toc-item.done{border-color:var(--good); color:var(--good);}
+.toc-item.current{border-color:var(--accent); color:var(--accent); font-weight:700;}
+
+.resource-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+@media(max-width:700px){.resource-grid{grid-template-columns:1fr;}}
+.resource-item{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:14px 16px;}
+.resource-item a{font-weight:600; text-decoration:none;}
+.resource-item .desc{font-size:.82rem; color:var(--muted); margin-top:4px;}
+
+.keyword-chip{
+  display:inline-block; background:var(--card2); border:1px solid var(--border); padding:5px 12px; border-radius:999px;
+  font-size:.8rem; margin:4px 4px 0 0;
+}
+.print-btn{position:fixed; bottom:24px; right:24px; z-index:50;}
+@media print{
+  header.topbar,.print-btn,.icon-btn,.btn,.exercise-box textarea,.quiz-box{display:none !important;}
+  .module{display:block !important;}
+  body{background:#fff; color:#000;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand"><div class="logo">🐍</div> Interactive Learning Studio</div>
+    <div class="controls">
+      <span class="progress-pill" id="progressLabel">0% Complete</span>
+      <button class="icon-btn" onclick="toggleTheme()">🌓 Theme</button>
+    </div>
+  </div>
+  <div class="container"><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div>
+</header>
+
+<div class="container">
+
+<section class="hero" id="intro">
+  <span class="badge">PYTHON · DATA STRUCTURES</span>
+  <h1>Python Data Structures: Lists, Dicts, Sets & Comprehensions</h1>
+  <p class="subtitle">A complete, hands-on tutorial that takes you from the fundamentals of Python's core data structures to writing elegant, efficient, Pythonic code using comprehensions.</p>
+
+  <div class="grid-4" style="margin-top:24px;">
+    <div class="stat-box"><div class="num">4</div><div class="label">Modules</div></div>
+    <div class="stat-box"><div class="num">~90 min</div><div class="label">Est. Time</div></div>
+    <div class="stat-box"><div class="num">16</div><div class="label">Quiz Questions</div></div>
+    <div class="stat-box"><div class="num">🏆</div><div class="label">Certificate</div></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:24px;">
+    <div class="card">
+      <h3>🎯 Learning Objectives</h3>
+      <ul class="objectives">
+        <li>Master lists, tuples, dictionaries, and sets — their behavior, methods, and performance characteristics</li>
+        <li>Understand mutability, hashing, and ordering as they apply to each structure</li>
+        <li>Choose the right data structure for a given problem</li>
+        <li>Write list/dict/set comprehensions and generator expressions fluently</li>
+        <li>Apply nested structures and comprehensions to real-world data transformation tasks</li>
+        <li>Avoid common pitfalls (mutable default arguments, shallow copies, unhashable types)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📋 Prerequisites & Outcomes</h3>
+      <p><strong>Prerequisites:</strong> Basic Python syntax (variables, loops, functions, if/else). No prior data structure knowledge needed.</p>
+      <br>
+      <p><strong>Expected Outcomes:</strong> By the end, you'll confidently pick between lists/sets/dicts, write comprehensions instead of manual loops, and understand time-complexity trade-offs well enough to explain them in an interview.</p>
+    </div>
+  </div>
+
+  <div class="reward-box">
+    <strong>🏅 Reward System</strong>
+    <p style="margin-top:8px;">Earn points for every quiz question (10 pts) and exercise (15 pts). Reach 100% module completion to unlock the next module. Finish all 4 modules + the final challenge to unlock your <strong>Data Structures Mastery Certificate</strong> at the end.</p>
+    <div style="margin-top:10px;">Your score: <strong id="totalScoreLabel">0</strong> pts</div>
+  </div>
+
+  <div class="toc-nav" id="tocNav"></div>
+
+  <button class="btn" onclick="goToModule(1)">Start Module 1 →</button>
+</section>
+
+<!-- MODULES INSERTED HERE -->
+<div id="modulesRoot">
+
+<section class="module" id="module1">
+  <div class="module-header"><div class="module-num">1</div><div><h2 style="margin-bottom:2px;">Lists &amp; Tuples — The Foundations</h2><p class="subtitle" style="margin:0;">Ordered collections, mutability, and when to use each</p></div></div>
+
+  <div class="card">
+    <h3>📖 What Are Lists and Tuples?</h3>
+    <p>A <strong>list</strong> is an ordered, <em>mutable</em> collection of items. A <strong>tuple</strong> is an ordered, <em>immutable</em> collection. Both can hold mixed types and are indexed starting at 0.</p>
+    <pre><code><span class="kw">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>]  <span class="cm"># list — mutable</span>
+<span class="kw">point</span> = (<span class="num">3</span>, <span class="num">4</span>)                        <span class="cm"># tuple — immutable</span>
+
+fruits.append(<span class="str">"date"</span>)   <span class="cm"># works fine</span>
+point[<span class="num">0</span>] = <span class="num">99</span>            <span class="cm"># TypeError: 'tuple' object does not support item assignment</span></code></pre>
+
+    <div class="analogy-box">
+      <div class="tag">Analogy</div>
+      Think of a <strong>list</strong> as a whiteboard — you can erase, add, or reorder items anytime. A <strong>tuple</strong> is like a printed receipt — once issued, the line items are locked in forever.
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
+        <text x="10" y="20" fill="var(--muted)" font-size="12" font-family="monospace">Index:</text>
+        <text x="120" y="20" fill="var(--muted)" font-size="12" font-family="monospace">0</text>
+        <text x="240" y="20" fill="var(--muted)" font-size="12" font-family="monospace">1</text>
+        <text x="360" y="20" fill="var(--muted)" font-size="12" font-family="monospace">2</text>
+        <text x="480" y="20" fill="var(--muted)" font-size="12" font-family="monospace">3</text>
+        <g font-family="monospace" font-size="14">
+          <rect x="90" y="35" width="100" height="50" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="140" y="65" text-anchor="middle" fill="var(--text)">"apple"</text>
+          <rect x="210" y="35" width="100" height="50" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="260" y="65" text-anchor="middle" fill="var(--text)">"banana"</text>
+          <rect x="330" y="35" width="100" height="50" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="380" y="65" text-anchor="middle" fill="var(--text)">"cherry"</text>
+          <rect x="450" y="35" width="100" height="50" rx="8" fill="var(--card2)" stroke="var(--accent2)" stroke-width="2" stroke-dasharray="5,3"/>
+          <text x="500" y="65" text-anchor="middle" fill="var(--text)">"date"</text>
+        </g>
+        <text x="450" y="120" fill="var(--accent2)" font-size="12" font-family="monospace">↑ appended (mutable)</text>
+      </svg>
+    </div>
+
+    <div class="tabs" id="tabgroup1">
+      <button class="tab-btn active" onclick="showTab('tabgroup1',0,this)">Common Methods</button>
+      <button class="tab-btn" onclick="showTab('tabgroup1',1,this)">Slicing</button>
+      <button class="tab-btn" onclick="showTab('tabgroup1',2,this)">Tuple Unpacking</button>
+    </div>
+    <div id="tabgroup1">
+      <div class="tab-content active">
+        <pre><code><span class="kw">nums</span> = [<span class="num">5</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>]
+nums.append(<span class="num">2</span>)      <span class="cm"># [5,3,1,4,2]</span>
+nums.sort()          <span class="cm"># [1,2,3,4,5]</span>
+nums.reverse()       <span class="cm"># [5,4,3,2,1]</span>
+nums.pop()           <span class="cm"># removes &amp; returns last: 1</span>
+nums.remove(<span class="num">4</span>)      <span class="cm"># removes first matching value 4</span>
+<span class="fn">len</span>(nums)          <span class="cm"># count of items</span></code></pre>
+      </div>
+      <div class="tab-content">
+        <pre><code><span class="kw">letters</span> = [<span class="str">'a'</span>,<span class="str">'b'</span>,<span class="str">'c'</span>,<span class="str">'d'</span>,<span class="str">'e'</span>]
+letters[<span class="num">1</span>:<span class="num">3</span>]     <span class="cm"># ['b','c']  — start:stop (stop excluded)</span>
+letters[:<span class="num">2</span>]      <span class="cm"># ['a','b']  — from start</span>
+letters[<span class="num">2</span>:]      <span class="cm"># ['c','d','e'] — to end</span>
+letters[::<span class="num">-1</span>]    <span class="cm"># ['e','d','c','b','a'] — reversed</span>
+letters[::<span class="num">2</span>]     <span class="cm"># ['a','c','e'] — every 2nd item</span></code></pre>
+      </div>
+      <div class="tab-content">
+        <pre><code><span class="kw">point</span> = (<span class="num">3</span>, <span class="num">4</span>)
+x, y = point          <span class="cm"># x=3, y=4</span>
+
+<span class="kw">first</span>, *<span class="kw">rest</span> = [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>]  <span class="cm"># first=1, rest=[2,3,4]</span>
+
+<span class="kw">a</span>, <span class="kw">b</span> = <span class="num">1</span>, <span class="num">2</span>
+<span class="kw">a</span>, <span class="kw">b</span> = <span class="kw">b</span>, <span class="kw">a</span>      <span class="cm"># swap using tuple packing</span></code></pre>
+      </div>
+    </div>
+
+    <div class="misconception-box">
+      <div class="tag">Common Misconception</div>
+      "Tuples are just immutable lists, so they're basically the same thing." Not quite — tuples are also semantically used for <strong>heterogeneous, fixed-structure</strong> data (like a coordinate pair or a database row), while lists represent <strong>homogeneous, variable-length</strong> sequences. Also: a tuple can contain a mutable object (e.g. a list), so "immutable" only means the tuple's own references can't change — <code>t = ([1,2], 3); t[0].append(9)</code> works fine.
+    </div>
+
+    <div class="misconception-box">
+      <div class="tag">Pitfall: Mutable Default Arguments</div>
+      <pre><code><span class="kw">def</span> <span class="fn">add_item</span>(item, bucket=[]):  <span class="cm"># DANGER: default list is created ONCE</span>
+    bucket.append(item)
+    <span class="kw">return</span> bucket
+
+add_item(<span class="num">1</span>)  <span class="cm"># [1]</span>
+add_item(<span class="num">2</span>)  <span class="cm"># [1, 2]  &lt;- unexpected! Same list reused across calls</span></code></pre>
+      Fix: use <code>bucket=None</code> and create a new list inside the function if it's <code>None</code>.
+    </div>
+
+    <h3 style="margin-top:20px;">🧪 Practical Exercise</h3>
+    <div class="exercise-box">
+      <p><strong>Task:</strong> Write an expression that returns the last three elements of <code>data = [10,20,30,40,50,60]</code> using slicing.</p>
+      <textarea id="ex1" placeholder="e.g. data[-3:]"></textarea>
+      <div style="margin-top:10px;"><button class="btn btn-small" onclick="checkEx1()">Check Answer</button></div>
+      <div class="exercise-result" id="ex1result"></div>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="tag">Key Takeaways</div>
+      <ul>
+        <li>Lists are mutable and ordered; tuples are immutable and ordered</li>
+        <li>Slicing uses <code>[start:stop:step]</code>, with <code>stop</code> excluded</li>
+        <li>Tuple unpacking is a clean way to assign multiple variables at once</li>
+        <li>Never use a mutable object as a default function argument</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quiz-box" id="quiz1">
+    <h3>📝 Module 1 Quiz</h3>
+    <div id="quiz1-questions"></div>
+    <button class="btn" id="quiz1-submit" onclick="gradeQuiz(1)">Submit Quiz</button>
+    <div class="quiz-summary" id="quiz1-summary"></div>
+  </div>
+</section>
+
+<section class="module" id="module2">
+  <div class="module-header"><div class="module-num">2</div><div><h2 style="margin-bottom:2px;">Dictionaries &amp; Sets — Key-Based &amp; Unique Collections</h2><p class="subtitle" style="margin:0;">Hashing, lookups, and uniqueness</p></div></div>
+
+  <div class="card">
+    <h3>📖 Dictionaries: Key → Value Mappings</h3>
+    <p>A <strong>dict</strong> stores key-value pairs. Keys must be hashable (immutable-ish: strings, numbers, tuples of immutables). Lookup by key is on average <strong>O(1)</strong> — constant time — regardless of dict size.</p>
+    <pre><code><span class="kw">student</span> = {<span class="str">"name"</span>: <span class="str">"Riya"</span>, <span class="str">"age"</span>: <span class="num">21</span>, <span class="str">"major"</span>: <span class="str">"CS"</span>}
+student[<span class="str">"age"</span>]            <span class="cm"># 21 — O(1) lookup</span>
+student[<span class="str">"gpa"</span>] = <span class="num">3.8</span>       <span class="cm"># add new key</span>
+student.get(<span class="str">"minor"</span>, <span class="str">"N/A"</span>)  <span class="cm"># safe lookup with default</span>
+<span class="str">"major"</span> <span class="kw">in</span> student        <span class="cm"># True — checks KEYS, not values</span></code></pre>
+
+    <div class="analogy-box">
+      <div class="tag">Analogy</div>
+      A dict is like a <strong>phone book</strong> — you don't scan every entry to find "Riya's number"; you jump straight to it because it's indexed by name. A list, by contrast, is like scanning a <strong>sequential guest list</strong> from top to bottom.
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+        <text x="20" y="24" fill="var(--muted)" font-size="13" font-family="monospace">Key</text>
+        <text x="220" y="24" fill="var(--muted)" font-size="13" font-family="monospace">Hash Function</text>
+        <text x="460" y="24" fill="var(--muted)" font-size="13" font-family="monospace">Bucket / Value</text>
+        <rect x="20" y="40" width="120" height="40" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="80" y="65" text-anchor="middle" font-family="monospace" font-size="13" fill="var(--text)">"age"</text>
+        <path d="M140 60 L 220 60" stroke="var(--accent2)" stroke-width="2" marker-end="url(#arrow2)"/>
+        <rect x="220" y="40" width="120" height="40" rx="8" fill="var(--card2)" stroke="var(--accent2)" stroke-width="2"/>
+        <text x="280" y="65" text-anchor="middle" font-family="monospace" font-size="12" fill="var(--text)">hash("age")</text>
+        <path d="M340 60 L 460 60" stroke="var(--accent2)" stroke-width="2" marker-end="url(#arrow2)"/>
+        <rect x="460" y="40" width="120" height="40" rx="8" fill="var(--card)" stroke="var(--good)" stroke-width="2"/>
+        <text x="520" y="65" text-anchor="middle" font-family="monospace" font-size="13" fill="var(--text)">21</text>
+        <defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--accent2)"/></marker></defs>
+        <text x="20" y="120" fill="var(--muted)" font-size="12" font-family="monospace">Because lookup jumps directly to a bucket via the hash,</text>
+        <text x="20" y="140" fill="var(--muted)" font-size="12" font-family="monospace">it doesn't need to scan every key — that's what makes it O(1).</text>
+      </svg>
+    </div>
+
+    <h3 style="margin-top:24px;">📖 Sets: Unique, Unordered Collections</h3>
+    <p>A <strong>set</strong> stores unique, unordered items and supports fast membership testing (O(1) average) plus classic mathematical set operations.</p>
+    <pre><code><span class="kw">a</span> = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>}
+<span class="kw">b</span> = {<span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}
+
+a | b   <span class="cm"># union: {1,2,3,4,5,6}</span>
+a &amp; b   <span class="cm"># intersection: {3,4}</span>
+a - b   <span class="cm"># difference: {1,2}</span>
+a ^ b   <span class="cm"># symmetric difference: {1,2,5,6}</span>
+
+<span class="kw">seen</span> = <span class="fn">set</span>()
+seen.add(<span class="num">5</span>); seen.add(<span class="num">5</span>)  <span class="cm"># still just {5} — duplicates auto-removed</span></code></pre>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="150" cy="100" r="80" fill="rgba(124,158,255,.18)" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="250" cy="100" r="80" fill="rgba(157,124,255,.18)" stroke="var(--accent2)" stroke-width="2"/>
+        <text x="110" y="105" font-family="monospace" font-size="14" fill="var(--text)">1, 2</text>
+        <text x="185" y="105" font-family="monospace" font-size="14" fill="var(--text)">3, 4</text>
+        <text x="270" y="105" font-family="monospace" font-size="14" fill="var(--text)">5, 6</text>
+        <text x="95" y="40" font-family="monospace" font-size="13" fill="var(--accent)">Set A</text>
+        <text x="270" y="40" font-family="monospace" font-size="13" fill="var(--accent2)">Set B</text>
+        <text x="150" y="180" text-anchor="middle" font-family="monospace" font-size="12" fill="var(--muted)">overlap = intersection (a &amp; b)</text>
+      </svg>
+    </div>
+
+    <div class="comparison-table" style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+        <tr style="background:var(--card2);"><th style="padding:10px; text-align:left; border:1px solid var(--border);">Structure</th><th style="padding:10px;text-align:left;border:1px solid var(--border);">Ordered?</th><th style="padding:10px;text-align:left;border:1px solid var(--border);">Mutable?</th><th style="padding:10px;text-align:left;border:1px solid var(--border);">Duplicates?</th><th style="padding:10px;text-align:left;border:1px solid var(--border);">Lookup</th></tr>
+        <tr><td style="padding:10px;border:1px solid var(--border);">List</td><td style="padding:10px;border:1px solid var(--border);">Yes</td><td style="padding:10px;border:1px solid var(--border);">Yes</td><td style="padding:10px;border:1px solid var(--border);">Allowed</td><td style="padding:10px;border:1px solid var(--border);">O(n) by value</td></tr>
+        <tr><td style="padding:10px;border:1px solid var(--border);">Tuple</td><td style="padding:10px;border:1px solid var(--border);">Yes</td><td style="padding:10px;border:1px solid var(--border);">No</td><td style="padding:10px;border:1px solid var(--border);">Allowed</td><td style="padding:10px;border:1px solid var(--border);">O(n) by value</td></tr>
+        <tr><td style="padding:10px;border:1px solid var(--border);">Dict</td><td style="padding:10px;border:1px solid var(--border);">Insertion order</td><td style="padding:10px;border:1px solid var(--border);">Yes</td><td style="padding:10px;border:1px solid var(--border);">No dup keys</td><td style="padding:10px;border:1px solid var(--border);">O(1) by key</td></tr>
+        <tr><td style="padding:10px;border:1px solid var(--border);">Set</td><td style="padding:10px;border:1px solid var(--border);">No</td><td style="padding:10px;border:1px solid var(--border);">Yes</td><td style="padding:10px;border:1px solid var(--border);">No duplicates</td><td style="padding:10px;border:1px solid var(--border);">O(1) membership</td></tr>
+      </table>
+    </div>
+
+    <div class="misconception-box">
+      <div class="tag">Common Misconception</div>
+      "Dicts in Python are unordered." Since Python 3.7, dicts officially preserve <strong>insertion order</strong> — but you still shouldn't rely on sorted or positional order for logic; use explicit sorting if order matters semantically.
+    </div>
+
+    <div class="misconception-box">
+      <div class="tag">Pitfall: Unhashable Types</div>
+      <pre><code><span class="kw">bad</span> = {[<span class="num">1</span>,<span class="num">2</span>]: <span class="str">"x"</span>}   <span class="cm"># TypeError: unhashable type: 'list'</span>
+<span class="kw">ok</span>  = {(<span class="num">1</span>,<span class="num">2</span>): <span class="str">"x"</span>}   <span class="cm"># fine — tuples are hashable</span></code></pre>
+      Lists and sets can't be dict keys or set members because they're mutable — their hash could change, breaking the internal bucket structure.
+    </div>
+
+    <h3 style="margin-top:20px;">🧪 Practical Exercise</h3>
+    <div class="exercise-box">
+      <p><strong>Task:</strong> Given <code>a = {1,2,3}</code> and <code>b = {2,3,4}</code>, write the expression to get elements in <code>a</code> but not in <code>b</code>.</p>
+      <textarea id="ex2" placeholder="e.g. a - b"></textarea>
+      <div style="margin-top:10px;"><button class="btn btn-small" onclick="checkEx2()">Check Answer</button></div>
+      <div class="exercise-result" id="ex2result"></div>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="tag">Key Takeaways</div>
+      <ul>
+        <li>Dicts map hashable keys to values with average O(1) lookup</li>
+        <li>Sets store unique items and support union/intersection/difference</li>
+        <li>Only hashable (typically immutable) types can be dict keys or set elements</li>
+        <li>Since Python 3.7, dicts preserve insertion order</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quiz-box" id="quiz2">
+    <h3>📝 Module 2 Quiz</h3>
+    <div id="quiz2-questions"></div>
+    <button class="btn" id="quiz2-submit" onclick="gradeQuiz(2)">Submit Quiz</button>
+    <div class="quiz-summary" id="quiz2-summary"></div>
+  </div>
+</section>
+
+<section class="module" id="module3">
+  <div class="module-header"><div class="module-num">3</div><div><h2 style="margin-bottom:2px;">Comprehensions — Writing Pythonic Code</h2><p class="subtitle" style="margin:0;">List, dict, set comprehensions and generator expressions</p></div></div>
+
+  <div class="card">
+    <h3>📖 From Loops to Comprehensions</h3>
+    <p>A comprehension builds a new collection in a single, readable expression instead of a multi-line loop. The general list form is <code>[expression for item in iterable if condition]</code>.</p>
+
+    <div class="tabs" id="tabgroup3">
+      <button class="tab-btn active" onclick="showTab('tabgroup3',0,this)">Manual Loop</button>
+      <button class="tab-btn" onclick="showTab('tabgroup3',1,this)">List Comprehension</button>
+    </div>
+    <div id="tabgroup3">
+      <div class="tab-content active">
+        <pre><code><span class="kw">squares</span> = []
+<span class="kw">for</span> n <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):
+    <span class="kw">if</span> n % <span class="num">2</span> == <span class="num">0</span>:
+        squares.append(n**<span class="num">2</span>)
+<span class="cm"># squares = [0, 4, 16, 36, 64]</span></code></pre>
+      </div>
+      <div class="tab-content">
+        <pre><code><span class="kw">squares</span> = [n**<span class="num">2</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>) <span class="kw">if</span> n % <span class="num">2</span> == <span class="num">0</span>]
+<span class="cm"># squares = [0, 4, 16, 36, 64] — same result, one line</span></code></pre>
+      </div>
+    </div>
+
+    <div class="analogy-box">
+      <div class="tag">Analogy</div>
+      A manual loop is like giving someone step-by-step directions ("go to the bin, pick it up, check it, put it in the basket, repeat"). A comprehension is handing them the rule directly: <strong>"every even number's square, from 0 to 9."</strong> Same destination, far less narration.
+    </div>
+
+    <h3 style="margin-top:20px;">📖 Dict &amp; Set Comprehensions</h3>
+    <pre><code><span class="cm"># Dict comprehension: {key_expr: value_expr for item in iterable}</span>
+<span class="kw">word_lengths</span> = {w: <span class="fn">len</span>(w) <span class="kw">for</span> w <span class="kw">in</span> [<span class="str">"cat"</span>,<span class="str">"elephant"</span>,<span class="str">"ox"</span>]}
+<span class="cm"># {'cat': 3, 'elephant': 8, 'ox': 2}</span>
+
+<span class="cm"># Set comprehension: {expr for item in iterable}</span>
+<span class="kw">unique_lengths</span> = {<span class="fn">len</span>(w) <span class="kw">for</span> w <span class="kw">in</span> [<span class="str">"cat"</span>,<span class="str">"dog"</span>,<span class="str">"ox"</span>]}
+<span class="cm"># {3, 2}  — duplicate length 3 collapses to one</span>
+
+<span class="cm"># Generator expression: () instead of [] — lazy, memory-efficient</span>
+<span class="kw">gen</span> = (n**<span class="num">2</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1000000</span>))  <span class="cm"># doesn't build the list in memory</span></code></pre>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 620 150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="20" width="180" height="60" rx="10" fill="var(--card2)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="100" y="45" text-anchor="middle" font-family="monospace" font-size="13" fill="var(--text)">[ ]</text>
+        <text x="100" y="65" text-anchor="middle" font-family="monospace" font-size="11" fill="var(--muted)">List — eager, in memory</text>
+        <rect x="220" y="20" width="180" height="60" rx="10" fill="var(--card2)" stroke="var(--accent2)" stroke-width="2"/>
+        <text x="310" y="45" text-anchor="middle" font-family="monospace" font-size="13" fill="var(--text)">{ }</text>
+        <text x="310" y="65" text-anchor="middle" font-family="monospace" font-size="11" fill="var(--muted)">Set/Dict — eager, unique keys</text>
+        <rect x="430" y="20" width="180" height="60" rx="10" fill="var(--card2)" stroke="var(--good)" stroke-width="2"/>
+        <text x="520" y="45" text-anchor="middle" font-family="monospace" font-size="13" fill="var(--text)">( )</text>
+        <text x="520" y="65" text-anchor="middle" font-family="monospace" font-size="11" fill="var(--muted)">Generator — lazy, one at a time</text>
+        <text x="10" y="120" font-family="monospace" font-size="12" fill="var(--muted)">Same syntax pattern, different brackets → different container semantics</text>
+      </svg>
+    </div>
+
+    <h3 style="margin-top:20px;">📖 Nested Comprehensions</h3>
+    <pre><code><span class="cm"># Flatten a matrix (list of lists)</span>
+<span class="kw">matrix</span> = [[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>], [<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>]]
+<span class="kw">flat</span> = [num <span class="kw">for</span> row <span class="kw">in</span> matrix <span class="kw">for</span> num <span class="kw">in</span> row]
+<span class="cm"># [1, 2, 3, 4, 5, 6]  — outer loop first, inner loop second, same order as nested for-loops</span></code></pre>
+
+    <div class="misconception-box">
+      <div class="tag">Common Misconception</div>
+      "Comprehensions are always faster and should replace every loop." They're often faster (less overhead, optimized bytecode) but nesting more than 2 levels or cramming complex logic into one line hurts readability. If it needs a comment to explain, a regular loop is usually clearer.
+    </div>
+
+    <div class="misconception-box">
+      <div class="tag">Pitfall: Overusing Side Effects</div>
+      <pre><code><span class="cm"># Bad — using a comprehension purely for side effects, result discarded</span>
+[<span class="fn">print</span>(x) <span class="kw">for</span> x <span class="kw">in</span> range(<span class="num">5</span>)]  <span class="cm"># builds a throwaway list of Nones — wasteful</span>
+
+<span class="cm"># Good — just use a for loop when you don't need the resulting collection</span>
+<span class="kw">for</span> x <span class="kw">in</span> range(<span class="num">5</span>): <span class="fn">print</span>(x)</code></pre>
+    </div>
+
+    <h3 style="margin-top:20px;">🧪 Practical Exercise</h3>
+    <div class="exercise-box">
+      <p><strong>Task:</strong> Write a dict comprehension that maps each number in <code>nums = [1,2,3,4]</code> to its cube.</p>
+      <textarea id="ex3" placeholder="e.g. {n: n**3 for n in nums}"></textarea>
+      <div style="margin-top:10px;"><button class="btn btn-small" onclick="checkEx3()">Check Answer</button></div>
+      <div class="exercise-result" id="ex3result"></div>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="tag">Key Takeaways</div>
+      <ul>
+        <li>List/dict/set comprehensions condense loops into a single readable expression</li>
+        <li>Generator expressions use <code>()</code> and are lazy — great for huge/streaming data</li>
+        <li>Nested comprehensions follow the same order as equivalent nested for-loops</li>
+        <li>Don't force a comprehension when a plain loop is clearer (especially for side effects)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quiz-box" id="quiz3">
+    <h3>📝 Module 3 Quiz</h3>
+    <div id="quiz3-questions"></div>
+    <button class="btn" id="quiz3-submit" onclick="gradeQuiz(3)">Submit Quiz</button>
+    <div class="quiz-summary" id="quiz3-summary"></div>
+  </div>
+</section>
+
+<section class="module" id="module4">
+  <div class="module-header"><div class="module-num">4</div><div><h2 style="margin-bottom:2px;">Mastery &amp; Real-World Application</h2><p class="subtitle" style="margin:0;">Choosing the right structure, combining them, and performance</p></div></div>
+
+  <div class="card">
+    <h3>📖 Choosing the Right Structure</h3>
+    <p>Real problems rarely say "use a dict." You infer it from the access pattern you need:</p>
+    <ul class="objectives">
+      <li><strong>Need order + duplicates + index access?</strong> → List</li>
+      <li><strong>Need a fixed, unchangeable record?</strong> → Tuple</li>
+      <li><strong>Need fast lookup by a unique label?</strong> → Dict</li>
+      <li><strong>Need to test membership fast, or de-duplicate?</strong> → Set</li>
+    </ul>
+
+    <div class="analogy-box">
+      <div class="tag">Analogy</div>
+      Think of these as tools in a toolbox: a list is a <strong>numbered filing cabinet drawer</strong> (order matters, duplicates fine); a dict is a <strong>labeled folder system</strong> (grab by label instantly); a set is a <strong>bouncer's guest list</strong> (only cares "are you on it or not," never lets duplicates in); a tuple is a <strong>sealed envelope</strong> (contents fixed once sealed).
+    </div>
+
+    <h3 style="margin-top:20px;">📖 Combining Structures: Real-World Patterns</h3>
+    <pre><code><span class="cm"># Pattern 1: Grouping data — dict of lists</span>
+<span class="kw">students_by_grade</span> = {}
+<span class="kw">for</span> name, grade <span class="kw">in</span> [(<span class="str">"Amit"</span>,<span class="str">"A"</span>), (<span class="str">"Riya"</span>,<span class="str">"B"</span>), (<span class="str">"Zoe"</span>,<span class="str">"A"</span>)]:
+    students_by_grade.setdefault(grade, []).append(name)
+<span class="cm"># {'A': ['Amit', 'Zoe'], 'B': ['Riya']}</span>
+
+<span class="cm"># Pattern 2: Counting with a dict comprehension + set of unique items</span>
+<span class="kw">words</span> = <span class="str">"the cat sat on the mat the cat ran"</span>.split()
+<span class="kw">counts</span> = {w: words.count(w) <span class="kw">for</span> w <span class="kw">in</span> <span class="fn">set</span>(words)}
+<span class="cm"># {'the': 3, 'cat': 2, 'sat': 1, 'on': 1, 'mat': 1, 'ran': 1}</span>
+
+<span class="cm"># Pattern 3: Deduplicating while preserving first-seen order</span>
+<span class="kw">seen</span> = <span class="fn">set</span>()
+<span class="kw">ordered_unique</span> = []
+<span class="kw">for</span> x <span class="kw">in</span> [<span class="num">3</span>,<span class="num">1</span>,<span class="num">3</span>,<span class="num">2</span>,<span class="num">1</span>,<span class="num">4</span>]:
+    <span class="kw">if</span> x <span class="kw">not in</span> seen:
+        seen.add(x)
+        ordered_unique.append(x)
+<span class="cm"># [3, 1, 2, 4]</span></code></pre>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="20" y="24" font-family="monospace" font-size="13" fill="var(--muted)">Raw records (list of tuples)</text>
+        <rect x="20" y="35" width="580" height="34" rx="6" fill="var(--card2)" stroke="var(--border)"/>
+        <text x="30" y="57" font-family="monospace" font-size="12" fill="var(--text)">("Amit","A") ("Riya","B") ("Zoe","A")</text>
+        <path d="M310 69 L 310 95" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow3)"/>
+        <defs><marker id="arrow3" markerWidth="10" markerHeight="10" refX="4" refY="8" orient="auto"><path d="M0,0 L8,0 L4,8 Z" fill="var(--accent)"/></marker></defs>
+        <text x="20" y="115" font-family="monospace" font-size="13" fill="var(--muted)">Grouped (dict of lists)</text>
+        <rect x="20" y="125" width="270" height="50" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="30" y="155" font-family="monospace" font-size="12" fill="var(--text)">'A': ['Amit','Zoe']</text>
+        <rect x="310" y="125" width="270" height="50" rx="8" fill="var(--card)" stroke="var(--accent2)" stroke-width="2"/>
+        <text x="320" y="155" font-family="monospace" font-size="12" fill="var(--text)">'B': ['Riya']</text>
+      </svg>
+    </div>
+
+    <h3 style="margin-top:20px;">📖 Performance Intuition</h3>
+    <p>The habit that separates a beginner from a confident Python developer: recognizing that "is X in this collection?" costs very different amounts depending on the container.</p>
+    <div class="comparison-table" style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+        <tr style="background:var(--card2);"><th style="padding:10px;text-align:left;border:1px solid var(--border);">Operation</th><th style="padding:10px;text-align:left;border:1px solid var(--border);">List</th><th style="padding:10px;text-align:left;border:1px solid var(--border);">Set</th><th style="padding:10px;text-align:left;border:1px solid var(--border);">Dict</th></tr>
+        <tr><td style="padding:10px;border:1px solid var(--border);"><code>x in collection</code></td><td style="padding:10px;border:1px solid var(--border);">O(n)</td><td style="padding:10px;border:1px solid var(--border);">O(1) avg</td><td style="padding:10px;border:1px solid var(--border);">O(1) avg (checks keys)</td></tr>
+        <tr><td style="padding:10px;border:1px solid var(--border);">Insert at end</td><td style="padding:10px;border:1px solid var(--border);">O(1) amortized</td><td style="padding:10px;border:1px solid var(--border);">O(1) avg</td><td style="padding:10px;border:1px solid var(--border);">O(1) avg</td></tr>
+        <tr><td style="padding:10px;border:1px solid var(--border);">Access by position/key</td><td style="padding:10px;border:1px solid var(--border);">O(1) by index</td><td style="padding:10px;border:1px solid var(--border);">N/A (unordered)</td><td style="padding:10px;border:1px solid var(--border);">O(1) by key</td></tr>
+      </table>
+    </div>
+
+    <div class="misconception-box">
+      <div class="tag">Common Misconception</div>
+      "Checking membership with <code>in</code> works the same way on any container." Using <code>in</code> on a 100,000-item list to check membership repeatedly in a loop is a classic hidden performance bug — converting that list to a set first can turn an O(n²) script into an O(n) one.
+    </div>
+
+    <h3 style="margin-top:20px;">🧪 Practical Exercise</h3>
+    <div class="exercise-box">
+      <p><strong>Task:</strong> You have <code>logs = ["error","info","error","warn","info","error"]</code>. Write a dict comprehension that counts occurrences of each unique log level.</p>
+      <textarea id="ex4" placeholder="e.g. {lvl: logs.count(lvl) for lvl in set(logs)}"></textarea>
+      <div style="margin-top:10px;"><button class="btn btn-small" onclick="checkEx4()">Check Answer</button></div>
+      <div class="exercise-result" id="ex4result"></div>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="tag">Key Takeaways</div>
+      <ul>
+        <li>Pick a structure based on access pattern: order/index (list), fixed record (tuple), fast key lookup (dict), fast membership/uniqueness (set)</li>
+        <li>Combining structures (dict of lists, set + list) solves most real grouping/deduplication problems</li>
+        <li>Converting a list to a set before repeated membership checks is a major performance win</li>
+        <li><code>setdefault</code> and comprehensions eliminate most manual boilerplate</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quiz-box" id="quiz4">
+    <h3>📝 Module 4 Quiz</h3>
+    <div id="quiz4-questions"></div>
+    <button class="btn" id="quiz4-submit" onclick="gradeQuiz(4)">Submit Quiz</button>
+    <div class="quiz-summary" id="quiz4-summary"></div>
+  </div>
+</section>
+
+
+</div>
+
+
+<!-- FINAL SECTION INSERTED HERE -->
+<div id="finalRoot">
+<section class="module" id="module5">
+  <div class="module-header"><div class="module-num">🏁</div><div><h2 style="margin-bottom:2px;">Final Challenge &amp; Wrap-Up</h2><p class="subtitle" style="margin:0;">Put it all together, then keep going</p></div></div>
+
+  <div class="card">
+    <h3>🏆 Final Practical Challenge</h3>
+    <p>You're given a list of orders: <code>orders = [{"item":"pen","qty":3}, {"item":"book","qty":1}, {"item":"pen","qty":2}, {"item":"bag","qty":1}]</code>.</p>
+    <p style="margin-top:8px;"><strong>Task:</strong> Write a single expression/snippet that produces a dict mapping each unique item name to its <em>total quantity</em> across all orders, e.g. <code>{"pen": 5, "book": 1, "bag": 1}</code>. Use a comprehension or loop combining a dict, and think about how you'd avoid scanning the list once per item.</p>
+    <div class="exercise-box">
+      <textarea id="finalChallenge" placeholder="Write your Python code here..."></textarea>
+      <div style="margin-top:10px;"><button class="btn btn-small" onclick="checkFinal()">Check My Approach</button></div>
+      <div class="exercise-result" id="finalResult"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 Cheat Sheet</h3>
+    <div class="grid-2">
+      <div>
+        <h4 style="margin-bottom:8px;">Lists &amp; Tuples</h4>
+        <pre><code>lst.append(x); lst.pop(); lst.sort()
+lst[a:b:c]        <span class="cm"># slicing</span>
+t = (1,2); a,b = t <span class="cm"># unpack</span></code></pre>
+      </div>
+      <div>
+        <h4 style="margin-bottom:8px;">Dicts &amp; Sets</h4>
+        <pre><code>d.get(k, default)
+d.setdefault(k, []).append(v)
+a | b, a &amp; b, a - b, a ^ b  <span class="cm"># set ops</span></code></pre>
+      </div>
+      <div>
+        <h4 style="margin-bottom:8px;">Comprehensions</h4>
+        <pre><code>[x for x in it if cond]
+{k:v for k,v in it}
+{x for x in it}
+(x for x in it)   <span class="cm"># generator, lazy</span></code></pre>
+      </div>
+      <div>
+        <h4 style="margin-bottom:8px;">Complexity Quick Reference</h4>
+        <pre><code>list:  in → O(n),  index → O(1)
+set/dict: in → O(1) avg
+Convert list→set for repeated lookups</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📝 Summary Notes</h3>
+    <p>Lists and tuples give you ordered sequences — mutable vs. immutable. Dicts and sets give you hash-based, near-instant lookups — key-value pairs vs. unique members. Comprehensions let you express "build a new collection from this rule" in one clean line instead of a multi-line loop, and generator expressions extend that idea to lazy, memory-efficient iteration. Mastery comes from matching the structure to the access pattern the problem actually needs — not from memorizing syntax.</p>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Continue Learning</h3>
+    <div class="resource-grid">
+      <div class="resource-item">
+        <a href="https://docs.python.org/3/tutorial/datastructures.html" target="_blank">Official Python Docs — Data Structures</a>
+        <div class="desc">The canonical reference for lists, dicts, sets, and comprehensions.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://docs.python.org/3/library/collections.html" target="_blank">collections module docs</a>
+        <div class="desc">Counter, defaultdict, OrderedDict, deque — natural next step after this tutorial.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/" target="_blank">Book: Fluent Python (Luciano Ramalho)</a>
+        <div class="desc">Deep dive into how Python's built-in data structures work under the hood.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://www.dabeaz.com" target="_blank">Book: Python Cookbook (Beazley &amp; Jones)</a>
+        <div class="desc">Recipe-style solutions using exactly these structures in real scenarios.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://dl.acm.org/doi/10.1145/3406325.3451105" target="_blank">Research: Studies on hash table performance (ACM)</a>
+        <div class="desc">For the curious: why average-case dict/set lookup behaves the way it does.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://www.reddit.com/r/learnpython/" target="_blank">Community: r/learnpython</a>
+        <div class="desc">Active community for beginner-to-intermediate Python questions.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://stackoverflow.com/questions/tagged/python" target="_blank">Community: Stack Overflow (python tag)</a>
+        <div class="desc">Search almost any data-structure error message here first.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://leetcode.com" target="_blank">Practice: LeetCode</a>
+        <div class="desc">Hundreds of problems that reward exactly this list/dict/set fluency.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://www.hackerrank.com/domains/python" target="_blank">Practice: HackerRank Python domain</a>
+        <div class="desc">Structured practice specifically on Python fundamentals.</div>
+      </div>
+      <div class="resource-item">
+        <a href="https://www.pythonmorsels.com/" target="_blank">Practice: Python Morsels</a>
+        <div class="desc">Bite-sized exercises focused on idiomatic Python, including comprehensions.</div>
+      </div>
+    </div>
+
+    <h4 style="margin-top:20px;">🔎 Search Keywords</h4>
+    <div>
+      <span class="keyword-chip">python list vs tuple</span>
+      <span class="keyword-chip">python dict comprehension examples</span>
+      <span class="keyword-chip">python set operations</span>
+      <span class="keyword-chip">python hashable types</span>
+      <span class="keyword-chip">python generator expression vs list comprehension</span>
+      <span class="keyword-chip">python time complexity data structures</span>
+      <span class="keyword-chip">python collections.Counter</span>
+      <span class="keyword-chip">python defaultdict grouping</span>
+    </div>
+
+    <h4 style="margin-top:20px;">🤖 Additional AI Prompts for Further Learning</h4>
+    <ul class="objectives">
+      <li>"Explain Python's <code>collections.Counter</code> and <code>defaultdict</code> with examples building on lists/dicts/sets."</li>
+      <li>"Give me 10 progressively harder Python comprehension exercises with solutions."</li>
+      <li>"Walk me through how Python dictionaries handle hash collisions internally."</li>
+      <li>"Show me when NOT to use a comprehension and why a loop is better in that case."</li>
+      <li>"Compare Python's list/dict/set with the equivalent structures in JavaScript or Java."</li>
+    </ul>
+  </div>
+
+  <div class="card" id="certificateCard" style="text-align:center; display:none;">
+    <h3>🏅 Congratulations!</h3>
+    <p>You've completed the Python Data Structures Mastery tutorial.</p>
+    <div style="font-size:2rem; margin:14px 0;">🎓</div>
+    <p>Total Score: <strong id="finalScoreDisplay">0</strong> points</p>
+  </div>
+</section>
+
+</div>
+
+</div>
+
+<footer class="page-footer">Interactive Learning Studio · Built for deep, hands-on Python mastery</footer>
+<button class="btn print-btn" onclick="window.print()">🖨️ Print Notes</button>
+
+<script>
+/* ============ THEME ============ */
+function toggleTheme(){document.body.classList.toggle('light');}
+
+/* ============ STATE ============ */
+const state = {
+  currentModule: 0, // 0 = intro
+  moduleUnlocked: [true,false,false,false],
+  moduleQuizPassed: [false,false,false,false],
+  score: 0,
+  exerciseDone: {},
+};
+
+function addScore(pts){
+  state.score += pts;
+  document.getElementById('totalScoreLabel').textContent = state.score;
+}
+
+function updateProgress(){
+  const doneModules = state.moduleQuizPassed.filter(Boolean).length;
+  const pct = Math.round((doneModules/4)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = pct+'% Complete';
+  renderTOC();
+}
+
+function renderTOC(){
+  const names = ['Intro','Module 1: Lists & Tuples','Module 2: Dicts & Sets','Module 3: Comprehensions','Module 4: Mastery & Application','Final Challenge'];
+  const nav = document.getElementById('tocNav');
+  nav.innerHTML = '';
+  names.forEach((n,i)=>{
+    const el = document.createElement('div');
+    el.className = 'toc-item';
+    if(i===state.currentModule) el.classList.add('current');
+    if(i>0 && i<=4 && state.moduleQuizPassed[i-1]) el.classList.add('done');
+    el.textContent = n;
+    el.onclick = ()=>{ if(i===0){ goToModule(0); } else if(i<=4 && state.moduleUnlocked[i-1]){ goToModule(i);} else if(i===5 && state.moduleQuizPassed[3]){ goToModule(5);} };
+    nav.appendChild(el);
+  });
+}
+
+function goToModule(n){
+  document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+  if(n===0){ document.getElementById('intro').scrollIntoView({behavior:'smooth'}); state.currentModule=0; renderTOC(); return; }
+  const target = document.getElementById('module'+n) || document.getElementById('finalChallenge');
+  if(target){ target.classList.add('active'); target.scrollIntoView({behavior:'smooth'}); }
+  state.currentModule = n;
+  renderTOC();
+}
+
+function unlockNext(moduleIndex){
+  state.moduleQuizPassed[moduleIndex-1] = true;
+  if(moduleIndex < 4){ state.moduleUnlocked[moduleIndex] = true; }
+  updateProgress();
+}
+
+/* Tabs helper */
+function showTab(groupId, tabIndex, btn){
+  const group = document.getElementById(groupId);
+  group.querySelectorAll('.tab-content').forEach((el,i)=>{
+    el.classList.toggle('active', i===tabIndex);
+  });
+  group.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ============ QUIZ DATA ============ */
+const quizData = {
+  1: [
+    {q:"What is the key difference between a list and a tuple?", opts:["Lists can hold numbers, tuples can only hold strings","Lists are mutable; tuples are immutable","Tuples are always faster to search","Lists can't be indexed"], correct:1, explain:"Lists can be changed after creation (append, remove, sort); tuples cannot be modified once created."},
+    {q:"What does letters[::-1] do to a list?", opts:["Removes the last element","Returns every other element","Reverses the list","Raises an error"], correct:2, explain:"A step of -1 with no start/stop walks the whole sequence backwards, effectively reversing it."},
+    {q:"Why is using a mutable default argument like def f(x, bucket=[]) risky?", opts:["It causes a syntax error","The same list object is reused across all calls","Python doesn't allow default arguments","It makes the function run slower"], correct:1, explain:"Default argument objects are created once, at function definition time, and reused on every call — so mutations persist between calls unexpectedly."},
+    {q:"Given point = (3, 4), what does x, y = point do?", opts:["Raises a TypeError","Creates a new tuple (x,y)","Unpacks 3 into x and 4 into y","Only works if x and y are pre-declared"], correct:2, explain:"Tuple unpacking assigns each element of the tuple to the corresponding variable, in order."}
+  ],
+  2: [
+    {q:"What is the average time complexity of a dictionary key lookup?", opts:["O(n)","O(log n)","O(1)","O(n^2)"], correct:2, explain:"Dictionaries use hashing internally, so looking up a key takes constant time on average, regardless of dict size."},
+    {q:"Which of these can be used as a dictionary key?", opts:["A list","A set","A tuple of integers","A dictionary"], correct:2, explain:"Only hashable (essentially immutable) types can be dict keys. Tuples of immutable elements are hashable; lists, sets, and dicts are not."},
+    {q:"What does a & b return for two sets a and b?", opts:["Union of a and b","Elements only in a","Intersection of a and b","Symmetric difference"], correct:2, explain:"The & operator on sets returns the intersection — elements present in both sets."},
+    {q:"Since which Python version do dicts guarantee insertion order?", opts:["Python 2.7","Python 3.0","Python 3.7","They've never guaranteed order"], correct:2, explain:"As of Python 3.7, dictionaries officially preserve the order in which keys were inserted."}
+  ],
+  3: [
+    {q:"What is the general syntax of a list comprehension?", opts:["(expr for item in iterable)","[expr for item in iterable if cond]","{expr: item for item in iterable}","for item in iterable: expr"], correct:1, explain:"List comprehensions use square brackets: [expression for item in iterable if condition], with the if-clause optional."},
+    {q:"What makes a generator expression different from a list comprehension?", opts:["It uses curly braces instead of square brackets","It evaluates eagerly and stores all items in memory","It's lazy — values are produced one at a time on demand","It can only be used once inside a function"], correct:2, explain:"Generator expressions, written with (), are lazy: they yield each value on demand instead of building the whole collection in memory upfront."},
+    {q:"For matrix = [[1,2],[3,4]], what does [n for row in matrix for n in row] produce?", opts:["[[1,2],[3,4]]","[1,3,2,4]","[1,2,3,4]","An error, nested comprehensions aren't allowed"], correct:2, explain:"The outer loop (over rows) runs first, and for each row the inner loop (over numbers) runs — same order as writing nested for-loops, flattening the matrix to [1,2,3,4]."},
+    {q:"Why is [print(x) for x in range(5)] considered bad practice?", opts:["print() cannot be used inside comprehensions","It builds a throwaway list just for a side effect","It reverses the order of printing","It's actually the recommended pattern"], correct:1, explain:"Comprehensions are meant to build a collection; using one purely to trigger print() calls wastes memory building a list of Nones you never use — a plain for-loop is clearer."}
+  ],
+  4: [
+    {q:"You need fast 'is this value already used?' checks on a large collection. What should you use?", opts:["A list","A set","A tuple","Doesn't matter, all are the same speed"], correct:1, explain:"Sets offer O(1) average membership testing, versus O(n) for lists and tuples, making them ideal for repeated 'in' checks."},
+    {q:"What does dict.setdefault(key, []).append(value) accomplish in a loop?", opts:["Overwrites the value at key every time","Groups values into a list under each key, creating the list only if needed","Raises an error if the key doesn't exist","Deletes the key if it already exists"], correct:1, explain:"setdefault returns the existing list for that key or creates and inserts a new empty list if the key is missing, so you can safely append without checking existence first."},
+    {q:"Why might converting a list to a set before a loop with repeated 'in' checks improve performance?", opts:["Sets use less memory always","It changes an O(n) check per lookup into O(1) average, avoiding an O(n squared) overall pattern","Lists can't support the 'in' operator","It sorts the data automatically"], correct:1, explain:"Repeated O(n) list membership checks inside a loop become O(n squared) overall; converting to a set turns each check into O(1) average, making the whole operation roughly O(n)."},
+    {q:"Which structure would best represent a fixed (x, y) coordinate pair?", opts:["List","Set","Tuple","Dict"], correct:2, explain:"A tuple's immutability and fixed structure fit a coordinate pair well — it shouldn't change shape or be accidentally mutated."}
+  ]
+};
+
+/* ============ QUIZ RENDERING ============ */
+function renderAllQuizzes(){
+  for(const m in quizData){
+    const container = document.getElementById('quiz'+m+'-questions');
+    if(!container) continue;
+    container.innerHTML = '';
+    quizData[m].forEach((item, qi)=>{
+      const qDiv = document.createElement('div');
+      qDiv.className = 'quiz-q';
+      qDiv.innerHTML = '<div class="qtext">'+(qi+1)+'. '+item.q+'</div><div class="quiz-options" id="q'+m+'-'+qi+'-opts"></div><div class="quiz-explain" id="q'+m+'-'+qi+'-explain"></div>';
+      container.appendChild(qDiv);
+      const optsDiv = qDiv.querySelector('.quiz-options');
+      item.opts.forEach((opt, oi)=>{
+        const optEl = document.createElement('div');
+        optEl.className = 'quiz-option';
+        optEl.textContent = opt;
+        optEl.onclick = ()=>selectOption(m, qi, oi);
+        optEl.id = 'q'+m+'-'+qi+'-opt'+oi;
+        optsDiv.appendChild(optEl);
+      });
+    });
+  }
+}
+
+const userAnswers = {1:{},2:{},3:{},4:{}};
+
+function selectOption(m, qi, oi){
+  const opts = document.querySelectorAll('[id^="q'+m+'-'+qi+'-opt"]');
+  opts.forEach(o=>o.classList.remove('selected'));
+  document.getElementById('q'+m+'-'+qi+'-opt'+oi).classList.add('selected');
+  userAnswers[m][qi] = oi;
+}
+
+function gradeQuiz(m){
+  const data = quizData[m];
+  let correctCount = 0;
+  data.forEach((item, qi)=>{
+    const chosen = userAnswers[m][qi];
+    const opts = document.querySelectorAll('[id^="q'+m+'-'+qi+'-opt"]');
+    opts.forEach((o,oi)=>{
+      o.style.pointerEvents = 'none';
+      if(oi === item.correct){ o.classList.add('correct'); }
+      else if(oi === chosen && chosen !== item.correct){ o.classList.add('incorrect'); }
+    });
+    const explainDiv = document.getElementById('q'+m+'-'+qi+'-explain');
+    explainDiv.classList.add('show');
+    const isCorrect = chosen === item.correct;
+    if(isCorrect){ correctCount++; addScore(10); }
+    explainDiv.innerHTML = (isCorrect ? '✅ Correct! ' : (chosen===undefined ? '⚠️ Not answered. ' : '❌ Incorrect. ')) + item.explain;
+  });
+
+  const submitBtn = document.getElementById('quiz'+m+'-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Quiz Submitted';
+
+  const pct = Math.round((correctCount/data.length)*100);
+  const summary = document.getElementById('quiz'+m+'-summary');
+  const passed = pct >= 50;
+  summary.classList.add('show');
+  const circleColor = pct>=75 ? 'var(--good)' : (pct>=50 ? 'var(--warn)' : 'var(--bad)');
+  const nextLabel = m<4 ? ('Continue to Module '+(m+1)) : 'Continue to Final Challenge';
+  const nextTarget = m+1<=4 ? m+1 : 5;
+  summary.innerHTML =
+    '<div class="score-circle" style="border-color:'+circleColor+'; color:'+circleColor+';">'+pct+'%</div>'+
+    '<h3>'+correctCount+' / '+data.length+' Correct</h3>'+
+    '<p style="color:var(--muted); margin-top:6px;">'+(passed ? 'Great work! Module completed — next module unlocked.' : 'Review the explanations above, then continue when ready.')+'</p>'+
+    '<button class="btn btn-small" style="margin-top:14px;" onclick="goToModule('+nextTarget+')">'+nextLabel+' →</button>';
+
+  unlockNext(m);
+}
+
+/* ============ EXERCISE CHECKERS ============ */
+function normalize(s){ return s.replace(/\s+/g,'').toLowerCase(); }
+
+function showExResult(id, correct, msg){
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  el.classList.toggle('correct', correct);
+  el.classList.toggle('incorrect', !correct);
+  el.textContent = msg;
+  if(correct) addScore(15);
+}
+
+function checkEx1(){
+  const val = normalize(document.getElementById('ex1').value);
+  const okAnswers = ['data[-3:]', 'data[3:]', 'data[3:6]'].map(normalize);
+  const ok = okAnswers.includes(val);
+  showExResult('ex1result', ok, ok ? '✅ Correct! data[-3:] (or equivalent) returns [40, 50, 60].' : '❌ Try data[-3:] — negative indices count from the end, and omitting the stop means "to the end."');
+}
+function checkEx2(){
+  const val = normalize(document.getElementById('ex2').value);
+  const okAnswers = ['a-b', 'a.difference(b)'].map(normalize);
+  const ok = okAnswers.includes(val);
+  showExResult('ex2result', ok, ok ? '✅ Correct! a - b gives {1}, the elements only in a.' : '❌ Try a - b — the minus operator between sets gives the difference (elements in the first but not the second).');
+}
+function checkEx3(){
+  const raw = document.getElementById('ex3').value;
+  const ok = /\{.*n\s*:\s*n\s*\*\*\s*3.*for\s+n\s+in\s+nums\}/i.test(raw.replace(/\s+/g,' '));
+  showExResult('ex3result', ok, ok ? '✅ Correct! {n: n**3 for n in nums} maps each number to its cube.' : '❌ Try: {n: n**3 for n in nums} — dict comprehensions use key:value for item in iterable.');
+}
+function checkEx4(){
+  const raw = document.getElementById('ex4').value;
+  const ok = /\{.*:.*count.*for.*in.*set/i.test(raw.replace(/\s+/g,' '));
+  showExResult('ex4result', ok, ok ? '✅ Correct! Using set(logs) ensures you count each unique level once.' : '❌ Try: {lvl: logs.count(lvl) for lvl in set(logs)} — iterate over the unique levels, not the whole list.');
+}
+function checkFinal(){
+  const raw = document.getElementById('finalChallenge').value.toLowerCase();
+  const mentionsDict = raw.includes('{') || raw.includes('dict');
+  const mentionsLoop = raw.includes('for');
+  const ok = mentionsDict && mentionsLoop;
+  const el = document.getElementById('finalResult');
+  el.classList.add('show');
+  el.classList.toggle('correct', ok);
+  el.classList.toggle('incorrect', !ok);
+  if(ok){
+    addScore(25);
+    el.textContent = '✅ Good approach! A clean solution: totals = {}; for o in orders: totals[o["item"]] = totals.get(o["item"], 0) + o["qty"] — using dict.get with a default avoids KeyErrors and scans the list only once.';
+    document.getElementById('certificateCard').style.display = 'block';
+    document.getElementById('finalScoreDisplay').textContent = state.score;
+  } else {
+    el.textContent = '❌ Think in terms of a dict that accumulates quantities as you loop through orders once — try totals.get(item, 0) + qty.';
+  }
+}
+
+renderAllQuizzes();
+updateProgress();
+
+</script>
+</body>
+</html>
