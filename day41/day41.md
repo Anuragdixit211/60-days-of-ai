@@ -25,8 +25,12 @@ Built a responsive web application using Claude AI with a focus on UI design, fu
 ## 📸 Files
 
 - Added HTML FILE
+-  [Original HTML](day41-htmlfile.html)
 - Added POSTER
+- ![Poster](day41-poster.jpeg)
 - Added ScreenShot
+- ![ScreenShot](day41-screenshot.png)
+
   
 
 ## 📚 Key Learnings
