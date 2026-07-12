@@ -71,8 +71,11 @@ Used Claude AI to:
 ## 📸 Project Added File
 
 - Added HTML FILE
+- [Original HTML](day42-htmlfile.html)
 - Added POSTER
+- ![Poster](day42-poster.png)
 - Added SCREEN SHOT
+- ![ScreenShot](day42-screenshot.png)
 ---
 
 ## 📂 Project Structure
