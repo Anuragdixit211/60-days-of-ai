@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Workflow Architect</title>
+<style>
+:root{--bg:#0b1220;--card:#131c31;--card2:#1a2642;--text:#eef3ff;--muted:#a9b6d3;--accent:#ff7a18;}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#0b1220,#10192e);color:var(--text)}
+header{padding:36px;text-align:center;background:radial-gradient(circle at top,#23345c,#0b1220)}
+h1{margin:0;font-size:2.2rem}.sub{color:var(--muted)}
+.wrap{max-width:1250px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:330px 1fr;gap:18px}
+.panel,.stage{background:rgba(19,28,49,.95);border:1px solid #243455;border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.timeline{display:flex;flex-wrap:wrap;gap:10px}
+.node{padding:8px 12px;border-radius:999px;background:#213154;border:1px solid #36518b}
+.stage{margin-bottom:16px}
+.badge{display:inline-block;padding:4px 10px;background:var(--accent);color:#fff;border-radius:999px;font-size:.8rem}
+textarea{width:100%;height:180px;background:#0f1730;color:#fff;border:1px solid #31466f;border-radius:12px;padding:10px}
+button{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;margin:4px}
+.progress{height:14px;background:#2b3b60;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#ff7a18,#ffb347)}
+table{width:100%;border-collapse:collapse}td,th{border:1px solid #31466f;padding:8px}
+details{margin-top:10px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>AI Workflow Architect</h1>
+<div class="sub">Complete AI-Powered Startup Journey • Idea → Launch → Growth → Scale</div>
+</header>
+<div class="wrap">
+<div class="timeline" id="timeline"></div>
+<div class="grid">
+<div class="panel">
+<h2>Dashboard</h2>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<p id="status"></p>
+<button onclick="next()">Complete Stage</button>
+<button onclick="window.print()">Print</button>
+<h3>Notes</h3>
+<textarea id="notes"></textarea>
+<h3>Workflow Summary</h3>
+<ul>
+<li>Validate</li><li>Research</li><li>Build</li><li>Launch</li><li>Scale</li>
+</ul>
+<h3>Recommended AI Stack</h3>
+<p>ChatGPT • Claude • Gemini • Perplexity • Cursor • Lovable • n8n • Canva • Figma</p>
+<h3>Communities</h3>
+<p>Indie Hackers • Product Hunt • Y Combinator • Hacker News</p>
+</div>
+<div>
+<div id="stages"></div>
+<div class="panel">
+<h2>Decision Tree</h2>
+<p><b>Idea validated?</b> → Yes → Build MVP → Test → Launch<br>No → Interview users → Refine problem → Validate again.</p>
+<h2>AI Tool Comparison</h2>
+<table>
+<tr><th>Task</th><th>Best</th><th>Alternative</th></tr>
+<tr><td>Research</td><td>Perplexity</td><td>Gemini</td></tr>
+<tr><td>Planning</td><td>Claude</td><td>ChatGPT</td></tr>
+<tr><td>Coding</td><td>Cursor</td><td>Lovable</td></tr>
+<tr><td>Design</td><td>Figma AI</td><td>Canva</td></tr>
+</table>
+<h2>Future Automation Opportunities</h2>
+<ul><li>Lead capture automation</li><li>Email onboarding</li><li>CRM sync</li><li>Analytics reports</li><li>AI support bot</li></ul>
+<h2>Search Keywords</h2>
+<p>startup roadmap, MVP, GTM strategy, customer discovery, AI automation, growth hacking</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+const data=[
+["Idea Validation","Validate pain point","Interview users, define ICP","Perplexity","Fast research","Gemini","Generate 20 interview questions","Talk to users","Skipping validation","Validated problem","2-5 days","Record every interview"],
+["Market Research","Study market","Competitor analysis","ChatGPT","Deep synthesis","Claude","Compare top competitors","Use data","Copying competitors","Research doc","3 days","Focus on niche"],
+["Business Model","Revenue","Pricing & canvas","Claude","Structured thinking","ChatGPT","Create pricing strategy","Keep simple","Complex pricing","Business model","2 days","Test willingness to pay"],
+["Branding","Identity","Name, logo","Canva","Visual speed","Figma","Create brand kit","Stay memorable","Generic brand","Brand kit","2 days","Check domain"],
+["MVP","Core product","Prioritize features","Claude","Feature planning","Notion AI","Write PRD","Build core only","Feature creep","PRD","3 days","Use MoSCoW"],
+["Development","Build","Code","Cursor","AI coding","Lovable","Generate React app","Ship weekly","Overengineering","Working MVP","2 weeks","Deploy often"],
+["Testing","Feedback","QA","ChatGPT","Bug analysis","Gemini","Generate test cases","Collect feedback","Ignoring users","Bug report","1 week","Observe sessions"],
+["Launch","Go live","Marketing","Canva","Fast assets","Buffer","Write launch copy","Launch everywhere","Silent launch","Users","2 days","Collect emails"],
+["Growth","Acquire users","SEO/content","ChatGPT","Content engine","Claude","30-day content plan","Measure","No analytics","Traffic","Ongoing","Double down"],
+["Scale","Systemize","Automation","n8n","Workflow automation","Zapier","Automate onboarding","Document","Hiring too early","Scalable ops","Ongoing","Track KPIs"]
+];
+const t=document.getElementById('timeline'), s=document.getElementById('stages');
+data.forEach((d,i)=>{
+t.innerHTML+=`<div class=node>${i+1}. ${d[0]}</div>`;
+s.innerHTML+=`<div class=stage><span class=badge>Stage ${i+1}</span><h2>${d[0]}</h2>
+<p><b>Objective:</b> ${d[1]}</p>
+<p><b>Tasks:</b> ${d[2]}</p>
+<p><b>Best AI Tool:</b> ${d[3]} — ${d[4]}</p>
+<p><b>Alternative:</b> ${d[5]}</p>
+<p><b>Prompt:</b> "${d[6]}"</p>
+<p><b>Best Practice:</b> ${d[7]}</p>
+<p><b>Common Mistake:</b> ${d[8]}</p>
+<p><b>Expected Output:</b> ${d[9]}</p>
+<p><b>Time:</b> ${d[10]}</p>
+<p><b>Efficiency Tip:</b> ${d[11]}</p>
+<details><summary>Bookmarks & Insights</summary>Bookmark key decisions, assumptions and metrics for this stage.</details>
+</div>`;
+});
+let p=+localStorage.p||0;
+function render(){bar.style.width=(p/data.length*100)+'%';status.textContent=`Progress: ${p}/${data.length} stages`;localStorage.p=p}
+function next(){if(p<data.length)p++;render()}
+notes.value=localStorage.notes||'';notes.oninput=()=>localStorage.notes=notes.value;
+render();
+</script>
+</body></html>
