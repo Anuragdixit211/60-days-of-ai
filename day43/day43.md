@@ -42,9 +42,7 @@ The objective of this challenge was to build a practical AI-powered application 
 - Understood how AI can accelerate software development.
 - Improved GitHub project documentation skills.
 
-## 🔗 Repository
 
-GitHub: https://github.com/Anuragdixit211
 
 ## ✅ Challenge Status
 
