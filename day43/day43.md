@@ -26,9 +26,10 @@ The objective of this challenge was to build a practical AI-powered application 
 
 ## 📸 File Included
 
-Added HtmlFile - 
-Added Poster -
-Added ScreenShot -
+Added HtmlFile - [Original HTML](day43-htmlfile.html)
+Added Poster - ![Poster](day43-poster.png)
+Added ScreenShot - ![ScreenShot](day43-screenshot.png)
+
 
 ## 🧠 Key Learnings
 
