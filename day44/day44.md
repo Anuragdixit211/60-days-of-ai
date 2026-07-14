@@ -29,9 +29,9 @@ Screenshots of the completed project are uploaded in this folder.
 
 ## 📂 Project Files
 
-- Generated HTML file
-- Screenshot
-- Poster 
+- Generated HTML file [Original HTML](day44-htmlfile.html)
+- Screenshot ![ScreenShot](day44-screenshot.png)
+- Poster  ![Poster](day44-poster.jpeg)
 
 ## 🧠 Key Learnings
 
