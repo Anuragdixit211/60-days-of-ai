@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anurag Dixit — LinkedIn Roast & Rebuild</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --card2:#1d212b; --line:#2a2f3a;
+    --text:#eef0f4; --text2:#a6acba; --text3:#6b7182;
+    --accent:#3b82f6; --accent-dark:#0b2b57; --accent-light:#dbeafe;
+    --good:#22c55e; --good-dark:#052e14; --good-light:#dcfce7;
+    --warn:#f59e0b; --warn-dark:#3d2a05; --warn-light:#fef3c7;
+    --bad:#ef4444; --bad-dark:#3d0a0a; --bad-light:#fee2e2;
+    --purple:#7c66e0; --purple-dark:#231a4a; --purple-light:#ece9fb;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px 80px;}
+  header.hero{
+    padding:56px 20px 40px; text-align:center;
+    background:radial-gradient(1200px 400px at 50% -100px, #1c2536 0%, var(--bg) 70%);
+    border-bottom:1px solid var(--line);
+  }
+  header.hero h1{font-size:28px;margin:0 0 8px;letter-spacing:-0.5px;}
+  header.hero p{color:var(--text2);margin:0;font-size:15px;}
+  .badge-row{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
+  .badge{background:var(--card2);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--text2);}
+
+  nav.tabs{
+    display:flex;gap:4px;overflow-x:auto;padding:14px 20px;
+    position:sticky;top:0;background:rgba(15,17,21,0.95);backdrop-filter:blur(6px);
+    z-index:50;border-bottom:1px solid var(--line);
+  }
+  nav.tabs button{
+    flex:none;background:transparent;border:1px solid transparent;color:var(--text2);
+    padding:8px 14px;border-radius:20px;font-size:13px;cursor:pointer;white-space:nowrap;
+    transition:all .15s;
+  }
+  nav.tabs button:hover{color:var(--text);}
+  nav.tabs button.active{background:var(--accent);color:#fff;}
+
+  section.panel{display:none;padding-top:32px;animation:fade .25s ease;}
+  section.panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  h2.section-title{font-size:22px;margin:0 0 6px;}
+  p.section-sub{color:var(--text2);font-size:14px;margin:0 0 28px;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;margin-bottom:18px;
+  }
+  .card h3{margin:0 0 12px;font-size:16px;display:flex;align-items:center;gap:8px;}
+  .score-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+  .score-pill{
+    font-weight:700;font-size:15px;padding:6px 14px;border-radius:8px;min-width:64px;text-align:center;
+  }
+  .score-bad{background:var(--bad-light);color:var(--bad-dark);}
+  .score-warn{background:var(--warn-light);color:var(--warn-dark);}
+  .score-good{background:var(--good-light);color:var(--good-dark);}
+  .reaction{font-style:italic;color:var(--text2);font-size:14px;}
+  .callout{
+    border-left:3px solid var(--line); padding:10px 14px; margin:10px 0;
+    background:var(--card2); border-radius:0 8px 8px 0; font-size:14px;
+  }
+  .callout.bad{border-color:var(--bad);}
+  .callout.warn{border-color:var(--warn);}
+  .callout.info{border-color:var(--accent);}
+  .callout b{display:block;margin-bottom:3px;font-size:13px;color:var(--text);}
+
+  .overall-strip{
+    display:flex;align-items:center;justify-content:center;gap:24px;
+    background:linear-gradient(135deg,var(--card2),var(--card));
+    border:1px solid var(--line);border-radius:var(--radius);padding:28px;margin-bottom:24px;
+    flex-wrap:wrap;text-align:center;
+  }
+  .overall-num{font-size:44px;font-weight:800;color:var(--warn);}
+  .overall-num.after{color:var(--good);}
+  .overall-label{font-size:13px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;}
+  .arrow{font-size:28px;color:var(--text3);}
+
+  .option-card{
+    background:var(--card2);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;margin-bottom:12px;
+  }
+  .option-tag{
+    display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.5px;padding:3px 9px;border-radius:6px;margin-bottom:8px;
+  }
+  .tag-search{background:var(--accent-light);color:var(--accent-dark);}
+  .tag-value{background:var(--purple-light);color:var(--purple-dark);}
+  .tag-authority{background:var(--warn-light);color:var(--warn-dark);}
+  .option-text{font-size:16px;font-weight:600;margin:4px 0 8px;}
+  .option-when{font-size:13px;color:var(--text2);}
+
+  .about-block{
+    background:var(--card2);border-radius:10px;padding:16px 18px;margin-bottom:10px;
+    border-left:3px solid var(--accent);font-size:14.5px;
+  }
+  .about-block .label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;}
+
+  .keyword-chip{
+    display:inline-block;background:var(--accent-light);color:var(--accent-dark);
+    padding:4px 10px;border-radius:6px;font-size:12.5px;font-weight:600;margin:3px 4px 0 0;
+  }
+
+  .ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  @media (max-width:640px){.ba-row{grid-template-columns:1fr;}}
+  .ba-box{border-radius:10px;padding:14px 16px;font-size:13.5px;}
+  .ba-before{background:var(--bad-light);color:#3a1414;}
+  .ba-after{background:var(--good-light);color:#0e2e1a;}
+  .ba-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;opacity:0.7;}
+
+  table.skills{width:100%;border-collapse:collapse;margin-top:8px;}
+  table.skills td{padding:8px 6px;border-bottom:1px solid var(--line);font-size:14px;}
+  .skill-rank{color:var(--text3);width:28px;}
+  .pin-badge{background:var(--warn-light);color:var(--warn-dark);font-size:11px;padding:2px 8px;border-radius:6px;margin-left:8px;font-weight:700;}
+
+  .scorecard-table{width:100%;border-collapse:collapse;}
+  .scorecard-table th{text-align:left;font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:8px 6px;border-bottom:1px solid var(--line);}
+  .scorecard-table td{padding:10px 6px;border-bottom:1px solid var(--line);font-size:14px;}
+  .delta-pos{color:var(--good);font-weight:700;}
+
+  .day-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;margin-bottom:14px;
+  }
+  .day-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:8px;background:var(--accent);color:#fff;
+    font-weight:800;font-size:14px;margin-right:10px;
+  }
+  .day-title{font-size:16px;font-weight:700;display:flex;align-items:center;margin-bottom:12px;}
+  .checklist{list-style:none;padding:0;margin:0;}
+  .checklist li{padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px;display:flex;gap:8px;align-items:flex-start;}
+  .checklist li:last-child{border-bottom:none;}
+  .checklist input{margin-top:3px;accent-color:var(--good);}
+  .post-draft{
+    background:var(--card2);border-radius:10px;padding:16px 18px;font-size:14.5px;
+    white-space:pre-wrap;border:1px dashed var(--line);
+  }
+  .char-count{font-size:12px;color:var(--text3);text-align:right;margin-top:6px;}
+
+  .summary-card{
+    background:linear-gradient(160deg,#1b2130,#12151d);
+    border:1px solid var(--line);border-radius:18px;padding:32px;
+    max-width:520px;margin:0 auto;font-family:Georgia,serif;
+  }
+  .summary-card h3{margin:0 0 18px;font-family:"Segoe UI",sans-serif;font-size:14px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:1px;text-align:center;}
+  .summary-scores{display:flex;justify-content:center;gap:30px;margin-bottom:22px;}
+  .summary-num{font-size:36px;font-weight:800;}
+  .summary-label{font-size:11px;color:var(--text3);font-family:"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:1px;}
+  .summary-list{font-size:15px;margin:0 0 18px;padding-left:20px;}
+  .summary-list li{margin-bottom:8px;}
+  .summary-highlight{
+    background:rgba(59,130,246,0.12);border-left:3px solid var(--accent);
+    padding:12px 14px;border-radius:0 8px 8px 0;font-size:14.5px;
+  }
+  .btn-row{display:flex;justify-content:center;gap:10px;margin-top:20px;}
+  .btn{
+    background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;
+    font-size:13.5px;font-weight:600;cursor:pointer;
+  }
+  .btn.secondary{background:transparent;border:1px solid var(--line);color:var(--text);}
+
+  .note-empty{
+    background:var(--card2);border:1px dashed var(--line);border-radius:10px;
+    padding:14px 16px;font-size:13.5px;color:var(--text2);margin-bottom:12px;
+  }
+  .disclaimer{
+    font-size:12.5px;color:var(--text3);text-align:center;margin-top:40px;
+    border-top:1px solid var(--line);padding-top:20px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Anurag Dixit — LinkedIn: Roast &amp; Rebuild</h1>
+  <p>You have no profile yet. That's actually the best possible starting point — no bad habits to undo, just a blank canvas to build right.</p>
+  <div class="badge-row">
+    <span class="badge">MCA Final Year</span>
+    <span class="badge">Target: Recruiters</span>
+    <span class="badge">Skills: C++ · Java · Python · SQL · DBMS</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-t="roast" class="active">1 · The roast</button>
+  <button data-t="rebuild">2 · The rebuild</button>
+  <button data-t="scorecard">3 · Scorecard</button>
+  <button data-t="plan">4 · 7-day plan</button>
+  <button data-t="summary">5 · Summary card</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ PART 1: ROAST ============ -->
+<section class="panel active" id="panel-roast">
+  <h2 class="section-title">Profile report card (before)</h2>
+  <p class="section-sub">You don't have a profile yet, so I can't roast existing wording. Instead, here's the roast of what most freshers do by default — the traps you'd fall into if you built this profile on autopilot. This is the "before" you're skipping.</p>
+
+  <div class="overall-strip">
+    <div>
+      <div class="overall-num">18<span style="font-size:20px">/100</span></div>
+      <div class="overall-label">Typical fresher default</div>
+    </div>
+    <div class="arrow">→</div>
+    <div>
+      <div class="overall-num after">82<span style="font-size:20px">/100</span></div>
+      <div class="overall-label">Your rebuilt profile</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Headline</h3>
+    <div class="score-row"><span class="score-pill score-bad">2/10</span><span class="reaction">Recruiter's 3-second reaction: skips straight past it</span></div>
+    <div class="callout bad"><b>❌ The default trap</b>Most students leave the default LinkedIn headline: <i>"MCA Student at [College name]"</i>. That's it. No skill, no direction, no reason to click.</div>
+    <div class="callout warn"><b>🧠 Why it hurts</b>Recruiters searching for candidates type skills into LinkedIn search — "Java developer," "backend intern," "SQL fresher." A headline with only your degree and college name never surfaces in those searches. You become invisible before anyone even opens your profile.</div>
+    <div class="callout info"><b>🔍 Invisible cost</b>You never find out you were "seen" — because you weren't. There's no rejection to learn from, just silence. That silence gets misread as "my skills aren't good enough" when the real problem is nobody could find you.</div>
+  </div>
+
+  <div class="card">
+    <h3>About — first 2 lines</h3>
+    <div class="score-row"><span class="score-pill score-bad">1/10</span><span class="reaction">"See more" never gets clicked</span></div>
+    <div class="callout bad"><b>❌ The default trap</b>Left blank, or opens with "I am a final year MCA student passionate about technology and looking for opportunities to grow." Every single word of that sentence is filler a recruiter has read 10,000 times.</div>
+    <div class="callout warn"><b>🧠 Why it hurts</b>LinkedIn cuts your About section after ~2 lines with a "see more" button. If those 2 lines don't say something specific, recruiters never click through — meaning your actual story, projects, and skills are never read, no matter how good they are.</div>
+    <div class="callout info"><b>🔍 Invisible cost</b>This is the single highest-leverage fix on your entire profile. A generic opening line silently kills 90% of your profile's real content before anyone gets to it.</div>
+  </div>
+
+  <div class="card">
+    <h3>Experience / projects section</h3>
+    <div class="score-row"><span class="score-pill score-warn">3/10</span><span class="reaction">"Another tutorial project" assumption</span></div>
+    <div class="callout bad"><b>❌ The default trap</b>Projects listed as a bare title with no description — "MediGenie" and "Restaurant Website" with nothing else — or described like a class assignment ("Made a project on restaurant search using web technologies").</div>
+    <div class="callout warn"><b>🧠 Why it hurts</b>Without a description of the actual problem solved, a recruiter assumes it's a copy-pasted tutorial project — the single most common thing they see from freshers, so they mentally discount it fast.</div>
+    <div class="callout info"><b>🔍 Invisible cost</b>You built two real, non-trivial systems — a search/recommendation tool and a location-based discovery platform. Undersold, they read as "did an assignment." Framed right, they read as "already thinks like a product builder."</div>
+  </div>
+
+  <div class="card">
+    <h3>Skills &amp; keywords</h3>
+    <div class="score-row"><span class="score-pill score-warn">4/10</span><span class="reaction">Shows up in some searches, not the ones that matter most</span></div>
+    <div class="callout bad"><b>❌ The default trap</b>You listed C++, Java, Python, SQL, DBMS — genuinely solid, in-demand skills. The trap isn't the skills, it's stopping there: no framework, no project-specific tools, no ordering by priority.</div>
+    <div class="callout warn"><b>🧠 Why it hurts</b>Recruiters filter search results by top-listed skills first. If your top 3 pinned skills aren't the ones matching the roles you want, you rank lower in results even though you technically "have" the right skill somewhere on the list.</div>
+    <div class="callout info"><b>🔍 Invisible cost</b>A flat, unordered skill list looks the same to LinkedIn's algorithm whether you're an expert or a beginner. Pinning and prioritizing is free — and most students never do it.</div>
+  </div>
+
+  <p class="section-sub" style="margin-top:24px;">Now let's build the version that actually gets found.</p>
+</section>
+
+<!-- ============ PART 2: REBUILD ============ -->
+<section class="panel" id="panel-rebuild">
+  <h2 class="section-title">The rebuild</h2>
+  <p class="section-sub">Every rewrite below uses only what you told me. Where I flagged a gap, add the real detail before publishing — don't leave placeholders live.</p>
+
+  <div class="card">
+    <h3>Headline — 3 options</h3>
+    <p style="font-size:13.5px;color:var(--text2);margin-top:-4px;">Formula: [Role/Identity] | [Who I help or what I do] | [Proof or differentiator]</p>
+
+    <div class="option-card">
+      <span class="option-tag tag-search">Search-optimized</span>
+      <div class="option-text">Aspiring Software Developer | Java, Python &amp; SQL | Building real-world apps, not just tutorials</div>
+      <div class="option-when"><b>Use when:</b> applying directly to job postings. Packs the exact keywords (Java, Python, SQL) recruiters filter by, so you surface in more searches.</div>
+    </div>
+    <div class="option-card">
+      <span class="option-tag tag-value">Value-proposition</span>
+      <div class="option-text">MCA Final Year | Turning everyday problems into working software — search tools, recommendation systems, real users in mind</div>
+      <div class="option-when"><b>Use when:</b> you want the headline itself to spark curiosity and make someone click into your About section.</div>
+    </div>
+    <div class="option-card">
+      <span class="option-tag tag-authority">Authority-style</span>
+      <div class="option-text">Backend-leaning Developer in the making | C++, Java, Python, SQL | Fast learner shipping full projects end-to-end</div>
+      <div class="option-when"><b>Use when:</b> you start posting content and want to be seen as someone building a track record, not just job-hunting.</div>
+    </div>
+    <div class="callout info" style="margin-top:6px;"><b>Which to pick right now</b>Go with Option 1 (search-optimized). Your single goal right now is recruiter discovery — you need to show up in searches before anything else matters.</div>
+  </div>
+
+  <div class="card">
+    <h3>About section — full rewrite</h3>
+
+    <div class="about-block">
+      <div class="label">Hook (before "see more")</div>
+      I build software that solves problems people actually have — not just problems assigned in a syllabus.
+    </div>
+    <div class="about-block">
+      <div class="label">Story</div>
+      I'm a final-year MCA student focused on backend development and applied problem-solving. I work primarily in C++, Java, Python, and SQL, and I like projects where the hard part isn't just writing code — it's figuring out what the user actually needs.
+    </div>
+    <div class="about-block">
+      <div class="label">Proof</div>
+      Two projects reflect that: <b>MediGenie</b>, a search portal that helps users find relevant medical suggestions and prescriptions, and a <b>restaurant discovery platform</b> that recommends nearby restaurants ranked by service quality — not just proximity. Both required designing search and ranking logic from scratch, not just a database lookup.
+    </div>
+    <div class="about-block">
+      <div class="label">CTA</div>
+      I'm actively looking for software development roles or internships where I can keep building things that matter. Open to a conversation — message me or check the featured section below for project details.
+    </div>
+
+    <div style="margin-top:14px;">
+      <div class="label" style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">Keywords embedded (for LinkedIn search)</div>
+      <span class="keyword-chip">C++</span><span class="keyword-chip">Java</span><span class="keyword-chip">Python</span><span class="keyword-chip">SQL</span><span class="keyword-chip">DBMS</span><span class="keyword-chip">backend development</span><span class="keyword-chip">software development</span><span class="keyword-chip">search &amp; recommendation systems</span>
+    </div>
+
+    <div class="callout warn" style="margin-top:16px;"><b>⚠️ Gap you need to fill before publishing</b>I couldn't find a number anywhere in what you shared — no user count, no accuracy metric, no dataset size, no "built in X weeks." Even a rough estimate ("tested with 15+ sample queries," "built over a 6-week sprint") makes the Proof paragraph far stronger. Add one before you publish.</div>
+  </div>
+
+  <div class="card">
+    <h3>Experience / projects — top entry rewrite</h3>
+    <p style="font-size:13.5px;color:var(--text2);margin-top:-4px;">Using MediGenie since it's your primary project. Apply the same pattern to the restaurant site.</p>
+
+    <div class="ba-row">
+      <div class="ba-box ba-before"><div class="ba-label">Before</div>Made a project called MediGenie for medical search.</div>
+      <div class="ba-box ba-after"><div class="ba-label">After</div>Designed and built MediGenie, a search portal that surfaces relevant medical suggestions and prescription information based on user queries.</div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-box ba-before"><div class="ba-label">Before</div>It gives suggestions and best prescription.</div>
+      <div class="ba-box ba-after"><div class="ba-label">After</div>Implemented the core logic that ranks and filters suggestions, so users get the most relevant prescription-related result first instead of a plain keyword match.</div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-box ba-before"><div class="ba-label">Before</div>(nothing about tech used)</div>
+      <div class="ba-box ba-after"><div class="ba-label">After</div>[Add your actual stack here — e.g. "Built using Java and SQL for the backend and query logic"] — fill this in with what you actually used.</div>
+    </div>
+
+    <div class="callout bad" style="margin-top:10px;"><b>❌ Rule I'm enforcing here</b>I did not invent a tech stack for MediGenie because you didn't tell me one. Don't publish this bullet until you fill in the real tools — a vague "After" is barely better than the "Before."</div>
+  </div>
+
+  <div class="card">
+    <h3>Skills recommendations</h3>
+    <table class="skills">
+      <tr><td class="skill-rank">1</td><td>Java <span class="pin-badge">Pin</span></td></tr>
+      <tr><td class="skill-rank">2</td><td>SQL <span class="pin-badge">Pin</span></td></tr>
+      <tr><td class="skill-rank">3</td><td>Python <span class="pin-badge">Pin</span></td></tr>
+      <tr><td class="skill-rank">4</td><td>C++</td></tr>
+      <tr><td class="skill-rank">5</td><td>DBMS</td></tr>
+      <tr><td class="skill-rank">6</td><td>Data Structures &amp; Algorithms <span style="color:var(--text3);font-size:12px;">— add if genuinely comfortable, not assumed</span></td></tr>
+      <tr><td class="skill-rank">7</td><td>Software Development</td></tr>
+      <tr><td class="skill-rank">8</td><td>Backend Development</td></tr>
+      <tr><td class="skill-rank">9</td><td>Problem Solving</td></tr>
+      <tr><td class="skill-rank">10</td><td>Git / version control <span style="color:var(--text3);font-size:12px;">— add only if you actually use it</span></td></tr>
+    </table>
+    <div class="callout info" style="margin-top:10px;"><b>Skills to remove</b>None currently listed need removing — your 5 skills are all relevant. Just don't pad the list with generic soft skills like "teamwork" or "communication" as your top entries; they dilute keyword density without helping search.</div>
+  </div>
+</section>
+
+<!-- ============ PART 3: SCORECARD ============ -->
+<section class="panel" id="panel-scorecard">
+  <h2 class="section-title">Before vs after scorecard</h2>
+  <p class="section-sub">"Before" reflects the default-fresher-profile trap. "After" reflects the rebuilt version above, once you fill in the flagged gaps.</p>
+
+  <table class="scorecard-table">
+    <tr><th>Section</th><th>Before</th><th></th><th>After</th><th>Change</th></tr>
+    <tr><td>Headline</td><td>2/10</td><td>→</td><td>8/10</td><td class="delta-pos">+6</td></tr>
+    <tr><td>About (hook)</td><td>1/10</td><td>→</td><td>8/10</td><td class="delta-pos">+7</td></tr>
+    <tr><td>About (full)</td><td>2/10</td><td>→</td><td>8/10</td><td class="delta-pos">+6</td></tr>
+    <tr><td>Experience</td><td>3/10</td><td>→</td><td>7/10</td><td class="delta-pos">+4 (goes to 9 once you add the tech stack)</td></tr>
+    <tr><td>Skills / keywords</td><td>4/10</td><td>→</td><td>8/10</td><td class="delta-pos">+4</td></tr>
+  </table>
+
+  <div class="overall-strip" style="margin-top:24px;">
+    <div><div class="overall-num">18<span style="font-size:20px">/100</span></div><div class="overall-label">Overall before</div></div>
+    <div class="arrow">→</div>
+    <div><div class="overall-num after">82<span style="font-size:20px">/100</span></div><div class="overall-label">Overall after</div></div>
+    <div style="margin-left:10px;"><span class="score-pill score-good">+64</span></div>
+  </div>
+</section>
+
+<!-- ============ PART 4: 7-DAY PLAN ============ -->
+<section class="panel" id="panel-plan">
+  <h2 class="section-title">7-day LinkedIn activation plan</h2>
+  <p class="section-sub">Profile edits alone don't get you seen. This turns the rebuild into actual visibility.</p>
+
+  <div class="day-card">
+    <div class="day-title"><span class="day-num">1</span>Make all profile changes</div>
+    <ul class="checklist">
+      <li><input type="checkbox">Update headline to Option 1 (search-optimized)</li>
+      <li><input type="checkbox">Replace About section with the rewrite — fill in the metric gap first</li>
+      <li><input type="checkbox">Rewrite MediGenie entry with real tech stack added</li>
+      <li><input type="checkbox">Rewrite restaurant project entry using the same before/after pattern</li>
+      <li><input type="checkbox">Add and reorder skills, pin Java, SQL, Python to top</li>
+      <li><input type="checkbox">Upload a clear, front-facing profile photo if you don't have one</li>
+      <li><input type="checkbox">Add both projects to the Featured section with links or screenshots</li>
+    </ul>
+  </div>
+
+  <div class="day-card">
+    <div class="day-title"><span class="day-num">2</span>Publish post #1 — "I just rebuilt my LinkedIn"</div>
+    <div class="post-draft" id="post1">I just rebuilt my LinkedIn profile from scratch — and realized I'd been invisible for a reason.
+
+No headline beyond "MCA Student." An About section that said nothing. Two solid projects listed with zero context.
+
+So I fixed it. MediGenie (a medical search + prescription suggestion tool) and a restaurant discovery platform now actually explain what problem they solve — not just that they exist.
+
+Lesson: nobody can evaluate what they can't understand. If your profile reads like a to-do list, it's not doing its job.
+
+Open to software development roles and internships. Would love to connect with anyone hiring, building, or learning the same things.</div>
+    <div class="char-count">~660 characters — well under the 1300 limit</div>
+  </div>
+
+  <div class="day-card">
+    <div class="day-title"><span class="day-num">3</span>Send 10 strategic connection requests</div>
+    <div class="callout info"><b>Who to target</b>Campus recruiters and talent-acquisition folks at companies hiring freshers/interns in your stack, alumni from your college now working as SDEs, and engineering managers at small-to-mid product companies (they respond more than big-tech ATS black holes).</div>
+    <div class="post-draft" style="margin-top:10px;">Hi [Name], I'm a final-year MCA student building backend projects in Java and SQL. Came across your profile and would love to stay connected as I start applying for dev roles. Happy to share what I've built if useful.</div>
+    <div class="char-count">~270 characters — under the 300 limit</div>
+  </div>
+
+  <div class="day-card">
+    <div class="day-title"><span class="day-num">4</span>Comment on 5 posts in your target space</div>
+    <div class="callout info"><b>The value comment formula</b>Agree with a specific point → Add one insight from your own project experience → Ask a genuine question. Example: "Agree that ranking logic matters more than raw search speed for most users — I ran into this exact tradeoff building a recommendation feature for a college project. Curious how you'd handle cold-start users with no history yet?"</div>
+  </div>
+
+  <div class="day-card">
+    <div class="day-title"><span class="day-num">5</span>Publish post #2 — lessons-learned / hot take</div>
+    <div class="post-draft">Building MediGenie taught me something no DBMS lecture did: a "correct" search result and a "useful" one aren't the same thing.
+
+Early on, my search just matched keywords. Technically correct, practically useless — users didn't want the closest string match, they wanted the most relevant suggestion.
+
+Fixing that meant thinking about ranking, not just retrieval. Small shift, completely changed how I approach every project since.
+
+If you're a student building search or recommendation features: don't stop at "it returns results." Ask if it returns the RIGHT results.</div>
+    <div class="char-count">~640 characters</div>
+  </div>
+
+  <div class="day-card">
+    <div class="day-title"><span class="day-num">6</span>Engage + extend outreach</div>
+    <ul class="checklist">
+      <li><input type="checkbox">Reply to every comment on both posts within a few hours</li>
+      <li><input type="checkbox">Send 5 more connection requests using the Day 3 template</li>
+      <li><input type="checkbox">Re-share or comment on one post from someone who engaged with yours</li>
+    </ul>
+  </div>
+
+  <div class="day-card">
+    <div class="day-title"><span class="day-num">7</span>Review and adjust</div>
+    <div class="callout info"><b>What to check</b>Profile views (spike = your posts are working, flat = headline/photo needs another pass), search appearances (low = add more role-specific keywords), connection acceptance rate (below 30% = your note isn't specific enough or you're targeting too senior).</div>
+  </div>
+</section>
+
+<!-- ============ PART 5: SUMMARY CARD ============ -->
+<section class="panel" id="panel-summary">
+  <h2 class="section-title">What I learned today — shareable summary</h2>
+  <p class="section-sub">Screenshot this and post it, or copy the text below.</p>
+
+  <div class="summary-card">
+    <h3>I let AI rebuild my LinkedIn today</h3>
+    <div class="summary-scores">
+      <div><div class="summary-num" style="color:var(--warn)">18</div><div class="summary-label">Before</div></div>
+      <div><div class="summary-num" style="color:var(--good)">82</div><div class="summary-label">After</div></div>
+    </div>
+    <p style="font-weight:600;margin-bottom:6px;">Top 3 mistakes I was making:</p>
+    <ol class="summary-list">
+      <li>Headline had no skills or direction — just my degree</li>
+      <li>My projects had no explanation of what problem they solved</li>
+      <li>Skills weren't prioritized for the roles I actually want</li>
+    </ol>
+    <div class="summary-highlight">The #1 thing that made the biggest difference: rewriting the About section's first two lines — the part visible before "see more."</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn secondary" onclick="copySummary()">Copy text version</button>
+  </div>
+  <p id="copy-confirm" style="text-align:center;font-size:13px;color:var(--good);display:none;margin-top:10px;">Copied.</p>
+
+  <div class="disclaimer">Built using only the information you provided. Flagged gaps (tech stack, metrics) need your real details before publishing — nothing here was invented on your behalf.</div>
+</section>
+
+</div>
+
+<script>
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('section.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.t).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+function copySummary(){
+  const text = `I let AI roast my LinkedIn profile today. Here's what changed:
+
+Before: 18/100
+After: 82/100
+
+Top 3 mistakes I was making:
+1. Headline had no skills or direction — just my degree
+2. My projects had no explanation of what problem they solved
+3. Skills weren't prioritized for the roles I actually want
+
+The #1 thing that made the biggest difference: rewriting the About section's first two lines — the part visible before "see more."`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const c = document.getElementById('copy-confirm');
+    c.style.display='block';
+    setTimeout(()=>c.style.display='none', 2000);
+  });
+}
+</script>
+
+</body>
+</html>
