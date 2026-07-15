@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Premium Decision Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#0b1020;--card:rgba(22,28,45,.78);--glass:rgba(255,255,255,.06);
+--txt:#eef2ff;--muted:#aab3d2;--blue:#60a5fa;--green:#34d399;--gold:#fbbf24;--red:#f87171;--purple:#a78bfa;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,sans-serif;background:
+radial-gradient(circle at top,#1d2b64 0,#0b1020 45%,#090b14 100%);
+color:var(--txt)}
+.wrap{max-width:900px;margin:auto;padding:28px}
+.hero{padding:42px;border-radius:24px;background:linear-gradient(135deg,rgba(96,165,250,.18),rgba(167,139,250,.12));backdrop-filter:blur(12px);border:1px solid var(--glass);box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.hero h1{font-size:42px;margin:0;font-weight:800}
+.hero p{color:var(--muted)}
+.grid{display:grid;gap:22px;margin-top:26px}
+.card{background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--glass);border-radius:22px;padding:26px;transition:.25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+h2{margin:0 0 18px;font-size:18px;text-transform:uppercase;letter-spacing:1px}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;background:rgba(251,191,36,.15);color:var(--gold);font-weight:700}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.opt{background:rgba(255,255,255,.03);padding:18px;border-radius:18px}
+.barbg{height:14px;background:#20263a;border-radius:999px;overflow:hidden}
+.bar{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#34d399,#10b981);animation:grow 1s forwards}
+@keyframes grow{to{width:var(--w)}}
+.score{display:flex;justify-content:space-between;margin:14px 0 6px}
+.win{font-size:36px;font-weight:800;color:var(--gold)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+.mini{background:#171d31;border-radius:18px;padding:18px}
+small{color:var(--muted)}
+footer{text-align:center;padding:30px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero">
+<span class="badge">Premium Decision Dashboard</span>
+<h1>Python vs Power BI vs AWS</h1>
+<p>Your goal: <b>Maximum long-term career growth</b> • Decision Date: 15 Jul 2026</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h2 style="color:#60a5fa">The Real Decision</h2>
+<p>You aren't choosing between three technologies—you are choosing where to commit your next 6–12 months. Your fear isn't learning Python; it's missing a better opportunity.</p>
+</div>
+
+<div class="card">
+<h2 style="color:#34d399">Strategic Comparison</h2>
+<div class="options">
+<div class="opt"><h3>🐍 Python</h3><p><b>Best Case:</b> Software, AI, automation, data and cloud.</p><p><b>Hidden Edge:</b> Makes AWS & Power BI easier later.</p><p><b>Weakness:</b> Slower initial payoff.</p></div>
+<div class="opt"><h3>📊 Power BI</h3><p><b>Best Case:</b> Analytics jobs.</p><p><b>Hidden Edge:</b> Business reporting.</p><p><b>Weakness:</b> More specialized.</p></div>
+<div class="opt"><h3>☁️ AWS</h3><p><b>Best Case:</b> Cloud engineering.</p><p><b>Hidden Edge:</b> High enterprise demand.</p><p><b>Weakness:</b> Stronger with coding.</p></div>
+</div>
+</div>
+
+<div class="card">
+<h2 style="color:#a78bfa">Decision Matrix</h2>
+<div class="score"><span>Python</span><b>63/70</b></div><div class="barbg"><div class="bar" style="--w:90%"></div></div>
+<div class="score"><span>AWS</span><b>54/70</b></div><div class="barbg"><div class="bar" style="--w:77%;background:linear-gradient(90deg,#a78bfa,#8b5cf6)"></div></div>
+<div class="score"><span>Power BI</span><b>49/70</b></div><div class="barbg"><div class="bar" style="--w:70%;background:linear-gradient(90deg,#60a5fa,#3b82f6)"></div></div>
+</div>
+
+<div class="card">
+<h2 style="color:#f87171">Assumption Buster</h2>
+<ul>
+<li>There is no perfect choice.</li>
+<li>You can switch later—your own answer confirmed that.</li>
+<li>Your biggest enemy is analysis paralysis, not lack of options.</li>
+</ul>
+</div>
+
+<div class="card">
+<h2 style="color:#34d399">7-Day Action Plan</h2>
+<ol>
+<li>Pick one Python roadmap.</li>
+<li>Ignore alternative courses.</li>
+<li>Finish Python basics.</li>
+<li>Build a small automation.</li>
+<li>Push project to GitHub.</li>
+<li>See how Python connects to AWS.</li>
+<li>Commit for 90 days.</li>
+</ol>
+</div>
+
+<div class="card">
+<h2 style="color:#fbbf24">Verdict</h2>
+<div class="win">Choose Python</div>
+<p>It aligns with your stated goal of maximizing career growth while keeping the greatest number of future paths open.</p>
+<p><em>Hard truth: The opportunity cost of indecision is now higher than the risk of choosing Python.</em></p>
+</div>
+
+<div class="card">
+<h2 style="color:#fbbf24">Shareable Cards</h2>
+<div class="cards">
+<div class="mini"><b>Matrix</b><hr><p>Python 63 ⭐<br>AWS 54<br>Power BI 49</p><small>Built with Claude AI</small></div>
+<div class="mini"><b>Verdict</b><hr><p>Python wins because it unlocks the broadest career options.</p><small>Built with Claude AI</small></div>
+<div class="mini"><b>LinkedIn</b><hr><p><b>Hook:</b> Stop chasing perfect decisions. Commit to one skill and compound.</p><small>Built with Claude AI</small></div>
+</div>
+</div>
+
+</div>
+<footer>Built with Claude AI • ABTalks 60-Day Challenge</footer>
+</body></html>
