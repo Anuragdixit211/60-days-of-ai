@@ -42,7 +42,7 @@ Built an AI-powered Decision Strategist that helps users make informed career de
 ## 📸 files included
 
 - Home Screen file [Original HTML](day45-htmlfile.html)
-- Decision Analysis Poster ![Poster](day44-poster.jpeg)
+- Decision Analysis Poster ![Poster](day45-poster.jpeg)
 - Recommendation Results Screenshot ![ScreenShot](day45-screenshot.png)
 
 ---
