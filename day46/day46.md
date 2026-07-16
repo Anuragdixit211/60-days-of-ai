@@ -54,11 +54,11 @@ Day46/
 
 # 📸 Uploaded Files
 
-✅ Generated HTML File
+✅ Generated HTML File [Original HTML](day46-htmlfile.html)
 
-✅ Poster
+✅ Poster ![Poster](day46-poster.jpeg)
 
-✅ Project Screenshots
+✅ Project Screenshots ![ScreenShot](day46-screenshot.png)
 
 ---
 
