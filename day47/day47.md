@@ -53,9 +53,9 @@ The platform provides detailed insights, content scoring, platform-specific reco
 
 ## 📸 Files Uploaded
 
-* ✅ Generated HTML File
-* ✅ Project Screenshots
-* ✅ Poster
+* ✅ Generated HTML File [Original HTML](day47-htmlfile.html)
+* ✅ Project Screenshots ![ScreenShot](day47-screenshot.png)
+* ✅ Poster ![Poster](day47-poster.png)
 
 ---
 
