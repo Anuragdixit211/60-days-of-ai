@@ -36,9 +36,9 @@ Develop a premium single-file HTML application that enables users to compare alt
 
 ## 📂 Files Uploaded
 
-* compare_decide_builder.html
-* Poster 
-* Screenshots
+* compare_decide_builder.html [Original HTML](day48-htmlfile.html)
+* Poster ![Poster](day48-poster.png)
+* Screenshots ![ScreenShot](day48-screenshot.png)
   
 
 
