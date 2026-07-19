@@ -33,9 +33,9 @@ Built a premium interactive web application that helps users create reusable AI 
 
 ## 📂 Files Included
 
-* day49.html
-* Screenshots of the application
-* Exported Workflow JSON Poster
+* day49.html [Original HTML](day49-htmlfile.html)
+* Screenshots of the application ![ScreenShot](day49-screenshot.png)
+* Exported Workflow JSON Poster ![Poster](day49-poster.png)
 
 ## 🧠 Key Learnings
 
