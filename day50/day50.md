@@ -33,9 +33,9 @@ Create an adaptive interview system that:
 - Local Storage
 
 ## 📂 Project Files
-- index.html
-- Screenshots
-- Defense Report Poster
+- index.html [Original HTML](day50-htmlfile.html)
+- Screenshots ![ScreenShot](day50-screenshot.png)
+- Defense Report Poster ![Poster](day50-poster.png)
 
 ## 📸 Screenshots
 Add all project screenshots inside this folder.
