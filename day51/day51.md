@@ -23,9 +23,9 @@ Design a product from idea to execution by defining the problem, identifying use
 
 ## 📄 Files Included
 
-- Implementation_Blueprint.pdf
-- Pitch_Deck.Poster
-- Screenshots
+- Implementation_Blueprint.pdf [Original HTML](day51-htmlfile.html)
+- Pitch_Deck.Poster ![Poster](day451-poster.png)
+- Screenshots ![ScreenShot](day51-screenshot.png)
 
 ---
 
