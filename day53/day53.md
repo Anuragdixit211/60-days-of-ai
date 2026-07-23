@@ -22,6 +22,7 @@ A well-prepared project saves time, reduces future bugs, and makes collaboration
 ---
 
 ## Poster 
+![Poster](day53-poster.jpeg)
   
 
 ## 🛠️ What I Worked On
