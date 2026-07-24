@@ -56,7 +56,7 @@ The emphasis was on writing clean, production-ready code while keeping the archi
 ---
 
 ## Poster 
-
+![Poster](day54-poster.jpeg)
 ## 📈 Day 54 Reflection
 
 Today's work transformed the project from a foundation into a functional application. The focus was on creating reliable, scalable features that will support everything built in the upcoming days.
