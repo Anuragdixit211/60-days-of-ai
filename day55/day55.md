@@ -51,7 +51,7 @@ Placemate AI
 - Git & GitHub Workflow
 
 ## Files and Screenshots
-- Dashboard Screenshot ![ScreenShot](day55-screenshot.jpeg)
+- Dashboard Screenshot ![ScreenShot](day55-screenshot.png)
 - Poster ![Poster](day55-poster.jpeg)
 
 
