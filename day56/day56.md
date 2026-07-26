@@ -20,7 +20,8 @@
 - Git workflow
 - Railway root directory configuration
 
-## Poster Added
+## Poster Added 
+- ![Poster](day56-poster.png)
 
 ## Status
 
