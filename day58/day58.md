@@ -23,7 +23,7 @@
 ## Files Added 
 - Poster ![Poster](day58-poster.png)
 - Screenshot1 ![ScreenShot](day58-screenshot1.png)
-- Screenshot2 ![ScreenShot](day58-screenshot1.png)
+- Screenshot2 ![ScreenShot](day58-screenshot2.png)
 - Screenshot3 ![ScreenShot](day58-screenshot3.png)
 
   
