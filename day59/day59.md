@@ -23,8 +23,8 @@ Finalize the application for production deployment, verify functionality, optimi
 - Updated GitHub repository
 
 ## Files Included  
-- POSTER
-- ScreenShot 
+- POSTER ![Poster](day59-poster.jpeg)
+- ScreenShot ![ScreenShot](day59-screenshot.png)
 
 ## Key Learnings
 - Production deployment workflow
