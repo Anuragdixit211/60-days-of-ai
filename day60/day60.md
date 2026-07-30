@@ -35,8 +35,8 @@
 
 ## Files Included 
 - POSTER ADDED ![Poster](day60-poster.jpeg)
-- SCREENSHOT ADDED 1 ![ScreenShot](day44-screenshot1.png)
-- SCREENSHOT ADDED 2 ![ScreenShot](day44-screenshot2.png)
+- SCREENSHOT ADDED 1 ![ScreenShot](day60-screenshot1.png)
+- SCREENSHOT ADDED 2 ![ScreenShot](day60-screenshot2.png)
 
 ---
 
