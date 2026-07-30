@@ -34,8 +34,9 @@
 - Continuous improvement mindset
 
 ## Files Included 
-- POSTER ADDED
-- SCREENSHOT ADDED 
+- POSTER ADDED ![Poster](day60-poster.jpeg)
+- SCREENSHOT ADDED 1 ![ScreenShot](day44-screenshot1.png)
+- SCREENSHOT ADDED 2 ![ScreenShot](day44-screenshot2.png)
 
 ---
 
